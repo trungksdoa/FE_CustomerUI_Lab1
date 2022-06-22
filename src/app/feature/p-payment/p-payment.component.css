@@ -1,0 +1,14 @@
+.payment-offer-summary__thumbnail {
+  width: 100%;
+  display: block;
+}
+
+table tbody tr,td,th {
+  border: none
+}
+
+::ng-deep .mat-dialog-content{
+  max-height: 82vh;
+  height:100%;
+}
+/* Totals section */

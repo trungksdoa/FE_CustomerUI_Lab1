@@ -1,0 +1,220 @@
+ <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+
+   <a class="navbar-brand" style="color:white;">Category Manager</a>
+   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor02"
+     aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
+     <span class="navbar-toggler-icon"></span>
+   </button>
+   <div class="collapse navbar-collapse" id="navbarColor02">
+     <form class="form-inline my-2 my-lg-0">
+       <input type="search" (ngModelChange)="searchCategory(key.value)" #key="ngModel" ngModel name="key"
+         id="searchName" class="form-control mr-sm-2" placeholder="Search product..." required>
+     </form>
+   </div>
+ </nav>
+ <div class="container" id="main-container" style="text-align: center ;">
+   <div class="row">
+
+     <h2> Category List</h2>
+
+
+     <table class="table table-bordered table-responsive-sm table-responsive-md
+    table-responsive-lg">
+       <thead>
+         <tr>
+           <th> Image </th>
+           <th> Name </th>
+           <th> Category </th>
+           <th> Description</th>
+           <th> Price</th>
+           <th> Created_At</th>
+           <th> Updated_At</th>
+           <th> Action</th>
+           <th><a (click)="onOpenModal(null, 'add')" class="btn btn-primary tooltips" data-placement="top"
+               data-original-title="Add">Add </a> </th>
+         </tr>
+       </thead>
+       <tbody>
+         <tr *ngFor="let product of products">
+           <td><img src="{{'http://localhost:8081/image/'+product.imageurl}}" alt="" border=3 height=100 width=100></td>
+           <td> <button mat-button>{{ product.name }}</button> </td>
+           <td><button mat-button>{{ product.catagory ? product.catagory.name: "Éo có danh mục nhé"}}</button> </td>
+           <td> <button mat-button>{{ product.description }}</button> </td>
+           <td> <button mat-button>{{ product.price }}</button> </td>
+           <td> <button mat-button>{{ product.createdAt }}</button> </td>
+           <td> <button mat-button>{{ product.updatedAt }}</button> </td>
+           <td>
+             <button mat-button (click)="onOpenModal(product, 'edit')" class="btn btn-warning" data-placement="top"
+               data-original-title="Edit">Edit </button>
+             <button mat-button (click)="onOpenModal(product, 'delete')" class="btn btn-danger tooltips"
+               data-placement="top" data-original-title="Delete">Delete</button>
+           </td>
+           <td></td>
+         </tr>
+       </tbody>
+     </table>
+
+   </div>
+ </div>
+
+
+ <!-- Add Employee Modal -->
+ <div class="modal fade" id="addEmployeeModal" tabindex="-1" role="dialog" aria-labelledby="addEmployeeModalLabel"
+   aria-hidden="true">
+   <div class="modal-dialog" role="document">
+     <div class="modal-content">
+       <div class="modal-header">
+         <h5 class="modal-title" id="addEmployeeModalLabel">Add Category</h5>
+         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+           <span aria-hidden="true">&times;</span>
+         </button>
+       </div>
+       <div class="modal-body">
+         <mat-card style="max-width: 500px;margin:auto" [class.mat-elevation-z8]="true">
+           <form style="display: flex;flex-direction: column;" [formGroup]="createProductForm" (ngSubmit)="onSubmit()">
+             <mat-form-field>
+               <input matInput placeholder="name" name="name" formControlName="name" />
+             </mat-form-field>
+
+             <mat-form-field>
+               <textarea matInput placeholder="description" name="description" formControlName="description"></textarea>
+             </mat-form-field>
+             <mat-form-field>
+               <input matInput type="number" placeholder="price" name="price" formControlName="price" />
+             </mat-form-field>
+
+
+             <mat-form-field appearance="fill">
+               <mat-label>Select Categorys (required)</mat-label>
+               <select matNativeControl required class="form-control" placeholder="category" name="category"
+                 formControlName="category">
+                 <option label="--select category --"></option>
+                 <option *ngFor="let category of categorys" [value]="category.id">
+                   {{category.name}}</option>
+               </select>
+
+             </mat-form-field>
+
+             <div style="display:flex" class="spacing-bottom">
+               <button mat-mini-fab type="button" color="primary" (click)="onUploadImageButtonClick()">
+                 <mat-icon>attach_file</mat-icon>
+               </button>
+               <span style="display: flex;align-items: center;margin-left: 15px;">
+                 {{
+                (createProductForm.value.image &&
+                  createProductForm.value.image.name) ||
+                  "upload an image"
+              }}
+               </span>
+               <input name="image" type="file" (change)="onFileChange()" hidden #inputImage />
+             </div>
+             <div *ngIf="imageDataUrl">
+               <img style="display: block;max-width: 100%; text-align: center; border-radius: 10px; margin:10px auto;"
+                 [src]="imageDataUrl" />
+             </div>
+             <button class="spacing-top" mat-raised-button color="primary" type="submit">
+               submit
+             </button>
+
+
+           </form>
+         </mat-card>
+       </div>
+     </div>
+   </div>
+ </div>
+
+ <!-- Edit Modal -->
+ <div class="modal fade" id="updateEmployeeModal" tabindex="-1" role="dialog" aria-labelledby="employeeEditModalLabel"
+   aria-hidden="true">
+   <div class="modal-dialog" role="document">
+     <div class="modal-content">
+       <div class="modal-header">
+         <h5 class="modal-title" id="updateEmployeeModalLabel">Edit {{editCate?.name}}</h5>
+         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+           <span aria-hidden="true">&times;</span>
+         </button>
+       </div>
+       <div class="modal-body">
+         <form #editForm="ngForm">
+           <div class="form-group">
+             <label for="name">Name</label>
+             <input type="text" ngModel="{{editCate?.name}}" name="name" class="form-control" id="name"
+               aria-describedby="emailHelp" placeholder="Name">
+           </div>
+           <div class="form-group">
+             <label for="description">Description</label>
+             <input type="text" ngModel="{{editCate?.description}}" name="description" class="form-control"
+               id="description" aria-describedby="emailHelp" placeholder="description">
+           </div>
+           <div class="form-group">
+             <label for="price">Price</label>
+             <input type="number" ngModel="{{editCate?.price}}" name="price" class="form-control" id="price"
+               aria-describedby="emailHelp" placeholder="price">
+           </div>
+           <div class="form-group">
+             <mat-form-field style="width: 100%;">
+               <mat-label>Select Categorys (required)</mat-label>
+               <select matNativeControl required class="form-control" ngModel name="category" id="category"
+                 placeholder="category">
+                 <option label="--select category --"></option>
+                 <option *ngFor="let category of categorys" [value]="category.id">
+                   {{category.name}}</option>
+               </select>
+             </mat-form-field>
+           </div>
+           <div class="form-group">
+             <label for="price">Image</label>
+             <img src="{{'http://localhost:8081/image/'+editCate?.imageurl}}"
+               style="display: block;width: 100%;height:100%; text-align: center; border-radius: 10px; margin:10px auto;"
+               name="image" class="form-control" id="image" aria-describedby="emailHelp" placeholder="image">
+
+           </div>
+           <div class="form-group">
+             <input type="hidden" ngModel="{{editCate?.createdAt}}" name="createdAt" class="form-control" id="createdAt"
+               aria-describedby="emailHelp" placeholder="createdAt">
+           </div>
+           <input type="hidden" ngModel="{{editCate?.id}}" name="id" class="form-control" id="id" placeholder="Email">
+
+
+           <div class="modal-footer">
+             <button type="button" id="" data-dismiss="modal" class="btn btn-secondary">Close</button>
+             <button (click)="onUpdateProduct(editForm)" data-dismiss="modal" class="btn btn-primary">Save
+               changes</button>
+           </div>
+         </form>
+       </div>
+     </div>
+   </div>
+ </div>
+
+ <!-- Delete Modal -->
+ <div class="modal fade" id="deleteEmployeeModal" tabindex="-1" role="dialog" aria-labelledby="deleteModelLabel"
+   aria-hidden="true">
+   <div class="modal-dialog" role="document">
+     <div class="modal-content">
+       <div class="modal-header">
+         <h5 class="modal-title" id="deleteModelLabel">Delete Category</h5>
+         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+           <span aria-hidden="true">&times;</span>
+         </button>
+       </div>
+       <div class="modal-body">
+         <p>Are you sure you want to delete {{deleteCate?.name}}?</p>
+         <div class="modal-footer">
+           <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+           <button (click)="onDeleteProduct(deleteCate?.id)" class="btn btn-danger" data-dismiss="modal">Yes</button>
+         </div>
+       </div>
+     </div>
+   </div>
+ </div>
+
+
+ <!-- Notification for no employees -->
+ <div *ngIf="products?.length == 0" class="col-lg-12 col-md-12 col-xl-12">
+   <div class="alert alert-info" role="alert">
+     <h4 class="alert-heading">NO Category!</h4>
+     <p>No Category were found.</p>
+   </div>
+ </div>

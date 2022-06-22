@@ -1,0 +1,6 @@
+<nav>
+  <mat-toolbar class="navbar" id="nav">
+    <a mat-button id="title" *ngFor="let category of categorys" (click)="getShare()"
+      routerLink="/product/category/{{category.id}}"> {{category.name}} </a>
+  </mat-toolbar>
+</nav>

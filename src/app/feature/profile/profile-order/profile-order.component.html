@@ -1,0 +1,37 @@
+<div class="container" id="main-container">
+  <div class="row">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th> Mã đơn hàng </th>
+          <th> Ngày đặt hàng </th>
+          <th> Tổng thiệt hại </th>
+          <th> Trạng thái </th>
+          <th colspan="2">Hành động</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let order of orders">
+          <td> <button mat-button style="padding:5px">{{order.id}} </button></td>
+          <td> <button mat-button style="padding:5px">{{order.createAt}}</button></td>
+          <td> <button mat-button style="padding:5px">{{formatCurrency(order.totalAmount)}} </button></td>
+          <td>
+            <div *ngIf="order.status == 1;">
+              <button mat-button color="warn" style="padding:5px">Chưa xác nhận</button>
+            </div>
+            <div *ngIf="order.status == 2;">
+              <button mat-button color="primary" style="padding:5px">Đã xác nhận</button>
+            </div>
+            <div *ngIf="order.status == 3;">
+              <button mat-button color="disabled" style="padding:5px">Đã hủy</button>
+            </div>
+            <div *ngIf="order.status == 4;">
+              <button mat-button style="padding:5px">Đã hoàn thành</button>
+            </div>
+          </td>
+          <td> <button mat-raised-button color="primary" style="padding:5px" (click)="openOrderDetail(order)">Chi tiết</button></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

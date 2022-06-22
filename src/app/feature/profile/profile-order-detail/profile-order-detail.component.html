@@ -1,0 +1,24 @@
+
+<h1 mat-dialog-title>Sản phẩm đã đặt</h1>
+<div mat-dialog-content>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th scope="col">Tên sản phẩm</th>
+        <th scope="col">Số lượng</th>
+        <th scope="col">Tổng</th>
+      </tr>
+    </thead>
+    <tbody *ngFor="let item of orderItems">
+      <tr style="cursor: pointer">
+        <td><button mat-button style="padding:5px">{{item.productItem.name}}</button></td>
+        <td><button mat-button style="padding:5px">{{item.quantity}}</button></td>
+        <td><button mat-button style="padding:5px">{{sharedService.getFormatCurrency(item.productPrice)}}</button></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">Thóat</button>
+  <!-- <button mat-button [mat-dialog-close]="data.animal" cdkFocusInitial>Ok</button> -->
+</div>
