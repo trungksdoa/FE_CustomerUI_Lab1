@@ -1,7 +1,6 @@
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SlickCarouselModule } from 'ngx-slick-carousel';
 import { NgxPaginationModule } from 'ngx-pagination';
-import { NgChartsModule } from 'ng2-charts';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { HttpClientModule } from "@angular/common/http";
 import { NgModule } from "@angular/core";
@@ -88,7 +87,6 @@ import { ToastServiceService } from "src/app/service/toast-service.service";
     ReactiveFormsModule,
     NgSelectModule,
     NgxPayPalModule,
-    NgChartsModule,
     NgxPaginationModule,
     SlickCarouselModule,
     NgSelectModule,
