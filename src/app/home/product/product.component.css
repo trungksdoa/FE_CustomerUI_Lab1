@@ -15,7 +15,7 @@
 .my-pagination{
   color:gray;
 }
-.my-pagination /deep/ .ngx-pagination .current{
+.my-pagination  .ngx-pagination .current{
   margin-top:30px;
   background-color: #232f3e;
   color:white;

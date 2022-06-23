@@ -8,7 +8,7 @@ import {
   UrlTree
 } from '@angular/router'
 import { Observable } from 'rxjs'
-import { SharedService } from '../shared.service'
+import { SharedService } from 'src/app/service/shared.service'
 @Injectable()
 export class AuthGuardService implements CanActivate {
   constructor (public sharedService: SharedService, public router: Router) {}

@@ -1,12 +1,11 @@
+
 import { HttpErrorResponse } from '@angular/common/http'
-import { Input } from '@angular/core'
-import { Component, OnInit } from '@angular/core'
+import { Component, OnInit, Input } from '@angular/core'
 import { ActivatedRoute, Router } from '@angular/router'
 import { Product } from 'src/app/api/product/product'
 import { ProductService } from 'src/app/api/product/product.service'
-import { NgCartService } from 'src/app/feature/p-cart/service/NgCartService'
-import { SharedService } from 'src/app/shared.service'
-
+import { NgCartService } from 'src/app/feature/p-cart/service'
+import { SharedService } from 'src/app/service/shared.service'
 @Component({
   selector: 'app-product',
   templateUrl: './product.component.html',

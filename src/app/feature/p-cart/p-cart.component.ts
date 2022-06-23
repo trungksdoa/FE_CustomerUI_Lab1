@@ -1,16 +1,14 @@
 import { NgCartCaculatorService } from './service/NgCartCaculatorService'
 import { Component, Inject, OnInit } from '@angular/core'
-import { SharedService } from 'src/app/shared.service'
+import { SharedService } from 'src/app/service/shared.service'
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog'
 import { PPaymentComponent } from 'src/app/feature/p-payment/p-payment.component'
-import { DialogService } from 'src/app/dialog.service'
-import { Users } from 'src/app/model/user'
+import { DialogService } from 'src/app/service/dialog.service'
 import { Router } from '@angular/router'
-import { SpinnerService } from 'src/app/spinner.service'
 import { Cart, cartItem, NgCartApiService, NgCartService } from './service'
 import { ResizeChangeService } from 'src/app/size-detector/resize-change.service'
 import { SCREEN_SIZE } from 'src/app/size-detector/size-detector.component'
-import { ToastServiceService } from 'src/app/toast-service.service'
+import { ToastServiceService } from 'src/app/service/toast-service.service'
 @Component({
   selector: 'app-p-cart',
   templateUrl: './p-cart.component.html',

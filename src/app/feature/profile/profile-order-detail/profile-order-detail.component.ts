@@ -1,8 +1,9 @@
-import { Component, Inject, OnInit } from '@angular/core'
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog'
-import { orderItems, orderManagement } from 'src/app/model/Order'
-import { SharedService } from 'src/app/shared.service'
-import { NgCartService } from '../../p-cart/service'
+import { Component, OnInit, Inject } from "@angular/core"
+import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog"
+import { orderItems, orderManagement } from "src/app/model/Order"
+import { SharedService } from "src/app/service/shared.service"
+import { NgCartService } from "../../p-cart/service"
+
 
 @Component({
   selector: 'app-profile-order-detail',

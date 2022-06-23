@@ -1,4 +1,4 @@
-import { SharedService } from 'src/app/shared.service'
+import { SharedService } from 'src/app/service/shared.service';
 import { Component, ElementRef, HostListener, OnInit } from '@angular/core'
 import { MatDialog } from '@angular/material/dialog'
 import { Product } from './api/product/product'

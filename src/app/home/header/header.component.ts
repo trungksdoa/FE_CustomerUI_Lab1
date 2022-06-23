@@ -1,14 +1,14 @@
-import { async, debounceTime, map, Observable, startWith } from 'rxjs'
-import { Input, Component, OnInit } from '@angular/core'
-import { Router } from '@angular/router'
-import { FormControl } from '@angular/forms'
 
-import { SharedService } from 'src/app/shared.service'
-import { DialogService } from 'src/app/dialog.service'
+import { Component, OnInit, Input } from '@angular/core'
+import { FormControl } from '@angular/forms'
+import { Router } from '@angular/router'
+import { Observable, startWith, debounceTime, map } from 'rxjs'
 import { Product } from 'src/app/api/product/product'
-import { PCartComponent } from 'src/app/feature/p-cart/p-cart.component'
-import { ToastServiceService } from 'src/app/toast-service.service'
 import { Cart } from 'src/app/model/cart'
+import { PCartComponent } from 'src/app/feature/p-cart/p-cart.component'
+import { DialogService } from 'src/app/service/dialog.service'
+import { SharedService } from 'src/app/service/shared.service'
+import { ToastServiceService } from 'src/app/service/toast-service.service'
 import { ResizeChangeService } from 'src/app/size-detector/resize-change.service'
 import { SCREEN_SIZE } from 'src/app/size-detector/size-detector.component'
 
@@ -41,7 +41,7 @@ export class HeaderComponent implements OnInit {
 
   ngOnInit (): void {
     this.sharedService.isLoggedIn().subscribe(data => {
-      console.log(this.sharedService.getUserFromCookie());
+      console.log(this.sharedService.getUserFromCookie())
       this.isLogin = data
       this.sharedService.afterClick.subscribe(() => {
         this.name = this.sharedService.getUserFromCookie().name
@@ -111,7 +111,7 @@ export class HeaderComponent implements OnInit {
     isEmpty: false,
     totalUniqueItems: 0
   }
-  goProfile(){
+  goProfile () {
     this.router.navigate(['profile'])
   }
   logOut () {

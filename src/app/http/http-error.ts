@@ -11,7 +11,7 @@ import {
 import { Injectable } from '@angular/core'
 import { Observable, tap } from 'rxjs'
 import { Cart } from '../model/cart'
-import { SpinnerService } from '../spinner.service'
+import { SpinnerService } from 'src/app/service/spinner.service'
 
 @Injectable()
 export class HttpErrorInterceptor implements HttpInterceptor {

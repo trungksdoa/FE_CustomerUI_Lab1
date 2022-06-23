@@ -44,10 +44,10 @@ import { ProductComponent } from "./home/product/product.component";
 import { httpInterceptProviders } from "./http";
 import { MaterialExampleModule } from "./module/material.module";
 import { ProductBestSellerComponent } from "./product-best-seller/product-best-seller.component";
-import { SharedService } from "./shared.service";
+import { SharedService } from "src/app/service/shared.service";
 import { ResizeChangeService } from "./size-detector/resize-change.service";
 import { SizeDetectorComponent } from "./size-detector/size-detector.component";
-import { ToastServiceService } from "./toast-service.service";
+import { ToastServiceService } from "src/app/service/toast-service.service";
 
 
 

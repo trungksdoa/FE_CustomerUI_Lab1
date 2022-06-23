@@ -1,4 +1,4 @@
-import { SharedService } from 'src/app/shared.service'
+import { SharedService } from 'src/app/service/shared.service'
 import { ProductService } from 'src/app/api/product/product.service'
 import { Component, OnInit } from '@angular/core'
 import { ActivatedRoute } from '@angular/router'

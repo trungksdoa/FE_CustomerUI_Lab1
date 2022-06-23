@@ -1,16 +1,14 @@
-import { NgCartService } from 'src/app/feature/p-cart/service/NgCartService'
-import { SharedService } from 'src/app/shared.service'
-import { Component, OnInit } from '@angular/core'
-import { Users } from 'src/app/model/user'
-import { NgForm } from '@angular/forms'
+import { Component, OnInit } from '@angular/core';
+import { NgForm } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router'
-import { UserService } from 'src/app/feature/profile/user.service'
-import { IDeactivateOptions } from 'src/app/Auth/confirm-deactivate-guard.service'
-import { Observable } from 'rxjs'
-import { CookieService } from 'ngx-cookie-service'
-import { ToastServiceService } from 'src/app/toast-service.service'
-import { MatSnackBar } from '@angular/material/snack-bar'
-import { HttpErrorResponse } from '@angular/common/http'
+import { Observable } from 'rxjs';
+import { IDeactivateOptions } from 'src/app/Auth/confirm-deactivate-guard.service';
+import { NgCartService } from 'src/app/feature/p-cart/service';
+import { Users } from 'src/app/model/user';
+import { SharedService } from 'src/app/service/shared.service';
+import { ToastServiceService } from 'src/app/service/toast-service.service';
+import {UserService} from 'src/app/feature/profile/user.service'
 @Component({
   selector: 'app-login-ui',
   templateUrl: './login-ui.component.html',
