@@ -1,0 +1,69 @@
+<nav class="py-2 bg-light border-bottom" class="navbar">
+  <div class="container d-flex flex-wrap">
+    <ul class="nav me-auto">
+      <li class="nav-item"><a class="nav-link link-light px-2" [routerLink]="['/home']" routerLinkActive="active"
+          aria-current="page">Trang chủ</a></li>
+    </ul>
+    <ul class="nav">
+      <li class="nav-item"><a href="#" class="nav-link link-light px-2" *ngIf="!isLogin" [routerLink]="['/login']">Đăng
+          nhập</a></li>
+      <li class="nav-item"><a href="#" class="nav-link link-light px-2" *ngIf="!isLogin" [routerLink]="['/login']">Đăng
+          ký</a></li>
+
+      <li class="nav-item" *ngIf="isLogin">
+        <div class="flex-shrink-0 dropdown">
+          <a class="d-block link-dark text-decoration-none" [matMenuTriggerFor]="menu">
+            <img src="http://bootdey.com/img/Content/avatar/avatar1.png" alt="mdo" width="32" height="32"
+              class="rounded-circle">
+          </a>
+          <mat-menu #menu="matMenu">
+            <a mat-menu-item [routerLink]="['/profile']">Thông tin</a>
+            <a mat-menu-item (click)="logOut()" [routerLink]="['/']">Đăng
+              xuất</a>
+          </mat-menu>
+        </div>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+<header class="py-3 mb-3 border-bottom">
+  <div class="container d-grid gap-3 align-items-center" style="grid-template-columns: 0.2fr 2fr;">
+    <div class="dropdown">
+      <a [routerLink]="['/home']" routerLinkActive="active"
+        class="d-flex align-items-center col-md-3 mb-2 mb-md-0 text-dark text-decoration-none">
+        <mat-icon>polymer</mat-icon>
+      </a>
+    </div>
+
+    <div class="d-flex align-items-center">
+      <form class="w-100 me-3">
+        <div class="input-group">
+          <input type="search" class="form-control" #myInput placeholder="Tìm Kiếm" aria-label="Search"
+            (keyup.enter)="doSearch(myInput.value)" [formControl]="myControl" [matAutocomplete]="auto">
+          <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+            <mat-option *ngFor="let option of filteredOptions | async" [value]="option.name">
+              <span>{{ option.name }} </span>
+              <small style="position: absolute; right: 30px; color: gray">in {{ option.catagory.name }}</small>
+            </mat-option>
+          </mat-autocomplete>
+          <div class="input-group-text" id="basic-addon1">
+            <button mat-raised-button style="background:transparent;box-shadow:none" (click)="doSearch(myInput.value)">
+              <mat-icon>search</mat-icon>
+            </button>
+          </div>
+        </div>
+      </form>
+      <div class=" flex-shrink-0">
+        <ul class="nav me-auto">
+          <li class="nav-item">
+            <button mat-raised-button (click)="openCart()" color="warn" matBadge="{{itemCount}}"
+              matBadgePosition="after" matBadgeColor="warn">
+              <mat-icon>add_shopping_cart</mat-icon>
+            </button>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</header>

@@ -1,0 +1,63 @@
+<div class="container-xl px-4 mt-4">
+    <!-- Account page navigation-->
+    <nav class="nav nav-borders">
+        <a class="nav-link active ms-0" >Thông Tin Cá Nhân</a>  
+    </nav>
+    <hr class="mt-0 mb-4">
+    <div class="row">
+        <div class="col-xl-4">
+            <!-- Profile picture card-->
+            <div class="card mb-4 mb-xl-0">
+                <div class="card-header">Hình Ảnh Đại Diện</div>
+                <div class="card-body text-center">
+                    <!-- Profile picture image-->
+                    <img class="img-account-profile rounded-circle mb-2" src="http://bootdey.com/img/Content/avatar/avatar1.png" alt="">
+                    <!-- Profile picture help block-->
+                    <div class="small font-italic text-muted mb-4">JPG or PNG no larger than 5 MB</div>
+                    <!-- Profile picture upload button-->
+                    <button class="btn btn-primary" type="button">Upload new image</button>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-8">
+            <!-- Account details card-->
+            <div class="card mb-4">
+                <div class="card-header">Account Details</div>
+                <div class="card-body">
+                    <form  #addForm="ngForm" (ngSubmit)="formSubmit(addForm.value)" novalidate>
+                        <!-- Form Group (username)-->
+                     
+                        <div class="mb-3">
+                            <label class="small mb-1" for="inputUsername">Tên đăng nhập</label>
+                            <input class="form-control" ngModel="{{user.username}}"  id="inputUsername" type="text"  name="username" id="username">
+                        </div>
+                        <!-- Form name-->
+                        <div class="mb-3">
+                            <label class="small mb-1" for="inputName">Tên</label>
+                            <input class="form-control" ngModel="{{user.name}}"  id="inputName" type="text"   name="name" id="name">
+                        </div>
+                         <!-- Form address-->
+                        <div class="mb-3">
+                            <label class="small mb-1" for="inputAddress">Địa Chỉ</label>
+                            <input class="form-control" ngModel="{{user.address}}" id="inputAddress" type="text"  name="address" id="address">
+                        </div>
+                         <!-- Form phone-->
+                        <div class="mb-3">
+                            <label class="small mb-1" for="inputPhone">Số điện thoại</label>
+                            <input class="form-control" ngModel="{{user.phone}}"  id="inputPhone" type="text"   name="phone" id="phone">
+                        </div>
+                        <div class="mb-3">
+                            <label class="small mb-1" for="inputPassword">Mật Khẩu</label>
+                            <input class="form-control" ngModel="{{user.password}}"  id="inputPassword"  [type]="show_button ? 'text' : 'password'"   name="password" id="password">
+                            <span class="field-icon"><i [class]="show_eye ? 'fa fa-eye' : 'fa fa-eye-slash'" (click)="showPassword()"></i></span>
+                        </div>
+                        
+        
+                        <!-- Save changes button-->
+                        <button class="btn btn-primary" type="submit" >Save changes</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

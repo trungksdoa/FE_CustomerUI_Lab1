@@ -1,0 +1,141 @@
+<div mat-dialog-title>
+  <div class="row parent">
+    <div class="col-md-3">
+      <h3 class="order-summary-title">Tổng Hóa Đơn</h3>
+    </div>
+    <div class="col-md-9">
+      <p>
+        Đặt hàng
+      </p>
+
+      <p (click)="existPayment()">
+        <mat-icon>arrow_back</mat-icon>
+      </p>
+    </div>
+  </div>
+</div>
+<div mat-dialog-content class="mat-typography ">
+  <div class="row">
+    <div class="col-md-3">
+      <div class="sidebar">
+        <div class="item-container">
+          <div class="thumbnail-image">
+            <img src="" />
+          </div>
+          <div class="item_content" style="
+          overflow-y: scroll;
+          overflow-x: hidden;
+          height:50vh;">
+            <table class="table">
+              <tbody>
+                <tr style="cursor: pointer" *ngFor="let item of cartItems" class="zindex-1">
+                  <td>
+                    <div class="row" style="padding:5px;">
+                      <div class="col-md-6">
+                        <div class="image_thumbail position-relative" matBadge="{{item.quantity}}"
+                          matBadgePosition="after" matBadgeColor="warn">
+                          <img src="{{'http://localhost:8081/image/'+item.productItem.imageurl}}"
+                            class="payment-offer-summary__thumbnail">
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="product_content">
+                          <p class="payment-offer-title">
+                            {{item.productItem.name}}
+                          </p>
+                          <span class="payment-offer-price">
+                            {{getCalculatedValue(item)}}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </td>
+                  <!-- <td></td>
+                  <td>{{getCalculatedValue(item)}}</td> -->
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-9">
+      <div class="container">
+        <nav mat-tab-nav-bar [tabPanel]="tabPanel">
+          <a mat-tab-link *ngFor="let link of links" (click)="paymentOnline(link)" [active]="activeLink == link">
+            {{link}} </a>
+        </nav>
+        <mat-tab-nav-panel #tabPanel></mat-tab-nav-panel>
+        <br>
+        <br>
+        <form id="paymentForm" *ngIf="activeLink==='Thanh toán trả sau'">
+          <div class="row">
+            <h1 style="text-align:center">Thanh Toán Khi Nhận Hàng</h1>
+            <div class="col-md-6">
+
+              <div class="mb-3">
+                <label for="address" class="form-label">Xưng hô</label>
+                <select class="form-select" [(ngModel)]="orderForm.xungho" name="xungho"
+                  aria-label="Default select example">
+                  <option [selected]="" value="Anh">Anh (Mr.)</option>
+                  <option value="Chị">Chị (Mss.)</option>
+                </select>
+              </div>
+              <div class="mb-3">
+                <label for="address" class="form-label">Họ và tên</label>
+                <input type="text" [(ngModel)]="orderForm.fullname" name="fullname" class="form-control" id="fullname">
+              </div>
+              <div class="mb-3">
+                <label for="phoneNumber" class="form-label">Số điện thoại</label>
+                <input type="text" [(ngModel)]="orderForm.phoneNumber" name="phoneNumber" class="form-control"
+                  id="phoneNumber">
+              </div>
+              <div class="mb-3">
+                <label for="notes" class="form-label">Ghi chú</label>
+                <input type="text" name="note" class="form-control" id="notes">
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label for="address" class="form-label">Địa chỉ cụ thể</label>
+                <input type="text" [(ngModel)]="orderForm.address" name="address" class="form-control" id="address">
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Tỉnh(Thành Phố)</label>
+                <ng-select [items]="citys" bindLabel="name" bindValue="matp" id="tp"
+                  (change)="onSelectChangeTP($event)">
+                </ng-select>
+              </div>
+              <div class="mb-3">
+                <label for="District" class="form-label">Quận(Huyện)</label>
+                <ng-select [items]="district" bindLabel="name" bindValue="maqh" id="qh"
+                  (change)="onSelectChangeQH($event)">
+                </ng-select>
+              </div>
+              <div class="mb-3">
+                <label for="wards" class="form-label">Xã(Phường)</label>
+                <ng-select [items]="wards" bindLabel="name" bindValue="xaid" id="px"
+                  (change)="onSelectChangePX($event)">
+                </ng-select>
+              </div>
+            </div>
+          </div>
+        </form>
+        <app-payment-paypal *ngIf="activeLink==='Thanh toán trả trước'" [items]="cartItems"></app-payment-paypal>
+      </div>
+    </div>
+  </div>
+  <div style="max-width:250px" *ngIf="activeLink==='Thanh toán trả sau'">
+    <div class="d-flex justify-content-between">
+      <p class="mb-2">Phí giao hàng</p>
+      <p class="mb-2">Miễn Phí</p>
+    </div>
+    <div class="d-flex justify-content-between">
+      <p class="mb-2">Tổng cộng</p>
+      <p class="mb-2">{{totalMoney}}</p>
+    </div>
+    <br>
+    <button style="width:100%" mat-button (click)="formSubmit()" class="btn btn-primary">Xác nhận thanh toán</button>
+
+  </div>
+</div>

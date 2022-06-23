@@ -1,0 +1,30 @@
+<mat-card class="example-card">
+  <mat-card-header>
+    <mat-card-title>Đăng nhập</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <form class="example-form" #addForm="ngForm" (ngSubmit)="formSubmit(addForm)">
+      <div class="mb-3">
+        <label for="username" class="form-label">Tên đăng nhập</label>
+        <input type="text" ngModel name="username" class="form-control" id="username" required>
+        <div *ngIf="addForm.controls['username'].invalid && (addForm.controls['username'].dirty || addForm.controls['username'].touched)">
+          <p  *ngIf="addForm.controls['username'].errors" style="color:red">* Hãy nhập username</p>
+         </div>
+    
+      </div>
+      <div class="mb-3">
+        <label for="password" class="form-label">Mật khẩu</label>
+        <input [type]="show_button ? 'text' : 'password'" ngModel name="password" class="form-control" id="password" required>
+        <span class="field-icon"><i [class]="show_eye ? 'fa fa-eye' : 'fa fa-eye-slash'" (click)="showPassword()"></i></span>
+        <div *ngIf="addForm.controls['password'].invalid && (addForm.controls['password'].dirty || addForm.controls['password'].touched)">
+          <p  *ngIf="addForm.controls['password'].errors" style="color:red">* Hãy nhập password</p>
+         </div>
+      </div>
+      <mat-card-actions>
+        <button mat-button style="background-color:beige"  type="submit">Đăng nhập</button>
+        <button mat-button style="background-color:beige" [routerLink]="['/register']">Đăng ký</button>
+      
+      </mat-card-actions>
+    </form>
+  </mat-card-content>
+</mat-card>
