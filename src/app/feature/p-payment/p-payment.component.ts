@@ -1,17 +1,18 @@
-import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core'
-import { SharedService } from 'src/app/shared.service'
-import { Subscription } from 'rxjs'
-import { OrderService } from 'src/app/feature/p-payment/order.service'
-import { Order } from 'src/app/model/Order'
-import { Users } from 'src/app/model/user'
-import { CityService } from 'src/app/feature/p-payment/citys.service'
-import { Router } from '@angular/router'
+
 import {
   MatDialogRef,
   MAT_DIALOG_DATA
 } from '@angular/material/dialog'
 import { ThemePalette } from '@angular/material/core'
 import { cartItem } from '../p-cart/service'
+import { Component, OnInit, Inject } from '@angular/core'
+import { Router } from 'express'
+import { Subscription } from 'rxjs'
+import { Order } from 'src/app/model/Order'
+import { Users } from 'src/app/model/user'
+import { SharedService } from 'src/app/service/shared.service'
+import { CityService } from './citys.service'
+import { OrderService } from './order.service'
 declare var bootstrap: any
 
 interface IPaymentFormValue extends Order {

@@ -6,16 +6,13 @@ import {
   cartInit,
   itemInitvalue
 } from './index'
-import { Injectable } from '@angular/core'
-import { HttpClient, HttpHeaders } from '@angular/common/http'
-import { Observable } from 'rxjs'
-import { environment } from 'src/environments/environment'
-import { SharedService } from 'src/app/shared.service'
-import { Product } from 'src/app/api/product/product'
-import { Users } from 'src/app/model/user'
-import { SpinnerService } from 'src/app/spinner.service'
-import { ToastServiceService } from 'src/app/toast-service.service'
 import { Router } from '@angular/router'
+import { Injectable } from '@angular/core';
+import { Product } from 'src/app/api/product/product';
+import { Users } from 'src/app/model/user';
+import { SharedService } from 'src/app/service/shared.service';
+import { SpinnerService } from 'src/app/service/spinner.service';
+import { ToastServiceService } from 'src/app/service/toast-service.service';
 
 @Injectable({ providedIn: 'root' })
 export class NgCartService {

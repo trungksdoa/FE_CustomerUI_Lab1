@@ -1,13 +1,12 @@
+import { UserService } from 'src/app/feature/profile/user.service';
+import { Router } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { Users } from 'src/app/model/user';
-import { SharedService } from 'src/app/shared.service';
-import { ToastServiceService } from 'src/app/toast-service.service';
-import { UserService } from '../user.service';
+import { SharedService } from 'src/app/service/shared.service';
+import { ToastServiceService } from 'src/app/service/toast-service.service';
 
 @Component({
   selector: 'app-profile-account',

@@ -1,14 +1,13 @@
-import { SharedService } from 'src/app/shared.service'
-import { Component, ElementRef, HostListener, OnInit } from '@angular/core'
-import { Router } from '@angular/router'
-import { Subscription, interval } from 'rxjs'
-import { MatDialog } from '@angular/material/dialog'
-import { Product } from './api/product/product'
-import { ProductService } from './api/product/product.service'
-import { HttpErrorResponse } from '@angular/common/http'
-import { Cart, NgCartService } from './feature/p-cart/service'
-import { ResizeChangeService } from './size-detector/resize-change.service'
-import { SCREEN_SIZE } from './size-detector/size-detector.component'
+import { HttpErrorResponse } from "@angular/common/http"
+import { Component, OnInit, ElementRef, HostListener } from "@angular/core"
+import { MatDialog } from "@angular/material/dialog"
+import { Product } from "./api/product/product"
+import { ProductService } from "./api/product/product.service"
+import { NgCartService } from "./feature/p-cart/service"
+import { SharedService } from "./service/shared.service"
+import { ResizeChangeService } from "./size-detector/resize-change.service"
+import { SCREEN_SIZE } from "./size-detector/size-detector.component"
+
 
 @Component({
   selector: 'app-root',

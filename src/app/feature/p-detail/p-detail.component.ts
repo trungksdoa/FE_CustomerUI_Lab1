@@ -1,9 +1,9 @@
-import { SharedService } from 'src/app/shared.service'
-import { ProductService } from 'src/app/api/product/product.service'
-import { Component, OnInit } from '@angular/core'
-import { ActivatedRoute } from '@angular/router'
-import { Product } from 'src/app/api/product/product'
-import { NgCartService } from 'src/app/feature/p-cart/service/NgCartService'
+import { Component, OnInit } from "@angular/core"
+import { ActivatedRoute } from "@angular/router"
+import { Product } from "src/app/api/product/product"
+import { ProductService } from "src/app/api/product/product.service"
+import { SharedService } from "src/app/service/shared.service"
+import { NgCartService } from "../p-cart/service"
 
 @Component({
   selector: 'app-p-detail',

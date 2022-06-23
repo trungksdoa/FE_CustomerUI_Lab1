@@ -1,3 +1,4 @@
+import { SharedService } from 'src/app/service/shared.service';
 // src/app/auth/auth-guard.service.ts
 import { Injectable } from '@angular/core'
 import {
@@ -8,7 +9,7 @@ import {
   UrlTree
 } from '@angular/router'
 import { Observable } from 'rxjs'
-import { SharedService } from '../shared.service'
+
 @Injectable()
 export class AuthGuardService implements CanActivate {
   constructor (public sharedService: SharedService, public router: Router) {}

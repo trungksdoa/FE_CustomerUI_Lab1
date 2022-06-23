@@ -1,3 +1,5 @@
+import { Cart } from 'src/app/model/cart';
+import { SpinnerService } from 'src/app/service/spinner.service';
 
 import {
   HttpErrorResponse,
@@ -10,8 +12,8 @@ import {
 } from '@angular/common/http'
 import { Injectable } from '@angular/core'
 import { Observable, tap } from 'rxjs'
-import { Cart } from '../model/cart'
-import { SpinnerService } from '../spinner.service'
+
+
 
 @Injectable()
 export class HttpErrorInterceptor implements HttpInterceptor {

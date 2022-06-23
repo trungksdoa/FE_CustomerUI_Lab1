@@ -1,16 +1,15 @@
-import { async, debounceTime, map, Observable, startWith } from 'rxjs'
-import { Input, Component, OnInit } from '@angular/core'
-import { Router } from '@angular/router'
-import { FormControl } from '@angular/forms'
-
-import { SharedService } from 'src/app/shared.service'
-import { DialogService } from 'src/app/dialog.service'
-import { Product } from 'src/app/api/product/product'
-import { PCartComponent } from 'src/app/feature/p-cart/p-cart.component'
-import { ToastServiceService } from 'src/app/toast-service.service'
-import { Cart } from 'src/app/model/cart'
-import { ResizeChangeService } from 'src/app/size-detector/resize-change.service'
-import { SCREEN_SIZE } from 'src/app/size-detector/size-detector.component'
+import { Component, OnInit, Input } from "@angular/core"
+import { FormControl } from "@angular/forms"
+import { Router } from "@angular/router"
+import { Observable, startWith, debounceTime, map } from "rxjs"
+import { Product } from "src/app/api/product/product"
+import { PCartComponent } from "src/app/feature/p-cart/p-cart.component"
+import { Cart } from "src/app/model/cart"
+import { DialogService } from "src/app/service/dialog.service"
+import { SharedService } from "src/app/service/shared.service"
+import { ToastServiceService } from "src/app/service/toast-service.service"
+import { ResizeChangeService } from "src/app/size-detector/resize-change.service"
+import { SCREEN_SIZE } from "src/app/size-detector/size-detector.component"
 
 @Component({
   selector: 'app-header',

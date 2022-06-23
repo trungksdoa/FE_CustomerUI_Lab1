@@ -1,5 +1,6 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
-import { SpinnerService } from '../../spinner.service';
+import { Component, OnInit, ChangeDetectorRef } from "@angular/core";
+import { SpinnerService } from "src/app/service/spinner.service";
+
 
 @Component({
   selector: 'app-spinner',

@@ -1,15 +1,13 @@
-import { Component, OnInit } from '@angular/core'
-import { Router } from '@angular/router'
-import { Observable } from 'rxjs'
-import { SharedService } from 'src/app/shared.service'
-import { UserService } from 'src/app/feature/profile/user.service'
-import { Users } from 'src/app/model/user'
-import { NgForm } from '@angular/forms'
-import { IDeactivateOptions } from 'src/app/Auth/confirm-deactivate-guard.service'
-import { MatSnackBar } from '@angular/material/snack-bar'
-import { HttpErrorResponse } from '@angular/common/http'
-import { NgCartService } from '../p-cart/service'
-import { ToastServiceService } from 'src/app/toast-service.service'
+import { Component, OnInit } from "@angular/core"
+import { NgForm } from "@angular/forms"
+import { Router } from "@angular/router"
+import { Observable } from "rxjs"
+import { IDeactivateOptions } from "src/app/Auth/confirm-deactivate-guard.service"
+import { Users } from "src/app/model/user"
+import { SharedService } from "src/app/service/shared.service"
+import { ToastServiceService } from "src/app/service/toast-service.service"
+import { NgCartService } from "../p-cart/service"
+import {UserService} from 'src/app/feature/profile/user.service'
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',

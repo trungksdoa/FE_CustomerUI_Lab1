@@ -1,9 +1,10 @@
-import { SharedService } from 'src/app/shared.service'
-import { orderManagement } from 'src/app/model/Order'
-import { OrderService } from 'src/app/feature/p-payment/order.service'
-import { Component, OnInit } from '@angular/core'
-import { DialogService } from 'src/app/dialog.service'
-import { ProfileOrderDetailComponent } from './profile-order-detail/profile-order-detail.component'
+import { Component, OnInit } from "@angular/core"
+import { orderManagement } from "src/app/model/Order"
+import { DialogService } from "src/app/service/dialog.service"
+import { SharedService } from "src/app/service/shared.service"
+import { OrderService } from "../p-payment/order.service"
+import { ProfileOrderDetailComponent } from "./profile-order-detail/profile-order-detail.component"
+
 
 @Component({
   selector: 'app-profile',

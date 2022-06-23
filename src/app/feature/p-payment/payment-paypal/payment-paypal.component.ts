@@ -1,12 +1,13 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { MatDialogRef } from '@angular/material/dialog';
-import { IPayPalConfig, ICreateOrderRequest } from 'ngx-paypal';
-import { Order } from 'src/app/model/Order';
-import { Users } from 'src/app/model/user';
-import { SharedService } from 'src/app/shared.service';
-import { cartItem } from '../../p-cart/service';
-import { OrderService } from '../order.service';
-import { PPaymentComponent } from '../p-payment.component';
+import { Component, OnInit, Input } from "@angular/core"
+import { MatDialogRef } from "@angular/material/dialog"
+import { IPayPalConfig, ICreateOrderRequest } from "ngx-paypal"
+import { Order } from "src/app/model/Order"
+import { Users } from "src/app/model/user"
+import { SharedService } from "src/app/service/shared.service"
+import { cartItem } from "../../p-cart/service"
+import { OrderService } from "../order.service"
+import { PPaymentComponent } from "../p-payment.component"
+
 
 @Component({
   selector: 'app-payment-paypal',

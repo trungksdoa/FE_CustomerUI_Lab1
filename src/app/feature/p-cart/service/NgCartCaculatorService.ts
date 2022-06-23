@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core'
 import { NgToastService } from 'ng-angular-popup'
 import { Users } from 'src/app/model/user'
-import { SharedService } from 'src/app/shared.service'
-import { ToastServiceService } from 'src/app/toast-service.service'
+import { SharedService } from 'src/app/service/shared.service'
+import { ToastServiceService } from 'src/app/service/toast-service.service'
 import { Cart, cartItem, NgCartApiService } from './index'
 
 @Injectable({
