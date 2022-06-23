@@ -55,7 +55,6 @@ import { SearchComponent } from './feature/search/search.component';
 import { ProfileOrderDetailComponent } from './feature/profile/profile-order-detail/profile-order-detail.component';
 import { ProfileOrderComponent } from './feature/profile/profile-order/profile-order.component';
 import { ProfileComponent } from './feature/profile/profile.component';
-import { PaymentPaypalComponent } from './feature/p-payment/Payment-paypal/payment-paypal.component';
 import { ConfirmDeactivateGuardService } from './Auth/confirm-deactivate-guard.service';
 import { LoginGuardService } from './Auth/login-guard.service';
 import { ProfileAccountComponent } from './feature/profile/profile-account/profile-account.component';
@@ -65,6 +64,7 @@ import { NgCartCaculatorService } from './feature/p-cart/service/NgCartCaculator
 import { NgCartApiService } from './feature/p-cart/service/NgCartAPIService';
 import { SizeDetectorComponent } from './size-detector/size-detector.component';
 import { ResizeChangeService } from './size-detector/resize-change.service';
+import { PaymentPaypalComponent } from './feature/p-payment/payment-paypal/payment-paypal.component';
 
 
 
