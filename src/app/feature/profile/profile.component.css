@@ -1,9 +1,0 @@
-.sideProfileMenu ::ng-deep .mat-list-item.active{
-  background: #c8c8c8;
-}
-
-
-.sideProfileMenu ::ng-deep .mat-list-item:hover{
-  cursor:context-menu;
-  user-select: none;
-}
