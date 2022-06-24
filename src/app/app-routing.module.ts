@@ -14,8 +14,8 @@ import { LoginGuardService } from './Auth/login-guard.service'
 
 
 const routes: Routes = [
-  { path: '', redirectTo: '/home', pathMatch: 'full' },
-  { path: 'home', component: HomeComponent },
+  { path: '', redirectTo: '/', pathMatch: 'full' },
+  { path: '', component: HomeComponent },
   {
     path: 'invoice',
     component: InvoiceComponent,
@@ -31,7 +31,7 @@ const routes: Routes = [
     component: PDetailComponent
     // child route component that the router renders
   },
-  
+
   {
     path: 'login',
     component: LoginUiComponent,
@@ -45,7 +45,7 @@ const routes: Routes = [
   },
   { path: 'product/category/:id', component: ProductComponent },
   { path: 'product/search/:keyword', component: ProductComponent },
-  
+
 ]
 
 @NgModule({
