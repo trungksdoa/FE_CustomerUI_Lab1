@@ -35,7 +35,6 @@ const routes: Routes = [
   {
     path: 'login',
     component: LoginUiComponent,
-    canDeactivate: [ConfirmDeactivateGuardService],
     canActivate: [LoginGuardService]
   },
   {

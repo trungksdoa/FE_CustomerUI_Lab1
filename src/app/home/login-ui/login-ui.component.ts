@@ -14,7 +14,7 @@ import {UserService} from 'src/app/feature/profile/user.service'
   templateUrl: './login-ui.component.html',
   styleUrls: ['./login-ui.component.css']
 })
-export class LoginUiComponent implements OnInit, IDeactivateOptions {
+export class LoginUiComponent implements OnInit {
   isSubmit = false
   hide = true
   durationInSeconds = 5
@@ -35,16 +35,7 @@ export class LoginUiComponent implements OnInit, IDeactivateOptions {
     this.show_button = !this.show_button;
     this.show_eye = !this.show_eye;
   }
-  canExit (): boolean | Promise<boolean> | Observable<boolean> {
-    if (this.isSubmit) {
-      return true
-    } else {
-      if (confirm('Are you want to exit?')) {
-        return true
-      }
-      return false
-    }
-  }
+
 
   createUser (param: Users) {
     // alert(JSON.stringify(param))
