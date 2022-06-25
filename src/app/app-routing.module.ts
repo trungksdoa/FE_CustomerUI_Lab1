@@ -35,13 +35,11 @@ const routes: Routes = [
   {
     path: 'login',
     component: LoginUiComponent,
-    canDeactivate: [ConfirmDeactivateGuardService],
     canActivate: [LoginGuardService]
   },
   {
     path: 'register',
     component: RegisterComponent,
-    canDeactivate: [ConfirmDeactivateGuardService]
   },
   { path: 'product/category/:id', component: ProductComponent },
   { path: 'product/search/:keyword', component: ProductComponent },

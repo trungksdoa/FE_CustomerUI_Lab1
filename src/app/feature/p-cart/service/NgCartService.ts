@@ -37,7 +37,7 @@ export class NgCartService {
         ...payload
       }
     })
-
+    console.log(items);
     const cartGenerator = this.cartProcess.generatorCart(cart, items)
 
     const field = {
@@ -175,6 +175,7 @@ export class NgCartService {
     this.callAPI
       .getCartItemByUserId(userId.id + '')
       .subscribe(({ cartData, isError, message, uniqueItemInCart }: any) => {
+        console.log("Có lỗi " + isError);
         if (isError) {
           this.cartProcess.saveCartToLocalStorage(
             this.cartProcess.generatorCart(cartInit, cartInit.cartItem)

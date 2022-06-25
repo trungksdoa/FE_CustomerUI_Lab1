@@ -98,7 +98,8 @@ export class HeaderComponent implements OnInit {
         )
         .subscribe(type => {})
     } else {
-      alert('Please login')
+      this.toast.showWarn("Vui lòng đăng nhập !")
+      this.router.navigate(['/login'])
     }
   }
   CartIndentify: Cart = {

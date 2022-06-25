@@ -14,7 +14,7 @@
         </mat-card-content>
       </mat-card>
     </div>
-    <div class="col-md-9" >
+    <div class="col-md-9">
       <mat-card *ngIf="pages === 'Thông tin chung'">
         <!-- <h4 class="text-muted">Báo cảo chi tiêu của bạn trong tháng</h4>
         <p class="text-muted h6">Bảng thống kê</p>
@@ -22,7 +22,8 @@
         <mat-divider [inset]="true"></mat-divider>
 
         <p class="text-muted h6">Các đơn đặt hàng gần đây nhất</p>
-        <table class="table border bg-white">
+        <table class="table table-bordered table-responsive-sm table-responsive-md
+        table-responsive-lg table-striped">
           <thead>
             <tr>
               <th> Mã đơn hàng </th>
@@ -35,23 +36,31 @@
           <tbody>
             <tr *ngFor="let order of orders">
               <td> <button mat-button style="padding:5px">{{order.id}} </button></td>
-              <td> <button mat-button style="padding:5px">{{sharedService.getFormatDateGTMToLocalDate(order.createAt)}}</button></td>
-              <td> <button mat-button style="padding:5px">{{sharedService.getFormatCurrency(order.totalAmount)}} </button></td>
+              <td> <button mat-button
+                  style="padding:5px">{{sharedService.getFormatDateGTMToLocalDate(order.createAt)}}</button></td>
+              <td> <button mat-button style="padding:5px">{{sharedService.getFormatCurrency(order.totalAmount)}}
+                </button></td>
               <td>
                 <div *ngIf="order.status == 1;">
-                  <button mat-button color="warn"  style="padding:5px">Chưa xác nhận</button>
+                  <button mat-button color="warn" style="padding:5px">Chưa xác nhận</button>
                 </div>
                 <div *ngIf="order.status == 2;">
-                  <button mat-button color="primary"  style="padding:5px">Đã xác nhận</button>
+                  <button mat-button color="primary" style="padding:5px">Đã xác nhận</button>
                 </div>
                 <div *ngIf="order.status == 3;">
-                  <button mat-button color="disabled"  style="padding:5px">Đã hủy</button>
+                  <button mat-button color="disabled" style="padding:5px">Đã hủy</button>
                 </div>
                 <div *ngIf="order.status == 4;">
                   <button mat-button style="padding:5px">Đã hoàn thành</button>
                 </div>
               </td>
-              <td> <button mat-raised-button color="primary" style="padding:5px" (click)="openOrderDetail(order)">Chi tiết</button></td>
+              <td> <button mat-raised-button color="primary" style="padding:5px" (click)="openOrderDetail(order)">Chi
+                  tiết</button></td>
+            </tr>
+            <tr *ngIf="orders.length <= 0">
+              <td colspan="5">
+                <h3 class="text-center">Không tìm thấy dữ liệu</h3>
+              </td>
             </tr>
         </table>
       </mat-card>
@@ -61,11 +70,10 @@
 
       <mat-card *ngIf="pages === 'Tài Khoản Của Tôi'">
         <app-profile-account></app-profile-account>
-        
+
       </mat-card>
-     
-  
+
+
     </div>
   </div>
-  </div>
-
+</div>

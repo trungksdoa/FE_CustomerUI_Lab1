@@ -1,12 +1,12 @@
 <mat-card class="example-card" >
   <mat-card-header>
-    <mat-card-title>Đăng nhập</mat-card-title>
+    <mat-card-title>Đăng ký</mat-card-title>
   </mat-card-header>
   <mat-card-content>
-     <form class="example-form " #addForm="ngForm" (ngSubmit)="formSubmit(addForm)" novalidate> 
+     <form class="example-form " #addForm="ngForm" (ngSubmit)="formSubmit(addForm)" novalidate>
       <div class="mb-3">
         <label for="username" class="form-label">Tên đăng nhập</label>
-        <input type="text" 
+        <input type="text"
          ngModel name="username" class="form-control" id="username" required>
          <div *ngIf="addForm.controls['username'].invalid && (addForm.controls['username'].dirty || addForm.controls['username'].touched)">
           <p  *ngIf="addForm.controls['username'].errors" style="color:red">* Hãy nhập tài khoản đăng nhập </p>
@@ -19,7 +19,7 @@
         <div *ngIf="addForm.controls['password'].invalid && (addForm.controls['password'].dirty || addForm.controls['password'].touched)">
           <p  *ngIf="addForm.controls['password'].errors " style="color:red">* Hãy nhập mật khẩu</p>
          </div>
-       
+
       </div>
       <div class="mb-3">
         <label for="name" class="form-label">Họ và tên</label>
@@ -27,7 +27,7 @@
         <div *ngIf="addForm.controls['name'].invalid && (addForm.controls['name'].dirty || addForm.controls['name'].touched)">
           <p  *ngIf="addForm.controls['name'].errors" style="color:red">* Hãy nhập Họ và tên</p>
          </div>
-      
+
       </div>
       <div class="mb-3">
         <label for="phone" class="form-label">Số điện thoại</label>
@@ -35,7 +35,7 @@
         <div *ngIf="addForm.controls['phone'].invalid && (addForm.controls['phone'].dirty || addForm.controls['phone'].touched)">
           <p  *ngIf="addForm.controls['phone'].errors"style="color:red">* Hãy nhập số điện thoại</p>
          </div>
-       
+
       </div>
       <div class="mb-3">
         <label for="address" class="form-label">Địa Chỉ</label>

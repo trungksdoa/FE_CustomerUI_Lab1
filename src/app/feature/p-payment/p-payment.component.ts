@@ -15,8 +15,6 @@ import { CityService } from './citys.service'
 import { OrderService } from './order.service'
 
 
-declare var bootstrap: any
-
 interface IPaymentFormValue extends Order {
   xungho: ''
 }
@@ -222,6 +220,7 @@ export class PPaymentComponent implements OnInit {
       this.orderService
         .addCartItem(this.getOrderItem(this.orderForm, this.orderForm.xungho))
         .subscribe(data => {
+          this.router.navigate(['/profile'])
           this.dialogRef.close('closePayment')
         })
     }
