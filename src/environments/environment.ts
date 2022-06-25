@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  apiBaseUrl: 'https://serveramazon2022.herokuapp.com/api/v1'
+  apiBaseUrl: 'http://localhost:8081/api/v1'
 }
 
 /*

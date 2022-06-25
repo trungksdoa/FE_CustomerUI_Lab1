@@ -6,14 +6,15 @@
 </style>
 <!-- <h1 mat-dialog-title>Giỏ hàng</h1> -->
 <div class="pCart">
-  <div class="row" *ngIf="!cart.isEmpty">
+  <div class="row" *ngIf="!cart?.isEmpty">
+    <app-spinner></app-spinner>
     <div class="col-md-8 cart">
       <div class="title">
         <div class="row">
           <div class="col">
             <h1 mat-dialog-title>Giỏ Hàng</h1>
           </div>
-          <div class="col align-self-center text-right text-muted"> Số lượng sản phẩm: {{cart.totalUniqueItems}}
+          <div class="col align-self-center text-right text-muted"> Số lượng sản phẩm: {{cart?.totalUniqueItems}}
           </div>
         </div>
       </div>
@@ -33,7 +34,7 @@
                 id="addon-wrapping">
                 <mat-icon aria-hidden="false" aria-label="Example minus icon">remove</mat-icon>
               </span>
-              <input class="form-control" (change)="updateQuantity($event,item.id,item.active)"
+              <input style="height: 40px;" class="form-control" (change)="updateQuantity($event,item.id,item.active)"
                 value="{{item.quantity}}" />
               <span class="input-group-text cursorPointer" (click)="changeQuantity(item.quantity+1,item.id,item.active)"
                 id="addon-wrapping">
@@ -85,7 +86,7 @@
       </div>
     </div>
   </div>
-  <div class="row" *ngIf="cart.isEmpty">
+  <div class="row" *ngIf="cart?.isEmpty">
     <div class="col-md-12">
       <div class="title">
         <div class="row">

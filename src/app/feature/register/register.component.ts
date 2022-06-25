@@ -13,7 +13,7 @@ import {UserService} from "src/app/feature/profile/user.service"
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.css']
 })
-export class RegisterComponent implements OnInit, IDeactivateOptions {
+export class RegisterComponent implements OnInit {
   isSubmit = false
 
   show_button: Boolean = false
@@ -37,16 +37,16 @@ export class RegisterComponent implements OnInit, IDeactivateOptions {
     this.show_button = !this.show_button
     this.show_eye = !this.show_eye
   }
-  canExit (): boolean | Promise<boolean> | Observable<boolean> {
-    if (this.isSubmit) {
-      return true
-    } else {
-      if (confirm('Are you want to exit?')) {
-        return true
-      }
-      return false
-    }
-  }
+  // canExit (): boolean | Promise<boolean> | Observable<boolean> {
+  //   if (this.isSubmit) {
+  //     return true
+  //   } else {
+  //     if (confirm('Are you want to exit?')) {
+  //       return true
+  //     }
+  //     return false
+  //   }
+  // }
 
   createUser (param: Users) {
     // alert(JSON.stringify(param))

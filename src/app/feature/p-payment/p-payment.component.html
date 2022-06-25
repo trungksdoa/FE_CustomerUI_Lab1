@@ -102,9 +102,10 @@
               </div>
               <div class="mb-3">
                 <label class="form-label">Tỉnh(Thành Phố)</label>
-                <ng-select [items]="citys" bindLabel="name" bindValue="matp" id="tp"
+                <input type="text" [(ngModel)]="orderForm.address" name="address" class="form-control" id="address">
+                <!-- <ng-select [items]="citys" bindLabel="name" bindValue="matp" id="tp"
                   (change)="onSelectChangeTP($event)">
-                </ng-select>
+                </ng-select> -->
               </div>
               <div class="mb-3">
                 <label for="District" class="form-label">Quận(Huyện)</label>
@@ -117,9 +118,9 @@
                 <ng-select [items]="wards" bindLabel="name" bindValue="xaid" id="px"
                   (change)="onSelectChangePX($event)">
                 </ng-select>
+                </div>
               </div>
             </div>
-          </div>
         </form>
         <app-payment-paypal *ngIf="activeLink==='Thanh toán trả trước'" [items]="cartItems"></app-payment-paypal>
       </div>

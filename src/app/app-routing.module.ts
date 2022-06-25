@@ -40,7 +40,6 @@ const routes: Routes = [
   {
     path: 'register',
     component: RegisterComponent,
-    canDeactivate: [ConfirmDeactivateGuardService]
   },
   { path: 'product/category/:id', component: ProductComponent },
   { path: 'product/search/:keyword', component: ProductComponent },

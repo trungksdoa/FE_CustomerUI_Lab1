@@ -37,7 +37,7 @@ export class NgCartService {
         ...payload
       }
     })
-
+    console.log(items);
     const cartGenerator = this.cartProcess.generatorCart(cart, items)
 
     const field = {
