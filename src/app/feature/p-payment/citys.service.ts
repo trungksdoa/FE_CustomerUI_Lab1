@@ -14,7 +14,7 @@ export class CityService {
   constructor (private http: HttpClient) {}
 
   public getImage (imageName: string): Observable<any> {
-    return this.http.get<any>(`http://localhost:8081/image/${imageName}`)
+    return this.http.get<any>(`https://serveramazon2022.herokuapp.com/image/${imageName}`)
   }
 
   public getCitys (): Observable<City[]> {
