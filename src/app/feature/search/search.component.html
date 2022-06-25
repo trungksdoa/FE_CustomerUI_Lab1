@@ -9,19 +9,6 @@
         itemsPerPage: 4,
         currentPage: page,
         totalItems: totalLength }">
-            <div class="card col-sm-10" >
-                <div class="product-1 align-items-center p-2 text-center" >
-                    <div class="image-container"  > <img class="xyz rounded" src="{{'https://serveramazon2022.herokuapp.com/image/'+product.imageurl}}" width="200" height="200"><img class="xyz-replacement rounded" src="{{'http://localhost:8081/image/'+product.imageurl}}" width="200" height="200">  </div>
-                    <h4 style="font-weight: bold;">{{product.name}}</h4>
-                    <div class="mt-3 info" style="height: 50px;"> <span class="text1 d-block" >{{product.description}}</span>  </div>
-                    <div class=" cost mt-3 text-dark"> <span>${{product.price}}</span>
-                        <div class=" star mt-3 align-items-center"> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> </div>
-                    </div>
-                </div>
-                <div class="p-2 bg-danger text-center text-white mt-3 cursor cart"> <span class="text-uppercase cart-text">Chi tiết sản phẩm</span> </div>
-
-              </div>
-
         <div class="card col-sm-10">
           <div class="product-1 align-items-center p-2 text-center">
             <div class="image-container"> <img class="xyz rounded"

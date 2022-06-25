@@ -23,7 +23,7 @@
       <div class="row border-top border-bottom" *ngFor="let item of cart?.cartItem">
         <div class="row main align-items-center">
           <div class="col-md-2"><img class="img-fluid"
-              src="{{'https://serveramazon2022.herokuapp.com/image/'+item.productItem.imageurl}}"></div>
+              src="{{'https://serveramazon2022.herokuapp.com/api/v1/image/'+item.productItem.imageurl}}"></div>
           <div class="col-md-3">
             <div class="row text-muted">{{item.productItem.catagory.name}}</div>
             <div class="row">{{item.productItem.name}}</div>
