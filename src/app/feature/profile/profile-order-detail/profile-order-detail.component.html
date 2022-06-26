@@ -11,7 +11,7 @@
     </thead>
     <tbody *ngFor="let item of orderItems">
       <tr style="cursor: pointer">
-        <td><img style="width:4rem" class="img-fluid" src="{{'https://serveramazon2022.herokuapp.com/api/v1/image/'+item.productItem.imageurl}}"></td>
+        <td><img style="width:4rem" class="img-fluid" src="data:{{item.imageurl?.type}};base64,{{item.imageurl?.data}}"></td>
         <td><button mat-button style="padding:5px">{{item.productItem.name}}</button></td>
         <td><button mat-button style="padding:5px">{{item.quantity}}</button></td>
         <td><button mat-button style="padding:5px">{{sharedService.getFormatCurrency(item.productPrice)}}</button></td>
