@@ -20,17 +20,8 @@ export class HttpErrorInterceptor implements HttpInterceptor {
     req: HttpRequest<any>,
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
+    this.spinnerServer.requestStarted()
     return this.handler(next, req)
-  }
-  initialValue: Cart = {
-    isEmpty: true,
-    totalUniqueItems: 0,
-    id: 0,
-    lastUpdated: undefined,
-    createAt: undefined,
-    cartItem: [],
-    userId: undefined,
-    TotalPrice: 0
   }
   handler (next: HttpHandler, request: HttpRequest<any>) {
     return next.handle(request).pipe(
