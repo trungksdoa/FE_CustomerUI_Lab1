@@ -175,14 +175,7 @@ export class NgCartService {
     this.callAPI
       .getCartItemByUserId(userId.id + '')
       .subscribe(({ cartData, isError, message, uniqueItemInCart }: any) => {
-        console.log("Có lỗi " + isError);
-        if (isError) {
-          this.cartProcess.saveCartToLocalStorage(
-            this.cartProcess.generatorCart(cartInit, cartInit.cartItem)
-          )
-          this.sharedService.setUniqueItemNumber(0)
-        } else {
-          console.log(cartData)
+        console.log(cartData)
           this.sharedService.callFunctionByClick('refreshCart')
           this.cartProcess.saveCartToLocalStorage(
             this.cartProcess.generatorCart(cartData, cartData.cartItem)
@@ -193,7 +186,11 @@ export class NgCartService {
             this.cartProcess.generatorCart(cartData, cartData.cartItem)
               .totalUniqueItems
           )
-        }
+      },error =>{
+        this.cartProcess.saveCartToLocalStorage(
+          this.cartProcess.generatorCart(cartInit, cartInit.cartItem)
+        )
+        this.sharedService.setUniqueItemNumber(0)
       })
   }
 }
