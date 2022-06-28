@@ -24,8 +24,7 @@ export class ProfileOrderComponent implements OnInit {
       .getOrder(this._sharedService.getUserFromCookie().id)
       .subscribe(items => {
         items.forEach(item => {
-          item.createAt = new Date(item.createAt).toUTCString()
-          item.lastUpdated = new Date(item.lastUpdated).toUTCString()
+
         })
         this.orders = items
       })

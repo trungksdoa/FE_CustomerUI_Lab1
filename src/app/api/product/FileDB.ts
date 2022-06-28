@@ -1,6 +1,8 @@
 export interface FileDB {
-  id:string,
-  name:string,
-  type:string,
-  data:any
-}
+
+    id:string,
+    name:string,
+    type:string,
+    data:any
+  }
+

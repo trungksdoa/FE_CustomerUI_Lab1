@@ -2,6 +2,7 @@ import { Category } from "../category/category";
 import { FileDB } from "./FileDB";
 
 export interface Product extends Category {
+ 
   id: number;
   name: string;
   description: string;
@@ -10,4 +11,8 @@ export interface Product extends Category {
   createdAt: Date;
   updatedAt: Date;
   catagory: Category;
+
 }
+
+
+
