@@ -59,13 +59,11 @@ export class NgCartService {
       itemInitvalue.productItem = item
       itemInitvalue.quantity = 1
       itemInitvalue.active = true
-      // console.log(itemInitvalue);
+
       this.cartProcess.saveCartToDB(
         itemInitvalue,
         this.sharedService.getUserFromCookie().id
       )
-
-      console.log('Ok')
     } else {
       this.toast.showWarn('Vui lóng đăng nhập để sử dụng')
       this.router.navigate(['/login'])

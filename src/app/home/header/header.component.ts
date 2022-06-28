@@ -94,13 +94,13 @@ export class HeaderComponent implements OnInit {
   }
   CartIndentify: Cart = {
     id: 0,
-    lastUpdated: '',
-    createAt: '',
     cartItem: [],
     userId: null,
     TotalPrice: 0,
     isEmpty: false,
-    totalUniqueItems: 0
+    totalUniqueItems: 0,
+    lastUpdated: undefined,
+    createAt: undefined
   }
   goProfile () {
     this.router.navigate(['profile'])
