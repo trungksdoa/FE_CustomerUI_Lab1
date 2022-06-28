@@ -179,7 +179,7 @@ export class PPaymentComponent implements OnInit {
 
   //Set properties
   getOrderItem (value: Order, xungho: string) {
-    let user = new Users(1, '', '', '', '', '')
+    let user = new Users(1, '', '', '', '', '',undefined,undefined)
     this.sharedService.isLoggedIn().subscribe(isLoggin => {
       if (isLoggin) {
         user = this.sharedService.getUserFromCookie()

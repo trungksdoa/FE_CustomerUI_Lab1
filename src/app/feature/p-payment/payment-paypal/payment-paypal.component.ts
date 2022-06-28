@@ -59,7 +59,7 @@ export class PaymentPaypalComponent implements OnInit {
     }
     payer_id: 'HNV5KUQRV9WEY'
   }) {
-    let user = new Users(1, '', '', '', '', '')
+    let user = new Users(1, '', '', '', '', '',undefined,undefined)
     this.sharedService.isLoggedIn().subscribe(isLoggin => {
       if (isLoggin) {
         user = this.sharedService.getUserFromCookie()

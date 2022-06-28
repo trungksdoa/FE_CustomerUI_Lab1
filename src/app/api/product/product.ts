@@ -8,8 +8,8 @@ export interface Product extends Category {
   description: string;
   imageurl: FileDB;
   price: number;
-  createdAt: Date;
-  updatedAt: Date;
+  createAt: any,
+   lastUpdated: any,
   catagory: Category;
 
 }

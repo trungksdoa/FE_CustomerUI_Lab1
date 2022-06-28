@@ -17,9 +17,10 @@ export class PDetailComponent implements OnInit {
     description: '',
     imageurl: undefined,
     price: 0,
-    createdAt: undefined,
-    updatedAt: undefined,
-    catagory: undefined
+    createAt: undefined,
+    lastUpdated: undefined,
+    catagory: undefined,
+    
   }
   timestamp = new Date().getTime()
   constructor (

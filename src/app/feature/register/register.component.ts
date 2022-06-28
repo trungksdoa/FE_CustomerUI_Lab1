@@ -51,6 +51,8 @@ export class RegisterComponent implements OnInit {
   createUser (param: Users) {
     // alert(JSON.stringify(param))
     const user: Users = {
+      createAt:undefined,
+      lastUpdated:undefined,
       username: param.username,
       name: param.name,
       password: param.password,
