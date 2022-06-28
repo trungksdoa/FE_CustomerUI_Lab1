@@ -95,11 +95,10 @@ export class SharedService {
       var time = now.getTime()
       var expireTime = time + 1000 * 36000
       now.setTime(expireTime)
-      this.cookieService.set(name, JSON.stringify(value),expireTime)
-    }else{
+      this.cookieService.set(name, JSON.stringify(value), expireTime)
+    } else {
       this.cookieService.set(name, JSON.stringify(value))
     }
-
   }
   getCookie (name: string) {
     return this.cookieService.get(name)

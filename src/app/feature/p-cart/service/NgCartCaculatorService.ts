@@ -20,14 +20,10 @@ export class NgCartCaculatorService {
       'localCart',
       this.generatorCart(cart, cart.cartItem)
     )
-    this.sharedService.callFunctionByClick('refreshCart')
-    this.sharedService.setUniqueItemNumber(
-      this.generatorCart(cart, cart.cartItem).totalUniqueItems
-    )
   }
 
-  saveCartToDB (cart: Cart) {
-    this.callAPI.addCartItem(cart).subscribe(
+  saveCartToDB (cart: cartItem,userId:number) {
+    this.callAPI.addCartItem(cart,userId).subscribe(
       ({
         cartData,
         uniqueItemInCart,
@@ -37,27 +33,12 @@ export class NgCartCaculatorService {
         cartData: Cart
         message: string
       }) => {
-        this.saveCartToLocalStorage(
-          this.generatorCart(cartData, cartData.cartItem)
-        )
-        this.sharedService.callFunctionByClick('refreshCart')
-        // this.sharedService.setUniqueItemNumber(parseInt(uniqueItemInCart))
+        this.saveCartToLocalStorage(cartData)
+        this.sharedService.setUniqueItemNumber(parseInt(uniqueItemInCart))
         this.toast.showSuccess(message)
       },
       responeError => {
         this.toast.showError(responeError.error.message)
-      }
-    )
-  }
-
-  updateCartToDB (userId: number, id: number, field: any) {
-    this.callAPI.updateItemsByAnyFields(userId, id, field).subscribe(
-      (data: any) => {
-        this.sharedService.setUniqueItemNumber(parseInt(data.uniqueItemInCart))
-        this.toast.showSuccess(data.message)
-      },
-      error => {
-        this.toast.showError(error.error.message)
       }
     )
   }

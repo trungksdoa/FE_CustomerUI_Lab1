@@ -2,7 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http'
 import { environment } from 'src/environments/environment'
 import { Injectable } from '@angular/core'
 import { Observable } from 'rxjs'
-import { Cart } from '.'
+import { Cart,cartItem } from '.'
 
 
 @Injectable({
@@ -13,15 +13,15 @@ export class NgCartApiService {
   constructor (private http: HttpClient) {}
 
   public getCartItemByUserId (userId: string): Observable<Cart> {
-    return this.http.get<Cart>(`${this.apiServerUrl}/cart?userId=${userId}`)
+    return this.http.get<Cart>(`${this.apiServerUrl}/cart?userID=${userId}`)
   }
 
   public getMiniCart (userId: string): Observable<any> {
-    return this.http.get<any>(`${this.apiServerUrl}/cart/mini?userId=${userId}`)
+    return this.http.get<any>(`${this.apiServerUrl}/cart/mini?userID=${userId}`)
   }
 
-  public addCartItem (cartItem: Cart): Observable<any> {
-    return this.http.post<any>(`${this.apiServerUrl}/cart`, cartItem)
+  public addCartItem (cartItem: cartItem,userId:number): Observable<any> {
+    return this.http.post<any>(`${this.apiServerUrl}/cart?&userID=${userId}`, cartItem)
   }
 
   public deleteCartItem (cartId: String, ItemId: number[]): Observable<any> {
@@ -32,7 +32,7 @@ export class NgCartApiService {
       body: ItemId
     }
     return this.http.delete<any>(
-      `${this.apiServerUrl}/cart?CartId=${cartId}`,
+      `${this.apiServerUrl}/cart?CartID=${cartId}`,
       options
     )
   }
@@ -43,7 +43,7 @@ export class NgCartApiService {
     fieldsArray: any
   ): Observable<Cart> {
     return this.http.patch<Cart>(
-      `${this.apiServerUrl}/cart?userId=${userId}&itemId=${itemId}`,
+      `${this.apiServerUrl}/cart?userID=${userId}&itemID=${itemId}`,
       fieldsArray
     )
   }

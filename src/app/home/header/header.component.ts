@@ -41,7 +41,6 @@ export class HeaderComponent implements OnInit {
 
   ngOnInit (): void {
     this.sharedService.isLoggedIn().subscribe(data => {
-      console.log(this.sharedService.getUserFromCookie())
       this.isLogin = data
       this.sharedService.afterClick.subscribe(() => {
         this.name = this.sharedService.getUserFromCookie().name
@@ -50,15 +49,6 @@ export class HeaderComponent implements OnInit {
         this.itemCount = uniqueItemInCart
       })
     })
-
-    // if (this.sharedService.getUserFromCookie()) {
-    //   this.sharedService.afterClick.subscribe(() => {
-    //     this.name = this.sharedService.getUserFromCookie().name
-    //   })
-    //   this.sharedService.getUniqueItemInCart().subscribe(uniqueItemInCart => {
-    //     this.itemCount = uniqueItemInCart
-    //   })
-    // }
     this.itemCount = 0
     this.getAllProduct()
   }

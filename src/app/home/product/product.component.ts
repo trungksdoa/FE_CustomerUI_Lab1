@@ -1,4 +1,3 @@
-
 import { HttpErrorResponse } from '@angular/common/http'
 import { Component, OnInit, Input } from '@angular/core'
 import { ActivatedRoute, Router } from '@angular/router'
@@ -18,26 +17,34 @@ export class ProductComponent implements OnInit {
   totalLength: any
   page: number = 1
   isLogin = false
+  timestamp = new Date().getTime()
   constructor (
     private productService: ProductService,
-    private sharedService: SharedService,
+    private _sharedService: SharedService,
     private route: ActivatedRoute,
     private cartService: NgCartService,
     private router: Router
   ) {}
 
   ngOnInit () {
-    this.sharedService.getUserFromCookie() ? (this.isLogin = true) : ''
+    this._sharedService.getUserFromCookie() ? (this.isLogin = true) : ''
     this.route.paramMap.subscribe(() => {
       this.getAllProduct()
     })
   }
 
-  public addCartItem (product: Product) {
+  addCartItem (product: Product) {
     this.cartService.addToCart(product)
   }
 
-  public getAllProduct () {
+  getlink(link:any){
+    if (this.timestamp) {
+      return link + '?' + this.timestamp
+    }
+    return link
+  }
+
+  getAllProduct () {
     this.searchMode = this.route.snapshot.paramMap.has('keyword')
     this.cateMode = this.route.snapshot.paramMap.has('id')
     if (this.searchMode) {

@@ -45,7 +45,6 @@ export class AppComponent implements OnInit {
     this.productService.getAllProduct().subscribe(
       (response: Product[]) => {
         this.products = response
-        console.log(this.products)
       },
       (error: HttpErrorResponse) => {
         alert(error.message)
@@ -97,7 +96,6 @@ export class AppComponent implements OnInit {
       const el = this.elementRef.nativeElement.querySelector(
         `.${this.prefix}${x.id}`
       )
-      console.log(el)
       // kiểm tra giá trị thuộc tính hiển thị của nó
       const isVisible = window.getComputedStyle(el).display != 'none'
 

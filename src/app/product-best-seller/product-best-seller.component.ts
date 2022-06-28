@@ -12,6 +12,7 @@ import { ProductService } from 'src/app/api/product/product.service'
 })
 export class ProductBestSellerComponent implements OnInit {
   @Input() products: Product[]
+  timestamp = new Date().getTime()
   constructor (private router: Router) {}
   ngOnInit () {}
 
@@ -20,11 +21,11 @@ export class ProductBestSellerComponent implements OnInit {
   }
 
   slideConfig = {
-    "slidesToShow": 4,
-    "slidesToScroll": 1,
-    "dots": true,
-    "infinite": false,
-    "responsive": [
+    slidesToShow: 4,
+    slidesToScroll: 1,
+    dots: true,
+    infinite: false,
+    responsive: [
       {
         breakpoint: 1024,
         settings: {
@@ -35,7 +36,6 @@ export class ProductBestSellerComponent implements OnInit {
         }
       },
       {
-      
         breakpoint: 600,
         settings: {
           slidesToShow: 2,
@@ -43,7 +43,7 @@ export class ProductBestSellerComponent implements OnInit {
         }
       },
       {
-        margin:100,
+        margin: 100,
         breakpoint: 480,
         settings: {
           slidesToShow: 1,
@@ -51,7 +51,7 @@ export class ProductBestSellerComponent implements OnInit {
         }
       }
     ]
-  };
+  }
 
   slickInit (e) {
     console.log('slick initialized')
@@ -67,5 +67,12 @@ export class ProductBestSellerComponent implements OnInit {
 
   beforeChange (e) {
     console.log('beforeChange')
+  }
+
+  getlink (link: any) {
+    if (this.timestamp) {
+      return link + '?' + this.timestamp
+    }
+    return link
   }
 }

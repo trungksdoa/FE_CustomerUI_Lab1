@@ -11,13 +11,22 @@ import { NgCartService } from 'src/app/feature/p-cart/service/NgCartService'
   styleUrls: ['./p-detail.component.css']
 })
 export class PDetailComponent implements OnInit {
-  public product: Product
-
+  public product: Product = {
+    id: 0,
+    name: '',
+    description: '',
+    imageurl: undefined,
+    price: 0,
+    createdAt: undefined,
+    updatedAt: undefined,
+    catagory: undefined
+  }
+  timestamp = new Date().getTime()
   constructor (
     private productService: ProductService,
     private cartService: NgCartService,
     private route: ActivatedRoute,
-    private shared: SharedService,
+    private shared: SharedService
   ) {}
 
   ngOnInit (): void {
@@ -27,14 +36,20 @@ export class PDetailComponent implements OnInit {
   formatCurrency (value: number) {
     return this.shared.getFormatCurrency(value)
   }
-  public addCartItem (product: Product) {
+  addCartItem (product: Product) {
     this.cartService.addToCart(product)
   }
-  public findProductById (productId: number) {
+  findProductById (productId: number) {
     this.productService
       .getOneProduct(productId)
       .subscribe((product: Product) => {
         this.product = product
       })
+  }
+  getlink (link: any) {
+    if (this.timestamp) {
+      return link + '?' + this.timestamp
+    }
+    return link
   }
 }

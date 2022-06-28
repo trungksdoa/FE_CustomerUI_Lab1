@@ -23,7 +23,7 @@
       <div class="row border-top border-bottom" *ngFor="let item of cart?.cartItem">
         <div class="row main align-items-center">
           <div class="col-md-2"><img class="img-fluid"
-              src="data:{{item.productItem.imageurl?.type}};base64,{{item.productItem.imageurl?.data}}"></div>
+              src="{{getlink(item.productItem.imageurl)}}"></div>
           <div class="col-md-3">
             <div class="row text-muted">{{item.productItem.catagory.name}}</div>
             <div class="row">{{item.productItem.name}}</div>
@@ -45,9 +45,9 @@
 
           <div class="col-md-3">
             <div class="d-flex justify-content-between">
-              {{getCalculatedValue(item)}}
+              {{getCalculatedValueCartItem(item)}}
               <span class="close">
-                <mat-checkbox (click)="selectedItem(item)" style="cursor: pointer" disabled="" [checked]="item.active">
+                <mat-checkbox (click)="selectedItem(item)" style="cursor: pointer" disabled="" [checked]="item.selected">
                 </mat-checkbox>
                 <!-- <mat-icon>remove</mat-icon> -->
               </span>
@@ -80,7 +80,7 @@
         </form> -->
         <div class="row" style="border-top: 1px solid rgba(0,0,0,.1); padding: 2vh 0;">
           <div class="col">Tổng giá trị đơn hàng</div>
-          <div class="col text-right">{{sharedService.getFormatCurrency(cart.TotalPrice)}}</div>
+          <div class="col text-right">{{getCalculatedValue(totalMoney)}}</div>
         </div>
         <button (click)="goCheckout()" mat-raised-button>Thanh toán</button>
       </div>
