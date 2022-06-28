@@ -76,15 +76,17 @@ export const itemInitvalue: cartItem = {
   quantity: 0,
   productPrice: 0,
   active: false,
-  selected: false
+  selected: false,
+  lastUpdated: undefined,
+  createAt: undefined
 }
 export const cartInit: Cart = {
   id: 0,
-  lastUpdated: '',
-  createAt: '',
   cartItem: [],
   userId: null,
   TotalPrice: 0,
   isEmpty: false,
-  totalUniqueItems: 0
+  totalUniqueItems: 0,
+  lastUpdated: undefined,
+  createAt: undefined
 }
