@@ -10,7 +10,6 @@ export interface Product extends Category {
   price: number;
   createAt: any,
    lastUpdated: any,
-  Las: Date;
   catagory: Category;
 
 }
