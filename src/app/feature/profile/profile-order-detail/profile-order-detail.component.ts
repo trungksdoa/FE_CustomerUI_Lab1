@@ -13,6 +13,8 @@ import { NgCartService } from "../../p-cart/service"
 export class ProfileOrderDetailComponent implements OnInit {
   orderItems: orderItems[]
   sharedService: SharedService
+  timestamp = new Date().getTime()
+  defaultImage = "https://www.placecage.com/1000/1000"
   constructor (
     private _sharedService: SharedService,
     public dialogRef: MatDialogRef<ProfileOrderDetailComponent>,
@@ -29,9 +31,12 @@ export class ProfileOrderDetailComponent implements OnInit {
     // console.log(this.data)
   }
 
-  // reOrder (item: any) {
-  //   this._cartService.addToCart(item.productItem)
-  // }
+  getlink (link: any) {
+    if (this.timestamp) {
+      return link + '?' + this.timestamp
+    }
+    return link
+  }
 
   onNoClick () {
     this.dialogRef.close()

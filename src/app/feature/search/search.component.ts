@@ -15,6 +15,7 @@ export class SearchComponent implements OnInit {
   totalLength: any
   page: number = 1
   timestamp = new Date().getTime()
+  defaultImage = "https://www.placecage.com/1000/1000"
   constructor (
     private productService: ProductService,
     private route: ActivatedRoute

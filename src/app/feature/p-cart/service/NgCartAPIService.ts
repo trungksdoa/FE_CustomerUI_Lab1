@@ -38,12 +38,10 @@ export class NgCartApiService {
   }
 
   public updateItemsByAnyFields (
-    userId: number,
-    itemId: number,
     fieldsArray: any
-  ): Observable<Cart> {
-    return this.http.patch<Cart>(
-      `${this.apiServerUrl}/cart?userID=${userId}&itemID=${itemId}`,
+  ): Observable<any> {
+    return this.http.patch<any>(
+      `${this.apiServerUrl}/cart`,
       fieldsArray
     )
   }

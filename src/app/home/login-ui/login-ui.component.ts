@@ -40,8 +40,6 @@ export class LoginUiComponent implements OnInit {
   createUser (param: Users) {
     // alert(JSON.stringify(param))
     const user: Users = {
-      createAt:undefined,
-      lastUpdated:undefined,
       id: 0,
       username: param.username,
       password: param.password,

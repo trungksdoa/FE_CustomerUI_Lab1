@@ -22,8 +22,8 @@ export class NgCartCaculatorService {
     )
   }
 
-  saveCartToDB (cart: cartItem,userId:number) {
-    this.callAPI.addCartItem(cart,userId).subscribe(
+  saveCartToDB (cart: cartItem, userId: number) {
+    this.callAPI.addCartItem(cart, userId).subscribe(
       ({
         cartData,
         uniqueItemInCart,
@@ -33,7 +33,7 @@ export class NgCartCaculatorService {
         cartData: Cart
         message: string
       }) => {
-        this.saveCartToLocalStorage(cartData)
+        this.saveCartToLocalStorage(this.generatorCart(cartData, cartData.cartItem))
         this.sharedService.setUniqueItemNumber(parseInt(uniqueItemInCart))
         this.toast.showSuccess(message)
       },
@@ -72,13 +72,12 @@ export class NgCartCaculatorService {
 }
 export const itemInitvalue: cartItem = {
   id: 0,
-  productItem: null,
-  quantity: 0,
-  productPrice: 0,
+  productItem: undefined,
+  quantity: undefined,
+  productPrice: undefined,
   active: false,
   selected: false,
-  lastUpdated: undefined,
-  createAt: undefined
+  parentID: undefined
 }
 export const cartInit: Cart = {
   id: 0,
@@ -86,7 +85,5 @@ export const cartInit: Cart = {
   userId: null,
   TotalPrice: 0,
   isEmpty: false,
-  totalUniqueItems: 0,
-  lastUpdated: undefined,
-  createAt: undefined
+  totalUniqueItems: 0
 }

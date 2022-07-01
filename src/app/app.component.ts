@@ -1,4 +1,4 @@
-import { SharedService } from 'src/app/service/shared.service';
+import { SharedService } from 'src/app/service/shared.service'
 import { Component, ElementRef, HostListener, OnInit } from '@angular/core'
 import { MatDialog } from '@angular/material/dialog'
 import { Product } from './api/product/product'
@@ -7,6 +7,7 @@ import { HttpErrorResponse } from '@angular/common/http'
 import { NgCartService } from './feature/p-cart/service'
 import { ResizeChangeService } from './size-detector/resize-change.service'
 import { SCREEN_SIZE } from './size-detector/size-detector.component'
+import { Router } from '@angular/router'
 
 @Component({
   selector: 'app-root',
@@ -15,31 +16,36 @@ import { SCREEN_SIZE } from './size-detector/size-detector.component'
 })
 export class AppComponent implements OnInit {
   public products: Product[]
-
+  loopingStatus = true
   constructor (
     public dialog: MatDialog,
     private cartService: NgCartService,
     private shared: SharedService,
     private productService: ProductService,
     private elementRef: ElementRef,
-    private resizeSvc: ResizeChangeService
-  ) {
-    // shared.getUserFromCookie() ? this.getMiniCart() : ''
-  }
+    private resizeSvc: ResizeChangeService,
+    private router: Router
+  ) {}
 
-  getMiniCart () {}
   ngOnInit (): void {
-    if (this.shared.getUserFromCookie()) {
-      this.cartService.getCartFromDB(this.shared.getUserFromCookie())
-    } else {
-      this.shared.setUniqueItemNumber(
-        this.cartService.getCartFromLocalStorage().totalUniqueItems
-      )
-    }
     this.getAllProduct()
-    // this.shared.afterClick.subscribe(() => {
-    //   this.shared.getUser() ? this.getMiniCart() : ''
-    // })
+    this.checkCart(this.cartService,this.shared.getUserFromCookie())
+    this.detectLocalStorage()
+  }
+  checkCart (cartService: any,user:any) {
+    cartService.isLocalCartExist().subscribe((isExits: any) => {
+      if (!isExits) {
+        cartService.getCartFromDB(user)
+      }
+    })
+  }
+  detectLocalStorage () {
+    const check = this.checkCart
+    const service = this.cartService
+    const user = this.shared.getUserFromCookie()
+    window.addEventListener('storage', function (e) {
+      check(service,user)
+    })
   }
   getAllProduct (): void {
     this.productService.getAllProduct().subscribe(

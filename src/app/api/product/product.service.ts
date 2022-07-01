@@ -20,8 +20,8 @@ export class ProductService {
     return this.http.get<Product[]>(`${this.apiServerUrl}/product/search?name=${theKeyword}`)
   }
 
-  public getOneProduct (id:number): Observable<Product> {
-    return this.http.get<Product>(
+  public getOneProduct (id:number): Observable<any> {
+    return this.http.get<any>(
       `${this.apiServerUrl}/product/${id}`
     )
   }

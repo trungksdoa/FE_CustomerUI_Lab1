@@ -13,7 +13,7 @@ export class ToastServiceService {
     this.toast.success({
       detail: 'Thông báo',
       summary: message,
-      duration: 1000
+      duration: 1000,
     })
   }
 

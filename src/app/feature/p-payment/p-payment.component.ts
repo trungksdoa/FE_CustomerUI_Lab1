@@ -67,9 +67,9 @@ export class PPaymentComponent implements OnInit {
     fullname: '',
     address: '',
     userId: undefined,
-    city: '',
-    wards: '',
-    district: '',
+    city: 'A',
+    wards: 'A',
+    district: 'A',
     note: '',
     status: 0,
     xungho: '',
@@ -162,24 +162,21 @@ export class PPaymentComponent implements OnInit {
 
     if (obj.address.length === 0) {
       error.isEmpty = true
-    } else if (obj.city.length === 0) {
-      error.isEmpty = true
-    } else if (obj.district.length === 0) {
-      error.isEmpty = true
     } else if (obj.fullname.length === 0) {
       error.isEmpty = true
     } else if (obj.phoneNumber.length === 0) {
       error.isEmpty = true
-    } else if (obj.wards.length === 0) {
-      error.isEmpty = true
     }
+    // } else if (obj.wards.length === 0) {
+    //   error.isEmpty = true
+    // }
 
     return error
   }
 
   //Set properties
   getOrderItem (value: Order, xungho: string) {
-    let user = new Users(1, '', '', '', '', '',undefined,undefined)
+    let user = new Users(1, '', '', '', '', '')
     this.sharedService.isLoggedIn().subscribe(isLoggin => {
       if (isLoggin) {
         user = this.sharedService.getUserFromCookie()
@@ -220,8 +217,8 @@ export class PPaymentComponent implements OnInit {
       this.orderService
         .addCartItem(this.getOrderItem(this.orderForm, this.orderForm.xungho))
         .subscribe(data => {
-          this.router.navigate(['/profile'])
           this.dialogRef.close('closePayment')
+          this.router.navigate(['/profile'])
         })
     }
   }

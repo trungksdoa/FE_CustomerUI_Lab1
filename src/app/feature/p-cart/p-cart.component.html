@@ -22,21 +22,21 @@
       <!-- <ng-template #getList>Content to render when condition is false.</ng-template> -->
       <div class="row border-top border-bottom" *ngFor="let item of cart?.cartItem">
         <div class="row main align-items-center">
-          <div class="col-md-2"><img class="img-fluid"
-              src="{{getlink(item.productItem.imageurl)}}"></div>
+          <div class="col-md-2"><img class="img-fluid" [defaultImage]="defaultImage"
+              [lazyLoad]="getlink(item.productItem.imageurl)"></div>
           <div class="col-md-3">
             <div class="row text-muted">{{item.productItem.catagory.name}}</div>
             <div class="row">{{item.productItem.name}}</div>
           </div>
           <div class="col-md-4 col-md-offset-4">
             <div class="input-group flex-nowrap">
-              <span class="input-group-text cursorPointer" (click)="changeQuantity(item.quantity-1,item.id,item.active)"
+              <span class="input-group-text cursorPointer" (click)="changeQuantity(item.quantity-1,item.id,cart?.id)"
                 id="addon-wrapping">
                 <mat-icon aria-hidden="false" aria-label="Example minus icon">remove</mat-icon>
               </span>
-              <input style="height: 40px;" class="form-control" (change)="updateQuantity($event,item.id,item.active)"
+              <input style="height: 40px;" class="form-control" (change)="updateQuantity($event,item.id,cart?.id)"
                 value="{{item.quantity}}" />
-              <span class="input-group-text cursorPointer" (click)="changeQuantity(item.quantity+1,item.id,item.active)"
+              <span class="input-group-text cursorPointer" (click)="changeQuantity(item.quantity+1,item.id,cart?.id)"
                 id="addon-wrapping">
                 <mat-icon aria-hidden="false" aria-label="Example minus icon">add</mat-icon>
               </span>
@@ -47,7 +47,8 @@
             <div class="d-flex justify-content-between">
               {{getCalculatedValueCartItem(item)}}
               <span class="close">
-                <mat-checkbox (click)="selectedItem(item)" style="cursor: pointer" disabled="" [checked]="item.selected">
+                <mat-checkbox (click)="selectedItem(item)" style="cursor: pointer" disabled=""
+                  [checked]="item.selected">
                 </mat-checkbox>
                 <!-- <mat-icon>remove</mat-icon> -->
               </span>
@@ -58,7 +59,7 @@
 
       <div mat-dialog-actions align="end">
         <button (click)="backToHome()" color="Accent" mat-raised-button>Trở về</button>
-        <button (click)="deleteItemInCart()" color="warn" mat-raised-button >Xóa</button>
+        <button (click)="deleteItemInCart()" color="warn" mat-raised-button>Xóa</button>
         <!-- <button mat-raised-button (click)="onNoClick()">Thóat</button> -->
         <!-- <button mat-raised-button [mat-dialog-close]="data.animal" cdkFocusInitial>Ok</button> -->
       </div>

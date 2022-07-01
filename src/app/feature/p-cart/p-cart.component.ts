@@ -15,7 +15,15 @@ import { ToastServiceService } from 'src/app/service/toast-service.service'
   styleUrls: ['./p-cart.component.css']
 })
 export class PCartComponent implements OnInit {
-  cart: Cart
+  cart: Cart = {
+    id: 0,
+    cartItem: [],
+    userId: undefined,
+    TotalPrice: 0,
+    isEmpty: false,
+    totalUniqueItems: 0
+  }
+  defaultImage = 'https://www.placecage.com/1000/1000'
   totalMoney: number = 0
   itemSelected: number[] = []
   itemObjectSelected: cartItem[] = []
@@ -28,6 +36,7 @@ export class PCartComponent implements OnInit {
     private dialogService: DialogService,
     private dialogRef: MatDialogRef<PCartComponent>,
     private toastService: ToastServiceService,
+    private cartProcess: NgCartCaculatorService,
     private router: Router,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
@@ -35,12 +44,7 @@ export class PCartComponent implements OnInit {
   }
 
   ngOnInit (): void {
-    this._sharedService.afterClick.subscribe((value?) => {
-      if (value === 'refreshCart') {
-        this.getCart()
-      }
-    })
-    this.cartservice.getCartFromDB(this._sharedService.getUserFromCookie())
+    this.getCart()
   }
 
   getlink (link: any) {
@@ -51,6 +55,23 @@ export class PCartComponent implements OnInit {
   }
 
   getCart (): void {
+    this.cartservice
+      .getAsyncCartFromDB(this._sharedService.getUserFromCookie())
+      .subscribe(
+        ({
+          cartData,
+          isError,
+          message,
+          uniqueItemInCart
+        }: any) => {
+          this.cart = cartData
+          this.cartProcess.saveCartToLocalStorage(
+            this.cartProcess.generatorCart(cartData, cartData.cartItem)
+          )
+          this.sharedService.setUniqueItemNumber(uniqueItemInCart)
+          this.toastService.showSuccess(message);
+        }
+      )
     this.cart = this.cartservice.getCartFromLocalStorage()
   }
 
@@ -62,21 +83,42 @@ export class PCartComponent implements OnInit {
     return this._sharedService.getFormatCurrency(value)
   }
 
-  callAPIChangeData (currentQuantity: number, itemId: number, active: boolean) {
-    const cart: Cart = this.cartservice.getCartFromLocalStorage()
-    const currentItem = cart.cartItem.find((i: cartItem) => i.id === itemId)
+  callAPIChangeData (
+    currentQuantity: number,
+    itemId: number,
+    parentID: number
+  ) {
+    this.cartservice
+      .updateCartQuantity({
+        payload: {
+          itemId: itemId,
+          quantityItemNumber: currentQuantity,
+          parentID: {
+            Id: parentID
+          }
+        }
+      })
+      .subscribe(
+        ({ cartData, message }: { cartData: Cart; message: string }) => {
+          this.cartProcess.saveCartToLocalStorage(
+            this.cartProcess.generatorCart(cartData, cartData.cartItem)
+          )
 
-    this.cart = this.cartservice.updateCartQuantity({
-      ...currentItem,
-      id: itemId,
-      payload: {
-        quantity: currentQuantity,
-        active: active
-      }
-    })
+          this.cart = this.cartProcess.generatorCart(
+            cartData,
+            cartData.cartItem
+          )
+
+          this.sharedService.setUniqueItemNumber(cartData.cartItem.length)
+          this.toastService.showSuccess(message)
+        },
+        error => {
+          this.toastService.showError(error.error.message)
+        }
+      )
   }
 
-  changeQuantity (currentQuantity: number, itemId: number, active: boolean) {
+  changeQuantity (currentQuantity: number, itemId: number, parentID: number) {
     if (currentQuantity < 1) {
       const listID = []
       listID.push(itemId)
@@ -84,20 +126,12 @@ export class PCartComponent implements OnInit {
     } else if (currentQuantity > 50) {
       this.toastService.showWarn('Giới hạn mua không lớn hơn 50')
     } else {
-      this.callAPIChangeData(currentQuantity, itemId, active)
+      this.callAPIChangeData(currentQuantity, itemId, parentID)
     }
   }
 
-  updateQuantity ($event: any, itemId: number, active: boolean) {
-    if (parseInt($event.target.value) < 1) {
-      const listID = []
-      listID.push(itemId)
-      this.deleteItemIfQuantityChangeLowerThanOne(this.cart.id, listID)
-    } else if (parseInt($event.target.value) > 50) {
-      this.toastService.showWarn('Giới hạn mua không lớn hơn 50')
-    } else {
-      this.callAPIChangeData(parseInt($event.target.value), itemId, active)
-    }
+  updateQuantity ($event: any, itemId: number, parentID: number) {
+    this.changeQuantity(parseInt($event.target.value), itemId, parentID)
   }
 
   selectedItem (cartitem: cartItem) {
@@ -151,6 +185,7 @@ export class PCartComponent implements OnInit {
             this.totalMoney = 0
             this.itemSelected = []
             this.itemObjectSelected = []
+            this.dialogRef.close()
           }
         })
     } else {

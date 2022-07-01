@@ -14,7 +14,7 @@
       <tbody>
         <tr *ngFor="let order of orders">
           <td> <button mat-button style="padding:5px">{{order.id}} </button></td>
-          <td> <button mat-button style="padding:5px">{{order.createAt}}</button></td>
+          <td> <button mat-button style="padding:5px">{{order.CreateAt}}</button></td>
           <td> <button mat-button style="padding:5px">{{formatCurrency(order.totalAmount)}} </button></td>
           <td>
             <div *ngIf="order.status == 1;">

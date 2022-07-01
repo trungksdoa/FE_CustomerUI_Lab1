@@ -10,13 +10,11 @@
      }">
         <div class="card col-sm-10">
           <div class="product-1 align-items-center p-2 text-center">
-            <div class="image-container"> <img class="xyz rounded"
-              src="{{getlink(product.imageurl)}}" width="200"
-                height="200">
+            <div class="image-container"> <img class="xyz rounded" [defaultImage]="defaultImage"
+                [lazyLoad]="getlink(product.imageurl)" width="200" height="200">
 
-              <img class="xyz-replacement rounded"
-                src="{{getlink(product.imageurl)}}" width="200"
-                height="200"> </div>
+              <img class="xyz-replacement rounded" [defaultImage]="defaultImage" [lazyLoad]="getlink(product.imageurl)"
+                width="200" height="200"> </div>
             <h4 style="font-weight: bold;">{{product.name}}</h4>
             <div class="mt-3 info" style="height: 50px;"> <span class="text1 d-block">{{product.description}}</span>
             </div>

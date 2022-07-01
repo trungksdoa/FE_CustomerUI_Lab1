@@ -26,6 +26,7 @@ export class HeaderComponent implements OnInit {
   itemCount: number = 0
   name: String = ''
   size: SCREEN_SIZE
+  _sharedService: SharedService
   constructor (
     private sharedService: SharedService,
     private toast: ToastServiceService,
@@ -34,6 +35,9 @@ export class HeaderComponent implements OnInit {
     private resizeSvc: ResizeChangeService
   ) {
     // đăng ký luồng thay đổi size
+    this.sharedService.getUniqueItemInCart().subscribe(data=>{
+      this.itemCount = data;
+    })
     this.resizeSvc.onResize$.subscribe(x => {
       this.size = x
     })
@@ -45,11 +49,7 @@ export class HeaderComponent implements OnInit {
       this.sharedService.afterClick.subscribe(() => {
         this.name = this.sharedService.getUserFromCookie().name
       })
-      this.sharedService.getUniqueItemInCart().subscribe(uniqueItemInCart => {
-        this.itemCount = uniqueItemInCart
-      })
     })
-    this.itemCount = 0
     this.getAllProduct()
   }
 
@@ -92,23 +92,14 @@ export class HeaderComponent implements OnInit {
       this.router.navigate(['/login'])
     }
   }
-  CartIndentify: Cart = {
-    id: 0,
-    cartItem: [],
-    userId: null,
-    TotalPrice: 0,
-    isEmpty: false,
-    totalUniqueItems: 0,
-    lastUpdated: undefined,
-    createAt: undefined
-  }
+
   goProfile () {
-    this.router.navigate(['profile'])
+    this.router.navigate(['/profile'])
   }
   logOut () {
     this.sharedService.deleteCookie('user')
     this.sharedService.deleteLocal('localCart')
-    this.router.navigate(['login'])
+    this.router.navigate(['/login'])
     this.sharedService.isLoggin(false)
     this.sharedService.setUniqueItemNumber(0)
   }

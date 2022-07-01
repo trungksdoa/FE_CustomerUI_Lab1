@@ -1,7 +1,7 @@
 import { SharedService } from 'src/app/service/shared.service'
 import { ProductService } from 'src/app/api/product/product.service'
 import { Component, OnInit } from '@angular/core'
-import { ActivatedRoute } from '@angular/router'
+import { ActivatedRoute, Router } from '@angular/router'
 import { Product } from 'src/app/api/product/product'
 import { NgCartService } from 'src/app/feature/p-cart/service/NgCartService'
 
@@ -15,18 +15,17 @@ export class PDetailComponent implements OnInit {
     id: 0,
     name: '',
     description: '',
-    imageurl: undefined,
+    imageurl: '',
     price: 0,
-    createAt: undefined,
-    lastUpdated: undefined,
-    catagory: undefined,
-    
+    catagory: undefined
   }
+  defaultImage = "https://www.placecage.com/1000/1000"
   timestamp = new Date().getTime()
   constructor (
     private productService: ProductService,
     private cartService: NgCartService,
     private route: ActivatedRoute,
+    private router: Router,
     private shared: SharedService
   ) {}
 
@@ -41,11 +40,26 @@ export class PDetailComponent implements OnInit {
     this.cartService.addToCart(product)
   }
   findProductById (productId: number) {
-    this.productService
-      .getOneProduct(productId)
-      .subscribe((product: Product) => {
-        this.product = product
-      })
+    this.productService.getOneProduct(productId).subscribe(
+      ({
+        data,
+        isError,
+        message
+      }: {
+        isError: boolean
+        data: Product
+        message: string
+      }) => {
+        this.product = data
+      },
+      responeError => {
+        if (responeError.error.isError) {
+          if (responeError.error.message === 'Không tìm thấy sản phẩm') {
+            this.router.navigate(['/404'])
+          }
+        }
+      }
+    )
   }
   getlink (link: any) {
     if (this.timestamp) {

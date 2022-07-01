@@ -10,6 +10,7 @@ import { InvoiceComponent } from './feature/invoice/invoice.component'
 import { AuthGuardService } from './Auth/auth-guard.service'
 import { ConfirmDeactivateGuardService } from './Auth/confirm-deactivate-guard.service'
 import { LoginGuardService } from './Auth/login-guard.service'
+import { NotFound404Component } from './not-found404/not-found404.component'
 
 
 
@@ -40,10 +41,12 @@ const routes: Routes = [
   {
     path: 'register',
     component: RegisterComponent,
+    canActivate: [LoginGuardService]
   },
   { path: 'product/category/:id', component: ProductComponent },
   { path: 'product/search/:keyword', component: ProductComponent },
-
+  {path: '404', component: NotFound404Component},
+  {path: '**', redirectTo: '/404'}
 ]
 
 @NgModule({

@@ -2,8 +2,6 @@ import { Users } from './user'
 import { Product } from 'src/app/api/product/product'
 export interface Cart {
   id: number
-  lastUpdated: Date
-  createAt: Date
   cartItem: Array<cartItem>
   userId: Users
   TotalPrice: number
@@ -17,6 +15,6 @@ export interface cartItem {
   productPrice: any
   active: boolean
   selected: boolean
-  lastUpdated: Date
-  createAt: Date
+  parentID:any
 }
+

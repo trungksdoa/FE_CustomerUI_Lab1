@@ -12,9 +12,11 @@ import { Product } from 'src/app/api/product/product'
 import { Users } from 'src/app/model/user'
 import { ToastServiceService } from 'src/app/service/toast-service.service'
 import { Router } from '@angular/router'
+import { BehaviorSubject } from 'rxjs'
 
 @Injectable({ providedIn: 'root' })
 export class NgCartService {
+  private cartLocalIsExits = new BehaviorSubject<boolean>(false)
   constructor (
     private callAPI: NgCartApiService,
     private cartProcess: NgCartCaculatorService,
@@ -23,35 +25,23 @@ export class NgCartService {
     private router: Router
   ) {}
 
-  updateCartQuantity ({ payload, id }: { id: number; payload: any }) {
-    const cart: Cart = this.sharedService.getLocal('localCart')
-
-    const items = cart.cartItem.map((item: cartItem) => {
-      if (item.id !== id) return item
-
-      return {
-        ...item,
-        ...payload
-      }
-    })
-
-    const field = {
-      quantityItemNumber: payload.quantity
+  isLocalCartExist () {
+    if (this.getCartFromLocalStorage()) {
+      this.cartLocalIsExits.next(true)
+    } else {
+      this.cartLocalIsExits.next(false)
     }
-    cart.userId = this.sharedService.getUserFromCookie()
-    const cartGenerator = this.cartProcess.generatorCart(cart, items)
-    this.callAPI.updateItemsByAnyFields(cart.userId.id, id, field).subscribe(
-      (data: any) => {
-        this.cartProcess.saveCartToLocalStorage(cartGenerator)
-        this.sharedService.setUniqueItemNumber(parseInt(data.uniqueItemInCart))
-        this.toast.showSuccess(data.message)
-      },
-      error => {
-        this.toast.showError(error.error.message)
-      }
-    )
+    return this.cartLocalIsExits.asObservable()
+  }
 
-    return cartGenerator
+  updateCartQuantity ({ payload }: { payload: any }) {
+    const field = {
+      quantityItemNumber: payload.quantityItemNumber,
+      id: payload.itemId,
+      parentId: payload.parentID
+    }
+    let cart = null
+    return this.callAPI.updateItemsByAnyFields(field)
   }
 
   addToCart (item: Product) {
@@ -59,11 +49,16 @@ export class NgCartService {
       itemInitvalue.productItem = item
       itemInitvalue.quantity = 1
       itemInitvalue.active = true
+      cartInit.cartItem.push(itemInitvalue)
+      const data: any = this.cartProcess
+        .generatorCart(cartInit, cartInit.cartItem)
+        .cartItem.find(x => x.productItem.id === item.id)
 
       this.cartProcess.saveCartToDB(
-        itemInitvalue,
+        data,
         this.sharedService.getUserFromCookie().id
       )
+      // this.cartProcess.saveCartToLocalStorage(cartInit)
     } else {
       this.toast.showWarn('Vui lóng đăng nhập để sử dụng')
       this.router.navigate(['/login'])
@@ -97,8 +92,19 @@ export class NgCartService {
         this.sharedService.setUniqueItemNumber(uniqueItemInCart)
       },
       error => {
-        this.sharedService.setUniqueItemNumber(0)
+        this.createLocalCart()
       }
     )
+  }
+
+  getAsyncCartFromDB (userId: Users) {
+    return this.callAPI.getCartItemByUserId(userId.id + '')
+  }
+
+  createLocalCart () {
+    this.cartProcess.saveCartToLocalStorage(
+      this.cartProcess.generatorCart(cartInit, cartInit.cartItem)
+    )
+    this.sharedService.setUniqueItemNumber(0)
   }
 }

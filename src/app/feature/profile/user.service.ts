@@ -19,16 +19,26 @@ export class UserService {
   public Save (user: Users): Observable<any> {
     return this.http.post<any>(`${this.apiServerUrl}/user/save`, user)
   }
-  public update (user: Users): Observable<Users> {
-    return this.http.put<Users>(`${this.apiServerUrl}/user/update/${user.id}`, user)
+  public update (user: Users): Observable<{ message:string; user:Users }> {
+    return this.http.put<{ message:string; user:Users }>(
+      `${this.apiServerUrl}/user/update/${user.id}`,
+      user
+    )
   }
   public triggerCheckIsAdmin (name: string): Observable<boolean> {
-    return this.http.get<boolean>(`${this.apiServerUrl}/user/isAdmin?name=${name}`)
+    return this.http.get<boolean>(
+      `${this.apiServerUrl}/user/isAdmin?name=${name}`
+    )
   }
   public triggerCheckIsBanned (name: string): Observable<boolean> {
-    return this.http.patch<boolean>(`${this.apiServerUrl}/user/banUser?name=${name}`,{})
+    return this.http.patch<boolean>(
+      `${this.apiServerUrl}/user/banUser?name=${name}`,
+      {}
+    )
   }
   public triggerCheckIsDeleted (name: string): Observable<boolean> {
-    return this.http.get<boolean>(`${this.apiServerUrl}/user/isDeleted?name=${name}`)
+    return this.http.get<boolean>(
+      `${this.apiServerUrl}/user/isDeleted?name=${name}`
+    )
   }
 }

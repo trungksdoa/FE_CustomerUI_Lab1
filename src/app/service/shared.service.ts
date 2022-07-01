@@ -127,7 +127,7 @@ export class SharedService {
     this._uniqueItemInCart.next(value)
   }
   getUniqueItemInCart () {
-    if (this.getLocal('localCart') !== '') {
+    if (this.getLocal('localCart')) {
       this._uniqueItemInCart.next(this.getLocal('localCart').totalUniqueItems)
     } else {
       this._uniqueItemInCart.next(0)

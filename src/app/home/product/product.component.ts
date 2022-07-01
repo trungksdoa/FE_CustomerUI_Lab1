@@ -14,6 +14,7 @@ export class ProductComponent implements OnInit {
   public searchMode: boolean
   public cateMode: boolean
   @Input() products: Product[]
+  defaultImage = "https://www.placecage.com/1000/1000"
   totalLength: any
   page: number = 1
   isLogin = false

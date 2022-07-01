@@ -17,7 +17,7 @@
               class="rounded-circle">
           </a>
           <mat-menu #menu="matMenu">
-            <a mat-menu-item [routerLink]="['/profile']">Thông tin</a>
+            <a mat-menu-item (click)="goProfile()">Thông tin</a>
             <a mat-menu-item (click)="logOut()">Đăng
               xuất</a>
           </mat-menu>

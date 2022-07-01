@@ -42,10 +42,6 @@ export class ProfileComponent implements OnInit {
     this.orderService
       .getTop5OrderByUserId(this._sharedService.getUserFromCookie().id)
       .subscribe(items => {
-        items.forEach(item => {
-          item.createAt = new Date(item.createAt).toUTCString()
-          item.lastUpdated = new Date(item.lastUpdated).toUTCString()
-        })
         this.orders = items
       })
   }
