@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core'
 import { NgForm } from '@angular/forms'
 import { Router } from '@angular/router'
 import { Observable } from 'rxjs'
-import { Users } from 'src/app/model/user'
+import { Users, UserUpdate } from 'src/app/model/user'
 import { SharedService } from 'src/app/service/shared.service'
 import { ToastServiceService } from 'src/app/service/toast-service.service'
 import { UserService } from 'src/app/feature/profile/user.service'
@@ -13,7 +13,7 @@ import { UserService } from 'src/app/feature/profile/user.service'
   styleUrls: ['./profile-account.component.css']
 })
 export class ProfileAccountComponent implements OnInit {
-  user: Users
+  user: UserUpdate
   isSubmit = false
   oldData: Users
   show_button: Boolean = false

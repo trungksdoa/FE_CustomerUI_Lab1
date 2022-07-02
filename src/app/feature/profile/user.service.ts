@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core'
 import { HttpClient, HttpHeaders } from '@angular/common/http'
 import { map } from 'rxjs/operators'
 import { of, Observable } from 'rxjs'
-import { Users } from 'src/app/model/user'
+import { Users, UserUpdate } from 'src/app/model/user'
 import { environment } from 'src/environments/environment'
 
 @Injectable({
@@ -19,7 +19,7 @@ export class UserService {
   public Save (user: Users): Observable<any> {
     return this.http.post<any>(`${this.apiServerUrl}/user/save`, user)
   }
-  public update (user: Users): Observable<{ message:string; user:Users }> {
+  public update (user: UserUpdate): Observable<{ message:string; user:Users }> {
     return this.http.put<{ message:string; user:Users }>(
       `${this.apiServerUrl}/user/update/${user.id}`,
       user
