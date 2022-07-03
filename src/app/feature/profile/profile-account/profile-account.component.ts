@@ -13,11 +13,13 @@ import { UserService } from 'src/app/feature/profile/user.service'
   styleUrls: ['./profile-account.component.css']
 })
 export class ProfileAccountComponent implements OnInit {
-  user: UserUpdate
+  user: Users
   isSubmit = false
   oldData: Users
   show_button: Boolean = false
   show_eye: Boolean = false
+
+  
 
   isLogin: Boolean = false
   constructor (

@@ -14,7 +14,7 @@ export class ProfileOrderDetailComponent implements OnInit {
   orderItems: orderItems[]
   sharedService: SharedService
   timestamp = new Date().getTime()
-  defaultImage = "https://www.placecage.com/1000/1000"
+  defaultImage = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSBZ98r5TmClIzjTCeDzUeCgNSwE5BbgFm4oA&usqp=CAU"
   constructor (
     private _sharedService: SharedService,
     public dialogRef: MatDialogRef<ProfileOrderDetailComponent>,

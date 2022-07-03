@@ -23,7 +23,7 @@ export class PCartComponent implements OnInit {
     isEmpty: false,
     totalUniqueItems: 0
   }
-  defaultImage = 'https://www.placecage.com/1000/1000'
+  defaultImage = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSBZ98r5TmClIzjTCeDzUeCgNSwE5BbgFm4oA&usqp=CAU'
   totalMoney: number = 0
   itemSelected: number[] = []
   itemObjectSelected: cartItem[] = []
