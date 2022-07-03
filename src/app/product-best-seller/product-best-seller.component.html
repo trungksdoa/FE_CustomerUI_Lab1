@@ -23,29 +23,10 @@
 
                 </span></div>
 
-                <div class="rating">
-                  <div class="stars">
-                    <span class="fa fa-star checked"></span>
-                    <span class="fa fa-star checked"></span>
-                    <span class="fa fa-star checked"></span>
-                    <span class="fa fa-star"></span>
-                    <span class="fa fa-star"></span>
-                  </div>
-                  <span class="review-no">41 Lượt Thích</span>
-                </div>
-                <p class="product-description">{{product.description}}</p>
-                <h4 class="price">Giá sản phẩm: <span>{{formatCurrency(product.price)}}</span></h4>
-                <h5 class="sizes">sizes:
-                  <span class="size" data-toggle="tooltip" title="small">s</span>
-                  <span class="size" data-toggle="tooltip" title="medium">m</span>
-                  <span class="size" data-toggle="tooltip" title="large">l</span>
-                  <span class="size" data-toggle="tooltip" title="xtra large">xl</span>
-                </h5>
-                <h5 class="colors">colors:
-                  <span class="color orange" data-toggle="tooltip" title="Not In store"></span>
-                  <span class="color green"></span>
-                  <span class="color blue"></span>
-                </h5>
+                <h4 style="font-weight: bold;">{{product.name}}</h4>
+                <div class="mt-3 info" style="height: 50px;"> <span class="text1 d-block" >{{product.description}}</span>  </div>
+                <div class=" cost mt-3 text-dark"> <span>${{product.price}}</span>
+                    <div class=" star mt-3 align-items-center"> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> </div>
                 </div>
             </div>
             <div class="p-2 bg-danger text-center text-white mt-3 cursor cart" (click)="goToDetail(product.id)"> <span class="text-uppercase cart-text">Chi tiết sản phẩm</span> </div>
