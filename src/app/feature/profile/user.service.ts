@@ -19,7 +19,7 @@ export class UserService {
   public Save (user: Users): Observable<any> {
     return this.http.post<any>(`${this.apiServerUrl}/user/save`, user)
   }
-  public update (user: UserUpdate): Observable<{ message:string; user:Users }> {
+  public update (user: Users): Observable<{ message:string; user:Users }> {
     return this.http.put<{ message:string; user:Users }>(
       `${this.apiServerUrl}/user/update/${user.id}`,
       user
