@@ -1,14 +1,19 @@
-import { Component, OnInit, Input } from "@angular/core"
-import { MatDialogRef } from "@angular/material/dialog"
-import { IPayPalConfig, ICreateOrderRequest } from "ngx-paypal"
-import { Order } from "src/app/model/Order"
-import { Users } from "src/app/model/user"
-import { SharedService } from "src/app/service/shared.service"
-import { cartItem } from "src/app/feature/p-cart/service"
-import { OrderService } from "src/app/feature/p-payment/order.service"
-import { PPaymentComponent } from "src/app/feature/p-payment/p-payment.component"
-
-
+import { Component, OnInit, Input } from '@angular/core'
+import { MatDialogRef } from '@angular/material/dialog'
+import { IPayPalConfig, ICreateOrderRequest } from 'ngx-paypal'
+import { Order } from 'src/app/model/Order'
+import { Users } from 'src/app/model/user'
+import { SharedService } from 'src/app/service/shared.service'
+import { cartItem } from 'src/app/feature/p-cart/service'
+import { OrderService } from 'src/app/feature/p-payment/order.service'
+import { PPaymentComponent } from 'src/app/feature/p-payment/p-payment.component'
+import {
+  formatCurrency,
+  getCurrencyRate,
+  getCurrencyRateList,
+  getCurrencyCode,
+  getCurrencySymbol
+} from 'currencyxchange'
 @Component({
   selector: 'app-payment-paypal',
   templateUrl: './payment-paypal.component.html',
@@ -16,6 +21,7 @@ import { PPaymentComponent } from "src/app/feature/p-payment/p-payment.component
 })
 export class PaymentPaypalComponent implements OnInit {
   @Input() items: Array<cartItem>
+  @Input() user: Users
 
   public payPalConfig?: IPayPalConfig
   showSuccess: boolean
@@ -27,6 +33,13 @@ export class PaymentPaypalComponent implements OnInit {
 
   ngOnInit (): void {
     this.initConfig()
+   async function tests(){
+    await getCurrencyRate('USD').then(data=>{
+      console.log(data);
+    })
+
+    }
+    tests();
     // this.getItemPaypal()
   }
 
@@ -37,7 +50,7 @@ export class PaymentPaypalComponent implements OnInit {
         quantity: '1',
         category: 'DIGITAL_GOODS',
         unit_amount: {
-          currency_code: 'RUB',
+          currency_code: 'USD',
           value: item.productPrice
         }
       }
@@ -81,17 +94,18 @@ export class PaymentPaypalComponent implements OnInit {
   }
   private initConfig (): void {
     this.payPalConfig = {
-      currency: 'RUB',
+      currency: 'USD',
       clientId:
         'AcY3T0c72nPrldG0kXU1vnYyUPeW9icX6uGS0gz9bB849FQHeQe-1pizqcpS0q17ueHG1tBSRRKjNPE_',
-      createOrderOnClient: data =>
-        <ICreateOrderRequest>{
+      createOrderOnClient: data => {
+        console.log(this.user)
+        return <ICreateOrderRequest>{
           intent: 'CAPTURE',
           purchase_units: [
             {
               shipping: {
                 address: {
-                  address_line_1: '2211 N First Street',
+                  address_line_1: this.user.address + '',
                   address_line_2: 'Building 17',
                   admin_area_2: 'San Jose',
                   admin_area_1: 'CA',
@@ -100,14 +114,14 @@ export class PaymentPaypalComponent implements OnInit {
                 }
               },
               amount: {
-                currency_code: 'RUB',
+                currency_code: 'USD',
                 value: this.items.reduce(
                   (pre, curr) => pre + curr.productPrice,
                   0
                 ),
                 breakdown: {
                   item_total: {
-                    currency_code: 'RUB',
+                    currency_code: 'USD',
                     value: this.items.reduce(
                       (pre, curr) => pre + curr.productPrice,
                       0
@@ -118,7 +132,9 @@ export class PaymentPaypalComponent implements OnInit {
               items: this.getItemPaypal()
             }
           ]
-        },
+        }
+      },
+
       advanced: {
         commit: 'true'
       },

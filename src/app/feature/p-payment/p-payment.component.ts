@@ -1,10 +1,6 @@
-
 import { Component, OnInit, Inject } from '@angular/core'
 import { ThemePalette } from '@angular/material/core'
-import {
-  MatDialogRef,
-  MAT_DIALOG_DATA
-} from '@angular/material/dialog'
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog'
 import { Router } from '@angular/router'
 import { Subscription } from 'rxjs'
 import { Order } from 'src/app/model/Order'
@@ -13,7 +9,6 @@ import { SharedService } from 'src/app/service/shared.service'
 import { cartItem } from 'src/app/feature/p-cart/service'
 import { CityService } from './citys.service'
 import { OrderService } from './order.service'
-
 
 @Component({
   selector: 'app-p-payment',
@@ -33,30 +28,31 @@ export class PPaymentComponent implements OnInit {
   clickEventSubscription: Subscription
   selected: Array<any> = []
   loading: boolean = false
-  citys = [
-    {
-      matp: 0,
-      name: '',
-      type: '',
-      slug: '',
-      quanhuyen: [
-        {
-          maqh: 0,
-          name: '',
-          type: '',
-          phuongxa: [
-            {
-              xaid: 0,
-              name: '',
-              type: ''
-            }
-          ]
-        }
-      ]
-    }
-  ]
-  wards = []
-  district = []
+  user: Users
+  // citys = [
+  //   {
+  //     matp: 0,
+  //     name: '',
+  //     type: '',
+  //     slug: '',
+  //     quanhuyen: [
+  //       {
+  //         maqh: 0,
+  //         name: '',
+  //         type: '',
+  //         phuongxa: [
+  //           {
+  //             xaid: 0,
+  //             name: '',
+  //             type: ''
+  //           }
+  //         ]
+  //       }
+  //     ]
+  //   }
+  // ]
+  // wards = []
+  // district = []
   orderForm: Order = {
     id: 0,
     orderItems: [],
@@ -70,18 +66,16 @@ export class PPaymentComponent implements OnInit {
 
   constructor (
     private sharedService: SharedService,
-    private orderService: OrderService,
-    private citysService: CityService,
     public dialogRef: MatDialogRef<PPaymentComponent>,
-    private router: Router,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
     if (data) {
       this.cartItems = [...data]
       this.totalMoney = this.caculatorTotal(data)
-      this.citysService.getCitys().subscribe((data: any) => {
-        this.citys = data
-      })
+      this.user = this.sharedService.getUserFromCookie()
+      // this.citysService.getCitys().subscribe((data: any) => {
+      //   this.citys = data
+      // })
     }
   }
 
@@ -148,7 +142,6 @@ export class PPaymentComponent implements OnInit {
   }
 
   isObjectEmpty (obj: Order) {
-    console.log(obj)
     const error = { isEmpty: false }
 
     if (obj.address.length === 0) {
@@ -159,18 +152,10 @@ export class PPaymentComponent implements OnInit {
 
   //Set properties
   getOrderItem (value: Order) {
-    let user = new Users(1, '', '', '', '', '')
-    this.sharedService.isLoggedIn().subscribe(isLoggin => {
-      if (isLoggin) {
-        user = this.sharedService.getUserFromCookie()
-      } else {
-        user = null
-      }
-    })
     const order_content: Order = {
       id: 0,
       orderItems: this.cartItems,
-      userId: user,
+      userId: this.user,
       note: value.note,
       address: value.address,
       status: 1,
@@ -184,16 +169,17 @@ export class PPaymentComponent implements OnInit {
     if (this.isObjectEmpty(this.orderForm).isEmpty) {
       alert('Vui lòng nhập thông tin')
     } else {
-      this.orderService
-        .addCartItem(this.getOrderItem(this.orderForm))
-        .subscribe(data => {
-          this.dialogRef.close('closePayment')
-          this.router.navigate(['profile'])
-        })
+      console.log(this.getOrderItem(this.orderForm))
+      // this.orderService
+      //   .addCartItem(this.getOrderItem(this.orderForm))
+      //   .subscribe(data => {
+      //     this.dialogRef.close('closePayment')
+      //     this.router.navigate(['profile'])
+      //   })
     }
   }
 
-  existPayment(){
+  existPayment () {
     this.dialogRef.close('closePayment')
   }
 

@@ -70,31 +70,33 @@
         <form id="paymentForm" *ngIf="activeLink==='Thanh toán trả sau'">
           <div class="row">
             <h1 style="text-align:center">Thanh Toán Khi Nhận Hàng</h1>
-            <div class="col-md-6">
+            <div class="col-md-12">
               <div class="mb-3">
                 <label for="address" class="form-label">Địa chỉ cụ thể</label>
                 <input type="text" [(ngModel)]="orderForm.address" name="address" class="form-control" id="address">
               </div>
-              <div class="col-md-6">
-                <div class="mb-3">
-                  <label for="notes" class="form-label">Ghi chú</label>
-                  <input type="text" name="note" class="form-control" id="notes">
-                </div>
+            </div>
+            <div class="col-md-12">
+              <div class="mb-3">
+                <label for="notes" class="form-label">Ghi chú</label>
+                <input type="text" name="note" class="form-control" id="notes">
               </div>
-              <!-- <div class="mb-3">
+            </div>
+
+            <!-- <div class="mb-3">
                 <label class="form-label">Tỉnh(Thành Phố)</label>
                 <input type="text" [(ngModel)]="orderForm.address" name="address" class="form-control" id="address">
-                <!-- <ng-select [items]="citys" bindLabel="name" bindValue="matp" id="tp"
+                <ng-select [items]="citys" bindLabel="name" bindValue="matp" id="tp"
                   (change)="onSelectChangeTP($event)">
-                </ng-select> -->
-            </div> -->
-            <!-- <div class="mb-3">
+                </ng-select>
+              </div>
+              <div class="mb-3">
                 <label for="District" class="form-label">Quận(Huyện)</label>
                 <ng-select [items]="district" bindLabel="name" bindValue="maqh" id="qh"
                   (change)="onSelectChangeQH($event)">
                 </ng-select>
-              </div> -->
-            <!-- <div class="mb-3">
+              </div>
+              <div class="mb-3">
                 <label for="wards" class="form-label">Xã(Phường)</label>
                 <ng-select [items]="wards" bindLabel="name" bindValue="xaid" id="px"
                   (change)="onSelectChangePX($event)">
@@ -102,7 +104,7 @@
               </div> -->
           </div>
         </form>
-        <app-payment-paypal *ngIf="activeLink==='Thanh toán trả trước'" [items]="cartItems"></app-payment-paypal>
+        <app-payment-paypal *ngIf="activeLink==='Thanh toán trả trước'" [user]=" user" [items]="cartItems"></app-payment-paypal>
       </div>
     </div>
   </div>
