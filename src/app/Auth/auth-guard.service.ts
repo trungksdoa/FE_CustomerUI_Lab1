@@ -30,7 +30,7 @@ export class AuthGuardService implements CanActivate {
     if (check.isLoggin) {
       return true
     } else {
-      this.router.navigate(['/login'], {
+      this.router.navigate(['login'], {
         queryParams: { redirectURL: state.url }
       })
       return false

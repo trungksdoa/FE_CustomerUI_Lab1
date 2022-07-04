@@ -15,9 +15,6 @@ import { CityService } from './citys.service'
 import { OrderService } from './order.service'
 
 
-interface IPaymentFormValue extends Order {
-  xungho: ''
-}
 @Component({
   selector: 'app-p-payment',
   templateUrl: './p-payment.component.html',
@@ -60,19 +57,13 @@ export class PPaymentComponent implements OnInit {
   ]
   wards = []
   district = []
-  orderForm: IPaymentFormValue = {
+  orderForm: Order = {
     id: 0,
     orderItems: [],
-    phoneNumber: '',
-    fullname: '',
     address: '',
     userId: undefined,
-    city: 'A',
-    wards: 'A',
-    district: 'A',
     note: '',
     status: 0,
-    xungho: '',
     totalAmount: 0
   }
   checkObject = JSON.stringify(this.orderForm, undefined, 2)
@@ -103,26 +94,26 @@ export class PPaymentComponent implements OnInit {
    *
    *
    */
-  onSelectChangeTP ($event: any): void {
-    if ($event) {
-      this.orderForm.city = $event.name
-      this.district = $event.quanhuyen
+  // onSelectChangeTP ($event: any): void {
+  //   if ($event) {
+  //     this.orderForm.city = $event.name
+  //     this.district = $event.quanhuyen
 
-      // this.clearSelectDistric()
-    }
-  }
-  onSelectChangeQH ($event: any): void {
-    if ($event) {
-      this.orderForm.district = $event.name
+  //     // this.clearSelectDistric()
+  //   }
+  // }
+  // onSelectChangeQH ($event: any): void {
+  //   if ($event) {
+  //     this.orderForm.district = $event.name
 
-      this.wards = $event.phuongxa
-    }
-  }
-  onSelectChangePX ($event: any): void {
-    if ($event) {
-      this.orderForm.wards = $event.name
-    }
-  }
+  //     this.wards = $event.phuongxa
+  //   }
+  // }
+  // onSelectChangePX ($event: any): void {
+  //   if ($event) {
+  //     this.orderForm.wards = $event.name
+  //   }
+  // }
 
   /*
    *
@@ -162,20 +153,12 @@ export class PPaymentComponent implements OnInit {
 
     if (obj.address.length === 0) {
       error.isEmpty = true
-    } else if (obj.fullname.length === 0) {
-      error.isEmpty = true
-    } else if (obj.phoneNumber.length === 0) {
-      error.isEmpty = true
     }
-    // } else if (obj.wards.length === 0) {
-    //   error.isEmpty = true
-    // }
-
     return error
   }
 
   //Set properties
-  getOrderItem (value: Order, xungho: string) {
+  getOrderItem (value: Order) {
     let user = new Users(1, '', '', '', '', '')
     this.sharedService.isLoggedIn().subscribe(isLoggin => {
       if (isLoggin) {
@@ -188,13 +171,8 @@ export class PPaymentComponent implements OnInit {
       id: 0,
       orderItems: this.cartItems,
       userId: user,
-      city: value.city,
-      wards: value.wards,
-      district: value.district,
       note: value.note,
       address: value.address,
-      fullname: xungho + ' ' + value.fullname,
-      phoneNumber: value.phoneNumber,
       status: 1,
       totalAmount: 0
     }
@@ -206,19 +184,11 @@ export class PPaymentComponent implements OnInit {
     if (this.isObjectEmpty(this.orderForm).isEmpty) {
       alert('Vui lòng nhập thông tin')
     } else {
-      this.orderForm.address =
-        this.orderForm.address +
-        ', ' +
-        this.orderForm.wards +
-        ', ' +
-        this.orderForm.district +
-        ', ' +
-        this.orderForm.city
       this.orderService
-        .addCartItem(this.getOrderItem(this.orderForm, this.orderForm.xungho))
+        .addCartItem(this.getOrderItem(this.orderForm))
         .subscribe(data => {
           this.dialogRef.close('closePayment')
-          this.router.navigate(['/profile'])
+          this.router.navigate(['profile'])
         })
     }
   }

@@ -55,7 +55,7 @@ export class PDetailComponent implements OnInit {
       responeError => {
         if (responeError.error.isError) {
           if (responeError.error.message === 'Không tìm thấy sản phẩm') {
-            this.router.navigate(['/404'])
+            this.router.navigate(['404'])
           }
         }
       }

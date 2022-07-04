@@ -61,7 +61,7 @@ export class NgCartService {
       // this.cartProcess.saveCartToLocalStorage(cartInit)
     } else {
       this.toast.showWarn('Vui lóng đăng nhập để sử dụng')
-      this.router.navigate(['/login'])
+      this.router.navigate(['login'])
     }
   }
 
@@ -92,7 +92,7 @@ export class NgCartService {
         this.sharedService.setUniqueItemNumber(uniqueItemInCart)
       },
       error => {
-        this.createLocalCart()
+        this.createLocalCart(userId,cartInit)
       }
     )
   }
@@ -101,10 +101,11 @@ export class NgCartService {
     return this.callAPI.getCartItemByUserId(userId.id + '')
   }
 
-  createLocalCart () {
+  createLocalCart (userId:Users,cart:Cart) {
+    cartInit.userId = userId;
     this.cartProcess.saveCartToLocalStorage(
-      this.cartProcess.generatorCart(cartInit, cartInit.cartItem)
+      this.cartProcess.generatorCart(cart, cart.cartItem)
     )
-    this.sharedService.setUniqueItemNumber(0)
+    this.sharedService.setUniqueItemNumber(cart.cartItem.length)
   }
 }

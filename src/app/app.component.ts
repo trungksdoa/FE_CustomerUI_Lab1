@@ -29,10 +29,10 @@ export class AppComponent implements OnInit {
 
   ngOnInit (): void {
     this.getAllProduct()
-    this.checkCart(this.cartService,this.shared.getUserFromCookie())
-    this.detectLocalStorage()
+    this.checkCart(this.cartService, this.shared.getUserFromCookie())
+    this.shared.isLoggedIn().subscribe(isLoggedIn => isLoggedIn ? this.detectLocalStorage() : "")
   }
-  checkCart (cartService: any,user:any) {
+  checkCart (cartService: any, user: any) {
     cartService.isLocalCartExist().subscribe((isExits: any) => {
       if (!isExits) {
         cartService.getCartFromDB(user)
@@ -44,7 +44,7 @@ export class AppComponent implements OnInit {
     const service = this.cartService
     const user = this.shared.getUserFromCookie()
     window.addEventListener('storage', function (e) {
-      check(service,user)
+      check(service, user)
     })
   }
   getAllProduct (): void {

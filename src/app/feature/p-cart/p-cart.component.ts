@@ -23,6 +23,7 @@ export class PCartComponent implements OnInit {
     isEmpty: false,
     totalUniqueItems: 0
   }
+  isEmpty = false;
   defaultImage = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSBZ98r5TmClIzjTCeDzUeCgNSwE5BbgFm4oA&usqp=CAU'
   totalMoney: number = 0
   itemSelected: number[] = []
@@ -65,11 +66,12 @@ export class PCartComponent implements OnInit {
           uniqueItemInCart
         }: any) => {
           this.cart = cartData
+          this.isEmpty = this.cartProcess.generatorCart(cartData, cartData.cartItem).isEmpty;
           this.cartProcess.saveCartToLocalStorage(
             this.cartProcess.generatorCart(cartData, cartData.cartItem)
           )
           this.sharedService.setUniqueItemNumber(uniqueItemInCart)
-          this.toastService.showSuccess(message);
+          // this.toastService.showSuccess(message);
         }
       )
     this.cart = this.cartservice.getCartFromLocalStorage()

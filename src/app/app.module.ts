@@ -120,8 +120,9 @@ import { SizeDetectorComponent } from './size-detector/size-detector.component'
     NgCartCaculatorService,
     NgCartApiService,
     ResizeChangeService,
-    { provide: LAZYLOAD_IMAGE_HOOKS, useClass: ScrollHooks }
+    { provide: LAZYLOAD_IMAGE_HOOKS, useClass: ScrollHooks },
   ],
+  exports: [AppRoutingModule, AppComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

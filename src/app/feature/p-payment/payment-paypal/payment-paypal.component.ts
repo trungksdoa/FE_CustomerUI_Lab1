@@ -59,21 +59,10 @@ export class PaymentPaypalComponent implements OnInit {
     }
     payer_id: 'HNV5KUQRV9WEY'
   }) {
-    let user = new Users(1, '', '', '', '', '')
-    this.sharedService.isLoggedIn().subscribe(isLoggin => {
-      if (isLoggin) {
-        user = this.sharedService.getUserFromCookie()
-      } else {
-        user = null
-      }
-    })
     const order_content: Order = {
       id: 0,
       orderItems: this.items,
-      userId: user,
-      city: payer.address.country_code,
-      wards: payer.address.admin_area_1,
-      district: payer.address.admin_area_2,
+      userId: this.sharedService.getUserFromCookie(),
       note: '',
       address:
         payer.address.address_line_1 +
@@ -85,8 +74,6 @@ export class PaymentPaypalComponent implements OnInit {
         payer.address.admin_area_2 +
         ', ' +
         payer.address.country_code,
-      fullname: payer.name.given_name + ' ' + payer.name.surname,
-      phoneNumber: '000000000000',
       status: 2,
       totalAmount: 0
     }

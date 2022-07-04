@@ -1,11 +1,14 @@
+import { Cart } from "./cart"
+
 export class Users {
-  public id: number
-  public name: String
-  public username: String
-  public password: String
-  public address: String
-  public phone: String
-  public isAdmin: boolean
+   id: number
+   name: String
+   username: String
+   password: String
+   address: String
+   phone: String
+   isAdmin: boolean
+   cart:Cart
   constructor (
     id: number,
     name: String,
@@ -24,10 +27,10 @@ export class Users {
 }
 
 export class UserUpdate {
-  public id: number
-  public name: String
-  public password: String
-  public address: String
-  public phone: String
-  public isAdmin: boolean
+   id: number
+   name: String
+   password: String
+   address: String
+   phone: String
+   isAdmin: boolean
 }

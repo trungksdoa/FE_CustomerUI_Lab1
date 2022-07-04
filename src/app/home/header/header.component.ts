@@ -4,8 +4,9 @@ import { FormControl } from '@angular/forms'
 import { Router } from '@angular/router'
 import { Observable, startWith, debounceTime, map } from 'rxjs'
 import { Product } from 'src/app/api/product/product'
-import { Cart } from 'src/app/model/cart'
+
 import { PCartComponent } from 'src/app/feature/p-cart/p-cart.component'
+import { NgCartService } from 'src/app/feature/p-cart/service'
 import { DialogService } from 'src/app/service/dialog.service'
 import { SharedService } from 'src/app/service/shared.service'
 import { ToastServiceService } from 'src/app/service/toast-service.service'
@@ -29,12 +30,18 @@ export class HeaderComponent implements OnInit {
   _sharedService: SharedService
   constructor (
     private sharedService: SharedService,
+    private cartService: NgCartService,
     private toast: ToastServiceService,
     private router: Router,
     private dialogService: DialogService,
     private resizeSvc: ResizeChangeService
   ) {
     // đăng ký luồng thay đổi size
+    this.sharedService.isLoggedIn().subscribe(data=>{
+      if(data){
+        this.itemCount = this.cartService.getCartFromLocalStorage().totalUniqueItems;
+      }
+    })
     this.sharedService.getUniqueItemInCart().subscribe(data=>{
       this.itemCount = data;
     })
@@ -70,7 +77,7 @@ export class HeaderComponent implements OnInit {
 
   doSearch (value: String): void {
     debounceTime(1000)
-    this.router.navigateByUrl(`/product/search/${value}`)
+    this.router.navigateByUrl(`product/search/${value}`)
   }
   openCart (): void {
     if (this.sharedService.getUserFromCookie()) {
@@ -89,17 +96,18 @@ export class HeaderComponent implements OnInit {
         .subscribe(type => {})
     } else {
       this.toast.showWarn("Vui lòng đăng nhập !")
-      this.router.navigate(['/login'])
+      this.router.navigate(['login'])
     }
   }
 
   goProfile () {
-    this.router.navigate(['/profile'])
+    console.log("profile");
+    this.router.navigate(['profile'])
   }
   logOut () {
     this.sharedService.deleteCookie('user')
     this.sharedService.deleteLocal('localCart')
-    this.router.navigate(['/login'])
+    this.router.navigate(['login'])
     this.sharedService.isLoggin(false)
     this.sharedService.setUniqueItemNumber(0)
   }

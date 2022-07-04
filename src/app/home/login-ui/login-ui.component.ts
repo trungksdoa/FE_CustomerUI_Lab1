@@ -46,7 +46,8 @@ export class LoginUiComponent implements OnInit {
       address: undefined,
       phone: undefined,
       isAdmin: false,
-      name: undefined
+      name: undefined,
+      cart: undefined
     }
 
     return user
@@ -60,7 +61,8 @@ export class LoginUiComponent implements OnInit {
       this.UserService.loginRequest(requestUser).subscribe(
         ({user,message}: { user: Users; message: string }) => {
           this.isSubmit = true
-          this.cartService.getCartFromDB(user)
+          // this.cartService.getCartFromDB(user)
+          this.cartService.createLocalCart(user,user.cart)
           this.sharedService.setCookie('user', user)
           this.sharedService.isLoggin(true)
           this.checkPreviousPage()

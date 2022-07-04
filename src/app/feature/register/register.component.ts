@@ -29,7 +29,7 @@ export class RegisterComponent implements OnInit {
   ngOnInit (): void {
     this.sharedService.isLoggedIn().subscribe(isLoggin => {
       if (isLoggin) {
-        this.router.navigate(['/login'])
+        this.router.navigate(['login'])
       }
     })
   }
@@ -57,7 +57,8 @@ export class RegisterComponent implements OnInit {
       address: param.address,
       phone: param.phone,
       isAdmin: false,
-      id: 0
+      id: 0,
+      cart: undefined
     }
 
     return user
@@ -72,7 +73,7 @@ export class RegisterComponent implements OnInit {
         ({user,message}: { user: Users; message: string }) => {
           console.log(user);
           this.isSubmit = true
-          this.router.navigate(["/login"])
+          this.router.navigate(["login"])
           this.toast.showSuccess(message)
           form.reset()
         },

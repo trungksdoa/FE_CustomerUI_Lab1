@@ -6,7 +6,7 @@
 </style>
 <!-- <h1 mat-dialog-title>Giỏ hàng</h1> -->
 <div class="pCart">
-  <div class="row" *ngIf="!cart?.isEmpty">
+  <div class="row" *ngIf="!isEmpty">
     <app-spinner></app-spinner>
     <div class="col-md-8 cart">
       <div class="title">
@@ -87,7 +87,7 @@
       </div>
     </div>
   </div>
-  <div class="row" *ngIf="cart?.isEmpty">
+  <div class="row" *ngIf="isEmpty">
     <div class="col-md-12">
       <div class="title">
         <div class="row">
