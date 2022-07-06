@@ -24,8 +24,6 @@ export class HomeComponent implements OnInit {
     this.productService.getAllProduct().subscribe(
       (response: Product[]) => {
         this.products = response
-
-        console.log(this.products)
       },
       (error: HttpErrorResponse) => {
         alert(error.message)

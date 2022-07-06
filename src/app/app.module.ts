@@ -59,6 +59,7 @@ import { ToastServiceService } from './service/toast-service.service'
 import { ResizeChangeService } from './size-detector/resize-change.service'
 import { SizeDetectorComponent } from './size-detector/size-detector.component'
 
+
 @NgModule({
   declarations: [
     AppComponent,

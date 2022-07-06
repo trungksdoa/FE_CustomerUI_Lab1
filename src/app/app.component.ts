@@ -1,13 +1,10 @@
 import { SharedService } from 'src/app/service/shared.service'
-import { Component, ElementRef, HostListener, OnInit } from '@angular/core'
+import { Component, OnInit } from '@angular/core'
 import { MatDialog } from '@angular/material/dialog'
 import { Product } from './api/product/product'
 import { ProductService } from './api/product/product.service'
 import { HttpErrorResponse } from '@angular/common/http'
-import { NgCartService } from './feature/p-cart/service'
-import { ResizeChangeService } from './size-detector/resize-change.service'
-import { SCREEN_SIZE } from './size-detector/size-detector.component'
-import { Router } from '@angular/router'
+import { Cart, NgCartService, cartInit } from './feature/p-cart/service'
 
 @Component({
   selector: 'app-root',
@@ -15,37 +12,53 @@ import { Router } from '@angular/router'
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
-  public products: Product[]
-  loopingStatus = true
+  products: Product[] = []
+  childCart = {
+    id: 0,
+    cartItem: [],
+    userId: undefined,
+    TotalPrice: 0,
+    isEmpty: false,
+    totalUniqueItems: 0
+  }
+  login = false
   constructor (
     public dialog: MatDialog,
     private cartService: NgCartService,
     private shared: SharedService,
-    private productService: ProductService,
-    private elementRef: ElementRef,
-    private resizeSvc: ResizeChangeService,
-    private router: Router
+    private productService: ProductService
   ) {}
 
   ngOnInit (): void {
     this.getAllProduct()
-    this.checkCart(this.cartService, this.shared.getUserFromCookie())
-    this.shared.isLoggedIn().subscribe(isLoggedIn => isLoggedIn ? this.detectLocalStorage() : "")
-  }
-  checkCart (cartService: any, user: any) {
-    cartService.isLocalCartExist().subscribe((isExits: any) => {
-      if (!isExits) {
-        cartService.getCartFromDB(user)
+    this.shared.isLoggedIn().subscribe(isLoggedIn => {
+      if (isLoggedIn) {
+        this.detectLocalStorage()
+      } else {
+        this.cartService.deleteCartLocal()
       }
     })
+  }
+  checkCart (shared: SharedService, cartService: NgCartService, user: any) {
+    if (user) {
+      cartService.getCartLocal().subscribe(data => {
+        shared.callFunctionByClick({ type: 'check', data: data })
+      })
+    } else {
+      cartService.deleteCartLocal()
+    }
   }
   detectLocalStorage () {
     const check = this.checkCart
     const service = this.cartService
     const user = this.shared.getUserFromCookie()
+    const shared = this.shared
     window.addEventListener('storage', function (e) {
-      check(service, user)
+      check(shared, service, user)
     })
+    if (service.getCartLocalSimple()) {
+      check(shared, service, user)
+    }
   }
   getAllProduct (): void {
     this.productService.getAllProduct().subscribe(
