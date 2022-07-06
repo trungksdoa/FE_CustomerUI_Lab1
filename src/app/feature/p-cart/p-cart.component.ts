@@ -6,9 +6,8 @@ import { PPaymentComponent } from 'src/app/feature/p-payment/p-payment.component
 import { DialogService } from 'src/app/service/dialog.service'
 import { Router } from '@angular/router'
 import { Cart, cartItem, NgCartApiService, NgCartService } from './service'
-import { ResizeChangeService } from 'src/app/size-detector/resize-change.service'
-import { SCREEN_SIZE } from 'src/app/size-detector/size-detector.component'
 import { ToastServiceService } from 'src/app/service/toast-service.service'
+
 @Component({
   selector: 'app-p-cart',
   templateUrl: './p-cart.component.html',
@@ -70,11 +69,9 @@ export class PCartComponent implements OnInit {
           this.cartProcess.saveCartToLocalStorage(
             this.cartProcess.generatorCart(cartData, cartData.cartItem)
           )
-          this.sharedService.setUniqueItemNumber(uniqueItemInCart)
-          // this.toastService.showSuccess(message);
         }
       )
-    this.cart = this.cartservice.getCartFromLocalStorage()
+    // this.cart = this.cartservice.getCartFromLocalStorage()
   }
 
   getCalculatedValueCartItem (cart: cartItem) {
@@ -110,8 +107,6 @@ export class PCartComponent implements OnInit {
             cartData,
             cartData.cartItem
           )
-
-          this.sharedService.setUniqueItemNumber(cartData.cartItem.length)
           this.toastService.showSuccess(message)
         },
         error => {

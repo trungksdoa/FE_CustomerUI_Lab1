@@ -1,14 +1,14 @@
-import { Component, OnInit } from '@angular/core';
-import { NgForm } from '@angular/forms';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { Component, OnInit } from '@angular/core'
+import { NgForm } from '@angular/forms'
+import { MatSnackBar } from '@angular/material/snack-bar'
 import { ActivatedRoute, Router } from '@angular/router'
-import { Observable } from 'rxjs';
-import { IDeactivateOptions } from 'src/app/Auth/confirm-deactivate-guard.service';
-import { NgCartService } from 'src/app/feature/p-cart/service';
-import { Users } from 'src/app/model/user';
-import { SharedService } from 'src/app/service/shared.service';
-import { ToastServiceService } from 'src/app/service/toast-service.service';
-import {UserService} from 'src/app/feature/profile/user.service'
+import { Observable } from 'rxjs'
+import { IDeactivateOptions } from 'src/app/Auth/confirm-deactivate-guard.service'
+import { NgCartService } from 'src/app/feature/p-cart/service'
+import { Users } from 'src/app/model/user'
+import { SharedService } from 'src/app/service/shared.service'
+import { ToastServiceService } from 'src/app/service/toast-service.service'
+import { UserService } from 'src/app/feature/profile/user.service'
 @Component({
   selector: 'app-login-ui',
   templateUrl: './login-ui.component.html',
@@ -18,7 +18,7 @@ export class LoginUiComponent implements OnInit {
   isSubmit = false
   hide = true
   durationInSeconds = 5
-  show_button: Boolean = false;
+  show_button: Boolean = false
   show_eye: Boolean = false
   constructor (
     private UserService: UserService,
@@ -31,11 +31,10 @@ export class LoginUiComponent implements OnInit {
   ) {}
 
   ngOnInit (): void {}
-  showPassword() {
-    this.show_button = !this.show_button;
-    this.show_eye = !this.show_eye;
+  showPassword () {
+    this.show_button = !this.show_button
+    this.show_eye = !this.show_eye
   }
-
 
   createUser (param: Users) {
     // alert(JSON.stringify(param))
@@ -59,12 +58,12 @@ export class LoginUiComponent implements OnInit {
     const requestUser = this.createUser(form.value)
     if (form.value) {
       this.UserService.loginRequest(requestUser).subscribe(
-        ({user,message}: { user: Users; message: string }) => {
+        ({ user, message }: { user: Users; message: string }) => {
           this.isSubmit = true
-          // this.cartService.getCartFromDB(user)
-          this.cartService.createLocalCart(user,user.cart)
+
+          // this.cartService.createLocalCart(user,user.cart)
           this.sharedService.setCookie('user', user)
-          this.sharedService.isLoggin(true)
+          this.sharedService.isLoggin(true);
           this.checkPreviousPage()
           this.toast.showSuccess(message)
           form.reset()

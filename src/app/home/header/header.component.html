@@ -5,12 +5,13 @@
           aria-current="page">Trang chủ</a></li>
     </ul>
     <ul class="nav">
-      <li class="nav-item"><a href="#" class="nav-link link-light px-2" *ngIf="!isLogin" [routerLink]="['/login']">Đăng
+      <li class="nav-item"><a href="#" class="nav-link link-light px-2" *ngIf="!login" [routerLink]="['/login']">Đăng
           nhập</a></li>
-      <li class="nav-item"><a href="#" class="nav-link link-light px-2" *ngIf="!isLogin" [routerLink]="['/register']">Đăng
+      <li class="nav-item"><a href="#" class="nav-link link-light px-2" *ngIf="!login"
+          [routerLink]="['/register']">Đăng
           ký</a></li>
 
-      <li class="nav-item" *ngIf="isLogin">
+      <li class="nav-item" *ngIf="login">
         <div class="flex-shrink-0 dropdown">
           <a class="d-block link-dark text-decoration-none" [matMenuTriggerFor]="menu">
             <img src="http://bootdey.com/img/Content/avatar/avatar1.png" alt="mdo" width="32" height="32"
@@ -57,7 +58,7 @@
       <div class=" flex-shrink-0">
         <ul class="nav me-auto">
           <li class="nav-item">
-            <button mat-raised-button (click)="openCart()" color="warn" matBadge="{{itemCount}}"
+            <button mat-raised-button (click)="openCart()" color="warn" matBadge="{{childCart?.totalUniqueItems}}"
               matBadgePosition="after" matBadgeColor="warn">
               <mat-icon>add_shopping_cart</mat-icon>
             </button>

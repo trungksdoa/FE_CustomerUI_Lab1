@@ -33,8 +33,9 @@ export class NgCartCaculatorService {
         cartData: Cart
         message: string
       }) => {
-        this.saveCartToLocalStorage(this.generatorCart(cartData, cartData.cartItem))
-        this.sharedService.setUniqueItemNumber(parseInt(uniqueItemInCart))
+        this.saveCartToLocalStorage(
+          this.generatorCart(cartData, cartData.cartItem)
+        )
         this.toast.showSuccess(message)
       },
       responeError => {

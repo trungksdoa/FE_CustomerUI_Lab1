@@ -69,14 +69,15 @@ export class SharedService {
    *
    *
    */
-
   setLocal (name: string, value: any) {
     localStorage.setItem(name, JSON.stringify(value))
   }
   getLocal (name: string) {
-    return localStorage.getItem(name)
-      ? JSON.parse(localStorage.getItem(name))
-      : ''
+    if (localStorage.getItem(name)) {
+      return JSON.parse(localStorage.getItem(name))
+    } else {
+      throw new Error('404')
+    }
   }
   deleteLocal (name: string) {
     localStorage.removeItem(name)
@@ -88,14 +89,16 @@ export class SharedService {
    *
    *
    */
-
   setCookie (name: string, value: any) {
     if (name === 'user') {
       var now = new Date()
       var time = now.getTime()
       var expireTime = time + 1000 * 36000
+
+      // var date = new Date();
+      // date.setTime(date.getTime() + (30 * 1000));
       now.setTime(expireTime)
-      this.cookieService.set(name, JSON.stringify(value), expireTime)
+      this.cookieService.set(name, JSON.stringify(value), now)
     } else {
       this.cookieService.set(name, JSON.stringify(value))
     }
@@ -123,17 +126,17 @@ export class SharedService {
    *
    */
 
-  setUniqueItemNumber (value: number) {
-    this._uniqueItemInCart.next(value)
-  }
-  getUniqueItemInCart () {
-    if (this.getLocal('localCart')) {
-      this._uniqueItemInCart.next(this.getLocal('localCart').totalUniqueItems)
-    } else {
-      this._uniqueItemInCart.next(0)
-    }
-    return this._uniqueItemInCart.asObservable()
-  }
+  // setUniqueItemNumber (value: number) {
+  //   this._uniqueItemInCart.next(value)
+  // }
+  // getUniqueItemInCart () {
+  //   if (this.getLocal('localCart')) {
+  //     this._uniqueItemInCart.next(this.getLocal('localCart').totalUniqueItems)
+  //   } else {
+  //     this._uniqueItemInCart.next(0)
+  //   }
+  //   return this._uniqueItemInCart.asObservable()
+  // }
 
   //
   // getUser (): Users {

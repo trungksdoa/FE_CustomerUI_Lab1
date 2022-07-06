@@ -1,4 +1,3 @@
-
 import { Component, OnInit, Input } from '@angular/core'
 import { FormControl } from '@angular/forms'
 import { Router } from '@angular/router'
@@ -6,12 +5,10 @@ import { Observable, startWith, debounceTime, map } from 'rxjs'
 import { Product } from 'src/app/api/product/product'
 
 import { PCartComponent } from 'src/app/feature/p-cart/p-cart.component'
-import { NgCartService } from 'src/app/feature/p-cart/service'
+import { Cart, cartInit} from 'src/app/feature/p-cart/service'
 import { DialogService } from 'src/app/service/dialog.service'
 import { SharedService } from 'src/app/service/shared.service'
 import { ToastServiceService } from 'src/app/service/toast-service.service'
-import { ResizeChangeService } from 'src/app/size-detector/resize-change.service'
-import { SCREEN_SIZE } from 'src/app/size-detector/size-detector.component'
 
 @Component({
   selector: 'app-header',
@@ -19,44 +16,43 @@ import { SCREEN_SIZE } from 'src/app/size-detector/size-detector.component'
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent implements OnInit {
-  @Input() products: Product[]
+  @Input() products: Product[] = []
+  childCart: Cart = {
+    id: 0,
+    cartItem: [],
+    userId: undefined,
+    TotalPrice: 0,
+    isEmpty: false,
+    totalUniqueItems: 0
+  }
   myControl = new FormControl('')
   filteredOptions: Observable<Product[]>
   searchMode: boolean
-  isLogin: Boolean = false
-  itemCount: number = 0
-  name: String = ''
-  size: SCREEN_SIZE
-  _sharedService: SharedService
+  login = false
   constructor (
     private sharedService: SharedService,
-    private cartService: NgCartService,
     private toast: ToastServiceService,
     private router: Router,
-    private dialogService: DialogService,
-    private resizeSvc: ResizeChangeService
-  ) {
-    // đăng ký luồng thay đổi size
-    this.sharedService.isLoggedIn().subscribe(data=>{
-      if(data){
-        this.itemCount = this.cartService.getCartFromLocalStorage().totalUniqueItems;
-      }
-    })
-    this.sharedService.getUniqueItemInCart().subscribe(data=>{
-      this.itemCount = data;
-    })
-    this.resizeSvc.onResize$.subscribe(x => {
-      this.size = x
-    })
-  }
+    private dialogService: DialogService
+  ) {}
 
   ngOnInit (): void {
-    this.sharedService.isLoggedIn().subscribe(data => {
-      this.isLogin = data
-      this.sharedService.afterClick.subscribe(() => {
-        this.name = this.sharedService.getUserFromCookie().name
-      })
+    this.sharedService.isLoggedIn().subscribe(isLoggedIn => {
+      if (isLoggedIn) {
+        this.login = isLoggedIn
+      }
     })
+    this.sharedService.afterClick.subscribe(data => {
+      if (data) {
+        if (data.type === 'check') {
+          this.childCart = data.data
+        }
+      }
+    })
+    setInterval(
+      () => (this.sharedService.getUserFromCookie() ? '' : this.logOut()),
+      2000
+    )
     this.getAllProduct()
   }
 
@@ -95,20 +91,20 @@ export class HeaderComponent implements OnInit {
         )
         .subscribe(type => {})
     } else {
-      this.toast.showWarn("Vui lòng đăng nhập !")
+      this.toast.showWarn('Vui lòng đăng nhập !')
       this.router.navigate(['login'])
     }
   }
 
   goProfile () {
-    console.log("profile");
+    console.log('profile')
     this.router.navigate(['profile'])
   }
   logOut () {
     this.sharedService.deleteCookie('user')
     this.sharedService.deleteLocal('localCart')
     this.router.navigate(['login'])
-    this.sharedService.isLoggin(false)
-    this.sharedService.setUniqueItemNumber(0)
+    this.sharedService.callFunctionByClick({ type: 'check', data: cartInit })
+    this.login = false
   }
 }
