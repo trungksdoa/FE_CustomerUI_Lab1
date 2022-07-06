@@ -16,8 +16,8 @@ export class ProductBestSellerComponent implements OnInit {
   constructor (private router: Router) {}
   ngOnInit () {}
 
-  goToDetail (id: any) {
-    this.router.navigate([`detail/${id}`])
+  goToDetail (id: any,slogan: any) {
+    this.router.navigate([`detail/${id}/${slogan}`])
   }
 
   slideConfig = {
