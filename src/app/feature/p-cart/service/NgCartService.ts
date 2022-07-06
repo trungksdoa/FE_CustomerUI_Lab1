@@ -83,6 +83,7 @@ export class NgCartService {
   }
 
   getCartLocalSimple = (): Cart => {
+
     return this.sharedService.getLocal('localCart')
   }
 
