@@ -77,7 +77,7 @@ export class PaymentPaypalComponent implements OnInit {
       orderItems: this.items,
       userId: this.sharedService.getUserFromCookie(),
       note: '',
-      address:
+      address2:
         payer.address.address_line_1 +
         ', ' +
         payer.address.address_line_2 +

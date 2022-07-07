@@ -56,7 +56,7 @@ export class PPaymentComponent implements OnInit {
   orderForm: Order = {
     id: 0,
     orderItems: [],
-    address: '',
+    address2: '',
     userId: undefined,
     note: '',
     status: 0,
@@ -65,7 +65,9 @@ export class PPaymentComponent implements OnInit {
   checkObject = JSON.stringify(this.orderForm, undefined, 2)
 
   constructor (
+    private orderService: OrderService,
     private sharedService: SharedService,
+    private router: Router,
     public dialogRef: MatDialogRef<PPaymentComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
@@ -144,7 +146,7 @@ export class PPaymentComponent implements OnInit {
   isObjectEmpty (obj: Order) {
     const error = { isEmpty: false }
 
-    if (obj.address.length === 0) {
+    if (obj.address2.length === 0) {
       error.isEmpty = true
     }
     return error
@@ -157,7 +159,7 @@ export class PPaymentComponent implements OnInit {
       orderItems: this.cartItems,
       userId: this.user,
       note: value.note,
-      address: value.address,
+      address2: value.address2,
       status: 1,
       totalAmount: 0
     }
@@ -169,13 +171,13 @@ export class PPaymentComponent implements OnInit {
     if (this.isObjectEmpty(this.orderForm).isEmpty) {
       alert('Vui lòng nhập thông tin')
     } else {
-      console.log(this.getOrderItem(this.orderForm))
-      // this.orderService
-      //   .addCartItem(this.getOrderItem(this.orderForm))
-      //   .subscribe(data => {
-      //     this.dialogRef.close('closePayment')
-      //     this.router.navigate(['profile'])
-      //   })
+      // console.log(this.getOrderItem(this.orderForm))
+      this.orderService
+        .addCartItem(this.getOrderItem(this.orderForm))
+        .subscribe(data => {
+          this.dialogRef.close('paymentSuccess')
+          this.router.navigate(['profile'])
+        })
     }
   }
 

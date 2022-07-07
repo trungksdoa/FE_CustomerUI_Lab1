@@ -15,11 +15,8 @@ export class NgCartCaculatorService {
     private toast: ToastServiceService
   ) {}
 
-  saveCartToLocalStorage (cart: Cart) {
-    this.sharedService.setLocal(
-      'localCart',
-      this.generatorCart(cart, cart.cartItem)
-    )
+  saveBadge (number: number) {
+    this.sharedService.setLocal('matBadge', number)
   }
 
   saveCartToDB (cart: cartItem, userId: number) {
@@ -29,13 +26,11 @@ export class NgCartCaculatorService {
         uniqueItemInCart,
         message
       }: {
-        uniqueItemInCart: string
+        uniqueItemInCart: number
         cartData: Cart
         message: string
       }) => {
-        this.saveCartToLocalStorage(
-          this.generatorCart(cartData, cartData.cartItem)
-        )
+        this.saveBadge(uniqueItemInCart)
         this.toast.showSuccess(message)
       },
       responeError => {

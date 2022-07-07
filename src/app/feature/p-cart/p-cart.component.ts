@@ -5,7 +5,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog'
 import { PPaymentComponent } from 'src/app/feature/p-payment/p-payment.component'
 import { DialogService } from 'src/app/service/dialog.service'
 import { Router } from '@angular/router'
-import { Cart, cartItem, NgCartApiService, NgCartService } from './service'
+import { Cart, cartItem, NgCartService, cartInit } from './service'
 import { ToastServiceService } from 'src/app/service/toast-service.service'
 
 @Component({
@@ -14,22 +14,16 @@ import { ToastServiceService } from 'src/app/service/toast-service.service'
   styleUrls: ['./p-cart.component.css']
 })
 export class PCartComponent implements OnInit {
-  cart: Cart = {
-    id: 0,
-    cartItem: [],
-    userId: undefined,
-    TotalPrice: 0,
-    isEmpty: false,
-    totalUniqueItems: 0
-  }
-  isEmpty = false;
-  defaultImage = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSBZ98r5TmClIzjTCeDzUeCgNSwE5BbgFm4oA&usqp=CAU'
+  cart: Cart = cartInit
+  isEmpty: boolean = false
+  isLoaded: boolean = true
+  defaultImage =
+    'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSBZ98r5TmClIzjTCeDzUeCgNSwE5BbgFm4oA&usqp=CAU'
   totalMoney: number = 0
   itemSelected: number[] = []
   itemObjectSelected: cartItem[] = []
-  displayedColumns: string[] = ['productItem.name', 'quantity', 'productPrice']
-  sharedService: SharedService
   timestamp = new Date().getTime()
+  emptyMessage = ''
   constructor (
     private cartservice: NgCartService,
     private _sharedService: SharedService,
@@ -39,11 +33,9 @@ export class PCartComponent implements OnInit {
     private cartProcess: NgCartCaculatorService,
     private router: Router,
     @Inject(MAT_DIALOG_DATA) public data: any
-  ) {
-    this.sharedService = _sharedService
-  }
+  ) {}
 
-  ngOnInit (): void {
+  ngOnInit () {
     this.getCart()
   }
 
@@ -54,24 +46,36 @@ export class PCartComponent implements OnInit {
     return link
   }
 
-  getCart (): void {
-    this.cartservice
-      .getAsyncCartFromDB(this._sharedService.getUserFromCookie())
-      .subscribe(
-        ({
-          cartData,
-          isError,
-          message,
-          uniqueItemInCart
-        }: any) => {
-          this.cart = cartData
-          this.isEmpty = this.cartProcess.generatorCart(cartData, cartData.cartItem).isEmpty;
-          this.cartProcess.saveCartToLocalStorage(
-            this.cartProcess.generatorCart(cartData, cartData.cartItem)
-          )
-        }
-      )
-    // this.cart = this.cartservice.getCartFromLocalStorage()
+  getCart () {
+    this.getPromiseCart().then(
+      ({
+        cartData,
+        isError,
+        message,
+        uniqueItemInCart
+      }: {
+        uniqueItemInCart: number
+        cartData: Cart
+        isError: boolean
+        message: string
+      }) => {
+        this.cart = this.cartProcess.generatorCart(cartData, cartData.cartItem)
+        this.isEmpty = uniqueItemInCart === 0
+        this.isLoaded = false
+      }
+    )
+  }
+
+  getPromiseCart (): Promise<any> {
+    const service = this.cartservice
+    const shared = this._sharedService
+    return new Promise(resolve => {
+      service
+        .getAsyncCartFromDB(shared.getUserFromCookie())
+        .subscribe((data: any) => {
+          resolve(data)
+        })
+    })
   }
 
   getCalculatedValueCartItem (cart: cartItem) {
@@ -82,48 +86,62 @@ export class PCartComponent implements OnInit {
     return this._sharedService.getFormatCurrency(value)
   }
 
-  callAPIChangeData (
-    currentQuantity: number,
-    itemId: number,
-    parentID: number
-  ) {
-    this.cartservice
-      .updateCartQuantity({
-        payload: {
-          itemId: itemId,
-          quantityItemNumber: currentQuantity,
-          parentID: {
-            Id: parentID
-          }
-        }
-      })
-      .subscribe(
-        ({ cartData, message }: { cartData: Cart; message: string }) => {
-          this.cartProcess.saveCartToLocalStorage(
-            this.cartProcess.generatorCart(cartData, cartData.cartItem)
-          )
-
-          this.cart = this.cartProcess.generatorCart(
-            cartData,
-            cartData.cartItem
-          )
-          this.toastService.showSuccess(message)
-        },
-        error => {
-          this.toastService.showError(error.error.message)
-        }
-      )
-  }
+  // callAPIChangeData (
+  //   currentQuantity: number,
+  //   itemId: number,
+  //   parentID: number
+  // ) {
+  //   this.cartservice
+  //     .updateCartQuantity({
+  //       payload: {
+  //         itemId: itemId,
+  //         quantityItemNumber: currentQuantity,
+  //         parentID: {
+  //           Id: parentID
+  //         }
+  //       }
+  //     })
+  //     .subscribe(
+  //       ({
+  //         cartData,
+  //         message,
+  //         uniqueItemInCart
+  //       }: {
+  //         cartData: Cart
+  //         message: string
+  //         uniqueItemInCart: number
+  //       }) => {
+  //         this.cart = this.cartProcess.generatorCart(
+  //           cartData,
+  //           cartData.cartItem
+  //         )
+  //         this.cartProcess.saveBadge(uniqueItemInCart)
+  //         this.toastService.showSuccess(message)
+  //       },
+  //       error => {
+  //         this.toastService.showError(error.error.message)
+  //       }
+  //     )
+  // }
 
   changeQuantity (currentQuantity: number, itemId: number, parentID: number) {
     if (currentQuantity < 1) {
       const listID = []
       listID.push(itemId)
-      this.deleteItemIfQuantityChangeLowerThanOne(this.cart.id, listID)
+      this.deleteItemIfQuantityChangeLowerThanOne(listID)
     } else if (currentQuantity > 50) {
       this.toastService.showWarn('Giới hạn mua không lớn hơn 50')
     } else {
-      this.callAPIChangeData(currentQuantity, itemId, parentID)
+      this.cartservice
+        .callAPIChangeData(currentQuantity, itemId, parentID)
+        .then(result => {
+          const cartResult: Cart = result.cartData
+          if (Object.keys(result).length) {
+            this.isEmpty = result.uniqueItemInCart === 0
+
+            this.cart = cartResult
+          }
+        })
     }
   }
 
@@ -149,16 +167,25 @@ export class PCartComponent implements OnInit {
     )
   }
 
-  deleteItemIfQuantityChangeLowerThanOne (cartId: number, listId: any) {
-    if (this.cartservice.removeAllItem(cartId, listId)) {
-      this.getCart()
-    }
+  deleteItemIfQuantityChangeLowerThanOne (listId: any) {
+    this.cartservice.removeAllItem(this.cart.id, listId).then(result => {
+      if (Object.keys(result).length) {
+        this.isEmpty = result.uniqueItemInCart === 0
+        this.cart = result.cartData
+      }
+    })
   }
   deleteItemInCart () {
     if (this.itemObjectSelected.length > 0) {
-      if (this.cartservice.removeAllItem(this.cart.id, this.itemSelected)) {
-        this.getCart()
-      }
+      this.cartservice
+        .removeAllItem(this.cart.id, this.itemSelected)
+        .then(result => {
+          const cartResult: Cart = result.cartData
+          if (Object.keys(result).length) {
+            this.isEmpty = result.uniqueItemInCart === 0
+            this.cart = cartResult
+          }
+        })
     } else {
       this.toastService.showError('Chưa có sản phẩm nào được chọn')
     }
@@ -166,6 +193,7 @@ export class PCartComponent implements OnInit {
 
   goCheckout () {
     if (this.itemObjectSelected.length > 0) {
+      this.onNoClick()
       this.dialogService
         .openDialog(
           {
@@ -178,11 +206,36 @@ export class PCartComponent implements OnInit {
         )
         .subscribe(type => {
           if (type === 'closePayment') {
-            this.cart.cartItem.forEach(x => (x.selected = false))
-            this.totalMoney = 0
-            this.itemSelected = []
-            this.itemObjectSelected = []
-            this.dialogRef.close()
+            this.dialogService
+              .openDialog(
+                {
+                  height: '100%',
+                  width: '100%',
+                  data: 'ABC'
+                },
+                PCartComponent
+              )
+              .subscribe(data => {
+                console.log(data)
+              })
+          }
+          if (type === 'paymentSuccess') {
+            // this.cart.cartItem.forEach(x => (x.selected = false))
+            // this.totalMoney = 0
+            // this.itemSelected = []
+            // this.itemObjectSelected = []
+            // this.dialogService
+            // .openDialog(
+            //   {
+            //     height: '100%',
+            //     width: '100%',
+            //     disableClose: true,
+            //     data: "ABC"
+            //   },
+            //   PCartComponent
+            // ).subscribe(data=>{
+            //   console.log(data);
+            // })
           }
         })
     } else {

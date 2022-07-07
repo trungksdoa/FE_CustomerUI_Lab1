@@ -48,48 +48,82 @@ export class NgCartService {
         data,
         this.sharedService.getUserFromCookie().id
       )
-      // this.cartProcess.saveCartToLocalStorage(cartInit)
     } else {
       this.toast.showWarn('Vui lóng đăng nhập để sử dụng')
       this.router.navigate(['login'])
     }
   }
 
-  removeAllItem (cartId: any, itemId: number[]): boolean {
-    let status = false
-    this.callAPI.deleteCartItem(cartId, itemId).subscribe(
-      ({ uniqueItemInCart, message }: any) => {
-        this.toast.showSuccess(message)
-        status = true
-      },
-      error => {
-        this.toast.showError(error.error.message)
-      }
-    )
-    return status
+  removeAllItem (cartId: any, itemId: number[]): Promise<any> {
+    return new Promise(resolve => {
+      this.callAPI.deleteCartItem(cartId, itemId).subscribe(
+        ({ cartData, uniqueItemInCart, message }: any) => {
+          this.toast.showSuccess(message)
+          this.cartProcess.saveBadge(uniqueItemInCart)
+          cartData = this.cartProcess.generatorCart(cartData, cartData.cartItem)
+          resolve({
+            cartData,
+            message,
+            uniqueItemInCart
+          })
+        },
+        error => {
+          this.toast.showError(error.error.message)
+          resolve({})
+        }
+      )
+    })
   }
 
-  getCartFromDB (userId: Users) {
-    this.callAPI.getCartItemByUserId(userId.id + '').subscribe(
-      ({ cartData, isError, message, uniqueItemInCart }: any) => {
-        this.cartProcess.saveCartToLocalStorage(
-          this.cartProcess.generatorCart(cartData, cartData.cartItem)
-        )
-      },
-      error => {
-        this.createLocalCart(userId, cartInit)
-      }
-    )
+  callAPIChangeData (
+    currentQuantity: number,
+    itemId: number,
+    parentID: number
+  ): Promise<any> {
+    return new Promise(resolve => {
+      this.updateCartQuantity({
+        payload: {
+          itemId: itemId,
+          quantityItemNumber: currentQuantity,
+          parentID: {
+            Id: parentID
+          }
+        }
+      }).subscribe(
+        ({
+          cartData,
+          message,
+          uniqueItemInCart
+        }: {
+          cartData: Cart
+          message: string
+          uniqueItemInCart: number
+        }) => {
+          cartData = this.cartProcess.generatorCart(cartData, cartData.cartItem)
+          resolve({
+            cartData,
+            message,
+            uniqueItemInCart
+          })
+          this.cartProcess.saveBadge(uniqueItemInCart)
+          this.toast.showSuccess(message)
+        },
+        error => {
+          resolve({})
+          this.toast.showError(error.error.message)
+        }
+      )
+    })
   }
 
-  getCartLocalSimple = (): Cart => {
-    return this.sharedService.getLocal('localCart')
+  getMiniCart = (): Observable<any> => {
+    return from(this.getPromise())
   }
 
-  getPromiseCartLocal = (): Promise<any> => {
+  getPromise = (): Promise<any> => {
     const session = this.sharedService.getLocal
     return new Promise(resolve => {
-      resolve(session('localCart'))
+      resolve(session('matBadge'))
     })
   }
 
@@ -97,38 +131,8 @@ export class NgCartService {
     return from(cp)
   }
 
-  getCartLocal (): Observable<Cart> {
-    const subject = new BehaviorSubject<Cart>(null)
-
-    this.ObservableConvert(this.getPromiseCartLocal()).subscribe(
-      (data: Cart) => {
-        subject.next(this.cartProcess.generatorCart(data, data.cartItem))
-      },
-      error => {
-        this.getAsyncCartFromDB(
-          this.sharedService.getUserFromCookie()
-        ).subscribe(({ cartData, isError, message, uniqueItemInCart }: any) => {
-          this.cartProcess.saveCartToLocalStorage(
-            this.cartProcess.generatorCart(cartData, cartData.cartItem)
-          )
-          subject.next(
-            this.cartProcess.generatorCart(cartData, cartData.cartItem)
-          )
-        })
-      }
-    )
-    return subject
-  }
-
   getAsyncCartFromDB (userId: Users) {
     return this.callAPI.getCartItemByUserId(userId.id + '')
-  }
-
-  createLocalCart (userId: Users, cart: Cart) {
-    cartInit.userId = userId
-    this.cartProcess.saveCartToLocalStorage(
-      this.cartProcess.generatorCart(cart, cart.cartItem)
-    )
   }
 
   deleteCartLocal () {
