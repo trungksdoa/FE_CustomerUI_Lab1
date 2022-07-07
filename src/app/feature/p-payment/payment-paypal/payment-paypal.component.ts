@@ -7,13 +7,6 @@ import { SharedService } from 'src/app/service/shared.service'
 import { cartItem } from 'src/app/feature/p-cart/service'
 import { OrderService } from 'src/app/feature/p-payment/order.service'
 import { PPaymentComponent } from 'src/app/feature/p-payment/p-payment.component'
-import {
-  formatCurrency,
-  getCurrencyRate,
-  getCurrencyRateList,
-  getCurrencyCode,
-  getCurrencySymbol
-} from 'currencyxchange'
 @Component({
   selector: 'app-payment-paypal',
   templateUrl: './payment-paypal.component.html',
@@ -22,6 +15,7 @@ import {
 export class PaymentPaypalComponent implements OnInit {
   @Input() items: Array<cartItem>
   @Input() user: Users
+
 
   public payPalConfig?: IPayPalConfig
   showSuccess: boolean
@@ -33,13 +27,7 @@ export class PaymentPaypalComponent implements OnInit {
 
   ngOnInit (): void {
     this.initConfig()
-   async function tests(){
-    await getCurrencyRate('USD').then(data=>{
-      console.log(data);
-    })
 
-    }
-    tests();
     // this.getItemPaypal()
   }
 
