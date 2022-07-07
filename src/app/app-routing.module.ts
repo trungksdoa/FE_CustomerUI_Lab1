@@ -27,7 +27,7 @@ const routes: Routes = [
     canActivate: [AuthGuardService]
   },
   {
-    path: 'detail/:id', // child route path
+    path: 'detail/:id/:slogan', // child route path
     component: PDetailComponent
     // child route component that the router renders
   },
@@ -42,7 +42,7 @@ const routes: Routes = [
     component: RegisterComponent,
     canActivate: [LoginGuardService]
   },
-  { path: 'product/category/:id', component: ProductComponent },
+  { path: 'product/category/:id/:slogan', component: ProductComponent },
   { path: 'product/search/:keyword', component: ProductComponent },
   {path: '404', component: NotFound404Component},
   {path: '**', redirectTo: '404'}

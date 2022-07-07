@@ -80,7 +80,7 @@ export class ProductComponent implements OnInit {
       }
     )
   }
-  goToDetail (id: any) {
-    this.router.navigate([`detail/${id}`])
+  goToDetail (id: any,slogan: any) {
+    this.router.navigate([`detail/${id}/${slogan}`])
   }
 }

@@ -8,4 +8,5 @@ export interface Product {
   imageurl: string
   price: number
   catagory: Category
+  slogan:string
 }
