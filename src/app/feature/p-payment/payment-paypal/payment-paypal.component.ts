@@ -7,13 +7,8 @@ import { SharedService } from 'src/app/service/shared.service'
 import { cartItem } from 'src/app/feature/p-cart/service'
 import { OrderService } from 'src/app/feature/p-payment/order.service'
 import { PPaymentComponent } from 'src/app/feature/p-payment/p-payment.component'
-import {
-  formatCurrency,
-  getCurrencyRate,
-  getCurrencyRateList,
-  getCurrencyCode,
-  getCurrencySymbol
-} from 'currencyxchange'
+import { CurrencyService } from 'src/app/api/currencyAPI.service'
+
 @Component({
   selector: 'app-payment-paypal',
   templateUrl: './payment-paypal.component.html',
@@ -23,35 +18,30 @@ export class PaymentPaypalComponent implements OnInit {
   @Input() items: Array<cartItem>
   @Input() user: Users
 
+  copyItems:Array<cartItem> = []
+
   public payPalConfig?: IPayPalConfig
   showSuccess: boolean
   constructor (
     private sharedService: SharedService,
     private orderService: OrderService,
+    private currency_code:CurrencyService,
     public dialogRef: MatDialogRef<PPaymentComponent>
   ) {}
 
   ngOnInit (): void {
     this.initConfig()
-   async function tests(){
-    await getCurrencyRate('USD').then(data=>{
-      console.log(data);
-    })
-
-    }
-    tests();
-    // this.getItemPaypal()
   }
 
   private getItemPaypal () {
-    return this.items.map(item => {
+    return this.copyItems.map(item => {
       return {
         name: item.productItem.name,
-        quantity: '1',
+        quantity: item.quantity,
         category: 'DIGITAL_GOODS',
         unit_amount: {
           currency_code: 'USD',
-          value: item.productPrice
+          value: item.productItem.price.toString()
         }
       }
     })
@@ -98,7 +88,7 @@ export class PaymentPaypalComponent implements OnInit {
       clientId:
         'AcY3T0c72nPrldG0kXU1vnYyUPeW9icX6uGS0gz9bB849FQHeQe-1pizqcpS0q17ueHG1tBSRRKjNPE_',
       createOrderOnClient: data => {
-        console.log(this.user)
+        // console.log(this.user)
         return <ICreateOrderRequest>{
           intent: 'CAPTURE',
           purchase_units: [
@@ -115,7 +105,7 @@ export class PaymentPaypalComponent implements OnInit {
               },
               amount: {
                 currency_code: 'USD',
-                value: this.items.reduce(
+                value: this.copyItems.reduce(
                   (pre, curr) => pre + curr.productPrice,
                   0
                 ),
@@ -182,6 +172,16 @@ export class PaymentPaypalComponent implements OnInit {
         console.log('OnError', err)
       },
       onClick: (data, actions) => {
+        this.copyItems = [...this.items]
+        this.currency_code.getCurrency().subscribe(data=>{
+          this.copyItems.forEach(item=>{
+            let fromRate = data.rates["VND"]
+            let toRate = data.rates["USD"]
+
+            item.productPrice =  ((toRate / fromRate) * item.productPrice).toFixed(2)
+            item.productItem.price =  parseFloat(((toRate / fromRate) * item.productItem.price).toFixed(2))
+          })
+        })
         console.log('onClick', data, actions)
       }
     }
