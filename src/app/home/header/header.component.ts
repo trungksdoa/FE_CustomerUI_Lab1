@@ -5,11 +5,12 @@ import { Observable, startWith, debounceTime, map } from 'rxjs'
 import { Product } from 'src/app/api/product/product'
 
 import { PCartComponent } from 'src/app/feature/p-cart/p-cart.component'
-import { Cart, cartInit} from 'src/app/feature/p-cart/service'
+import { NgCartApiService, NgCartService } from 'src/app/feature/p-cart/service'
 import { DialogService } from 'src/app/service/dialog.service'
 import { SharedService } from 'src/app/service/shared.service'
 import { ToastServiceService } from 'src/app/service/toast-service.service'
-
+import { switchMap, share } from 'rxjs/operators'
+import { of } from 'rxjs'
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
@@ -17,21 +18,16 @@ import { ToastServiceService } from 'src/app/service/toast-service.service'
 })
 export class HeaderComponent implements OnInit {
   @Input() products: Product[] = []
-  childCart: Cart = {
-    id: 0,
-    cartItem: [],
-    userId: undefined,
-    TotalPrice: 0,
-    isEmpty: false,
-    totalUniqueItems: 0
-  }
   myControl = new FormControl('')
   filteredOptions: Observable<Product[]>
   searchMode: boolean
   login = false
+  miniBadge: number = 0
   constructor (
     private sharedService: SharedService,
     private toast: ToastServiceService,
+    private cartAPI: NgCartApiService,
+    private cartService: NgCartService,
     private router: Router,
     private dialogService: DialogService
   ) {}
@@ -40,19 +36,11 @@ export class HeaderComponent implements OnInit {
     this.sharedService.isLoggedIn().subscribe(isLoggedIn => {
       if (isLoggedIn) {
         this.login = isLoggedIn
+      } else {
+        // this.logOut()
       }
     })
-    this.sharedService.afterClick.subscribe(data => {
-      if (data) {
-        if (data.type === 'check') {
-          this.childCart = data.data
-        }
-      }
-    })
-    setInterval(
-      () => (this.sharedService.getUserFromCookie() ? '' : this.logOut()),
-      2000
-    )
+    this.getMiniCart()
     this.getAllProduct()
   }
 
@@ -64,6 +52,27 @@ export class HeaderComponent implements OnInit {
     )
   }
 
+  getMiniCart () {
+    if (this.sharedService.getUserFromCookie()) {
+      setInterval(() => {
+        this.cartService.getMiniCart().subscribe(
+          data => {
+            this.miniBadge = data
+          },
+          error => {
+            this.cartAPI
+              .getMiniCart(this.sharedService.getUserFromCookie().id + '')
+              .subscribe(data => {
+                this.miniBadge = data.uniqueItemInCart
+                this.sharedService.setLocal('matBadge', data.uniqueItemInCart)
+              })
+          }
+        )
+      }, 1000)
+    } else {
+      this.sharedService.setLocal('matBadge', 0)
+    }
+  }
   private _filter (value: string): Product[] {
     const filterValue = value.toLowerCase()
     return this.products.filter(
@@ -75,6 +84,7 @@ export class HeaderComponent implements OnInit {
     debounceTime(1000)
     this.router.navigateByUrl(`product/search/${value}`)
   }
+
   openCart (): void {
     if (this.sharedService.getUserFromCookie()) {
       this.dialogService
@@ -104,7 +114,6 @@ export class HeaderComponent implements OnInit {
     this.sharedService.deleteCookie('user')
     this.sharedService.deleteLocal('localCart')
     this.router.navigate(['login'])
-    this.sharedService.callFunctionByClick({ type: 'check', data: cartInit })
     this.login = false
   }
 }

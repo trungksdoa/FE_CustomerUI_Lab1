@@ -4,11 +4,13 @@
   }
 
 </style>
-<!-- <h1 mat-dialog-title>Giỏ hàng</h1> -->
+
+
 <div class="pCart">
-  <div class="row" *ngIf="!isEmpty">
-    <app-spinner></app-spinner>
+  <div class="row" *ngIf="!isEmpty && !isLoaded">
+    <!-- <app-spinner></app-spinner> -->
     <div class="col-md-8 cart">
+      <h3 (click)="onNoClick()" style="cursor: pointer">Thoát</h3>
       <div class="title">
         <div class="row">
           <div class="col">
@@ -87,18 +89,21 @@
       </div>
     </div>
   </div>
-  <div class="row" *ngIf="isEmpty">
+  <div class="row" *ngIf="isEmpty && (isLoaded || !isLoaded)">
     <div class="col-md-12">
-      <div class="title">
+      <h3 (click)="onNoClick()" style="cursor: pointer">Thoát</h3>
+      <!-- <div class="title">
         <div class="row">
           <div class="col">
             <h1 mat-dialog-title>Giỏ Hàng</h1>
           </div>
         </div>
-      </div>
+      </div> -->
       <div class="centerDiv">
         <img src="/assets/cart-is-empty.png" style="width: 100%;" alt="image">
+        <br />
         <h3 class="text-center">Giỏ hàng trống</h3>
+        <button style="width: 100%;" (click)="backToHome()" color="Accent" mat-raised-button>Đi mua ngay</button>
       </div>
     </div>
   </div>

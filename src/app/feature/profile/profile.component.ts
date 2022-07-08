@@ -42,6 +42,7 @@ export class ProfileComponent implements OnInit {
     this.orderService
       .getTop5OrderByUserId(this._sharedService.getUserFromCookie().id)
       .subscribe(items => {
+        console.log(items);
         this.orders = items
       })
   }

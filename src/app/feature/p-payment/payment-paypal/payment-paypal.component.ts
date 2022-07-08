@@ -8,7 +8,6 @@ import { cartItem } from 'src/app/feature/p-cart/service'
 import { OrderService } from 'src/app/feature/p-payment/order.service'
 import { PPaymentComponent } from 'src/app/feature/p-payment/p-payment.component'
 import { CurrencyService } from 'src/app/api/currencyAPI.service'
-
 @Component({
   selector: 'app-payment-paypal',
   templateUrl: './payment-paypal.component.html',
@@ -67,7 +66,7 @@ export class PaymentPaypalComponent implements OnInit {
       orderItems: this.items,
       userId: this.sharedService.getUserFromCookie(),
       note: '',
-      address:
+      address2:
         payer.address.address_line_1 +
         ', ' +
         payer.address.address_line_2 +
