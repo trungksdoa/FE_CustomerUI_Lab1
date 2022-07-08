@@ -1,5 +1,5 @@
-import { Component, OnInit, Input } from '@angular/core'
-import { MatDialogRef } from '@angular/material/dialog'
+import { Component, OnInit, Input, Inject } from '@angular/core'
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog'
 import { IPayPalConfig, ICreateOrderRequest } from 'ngx-paypal'
 import { Order } from 'src/app/model/Order'
 import { Users } from 'src/app/model/user'
@@ -8,39 +8,64 @@ import { cartItem } from 'src/app/feature/p-cart/service'
 import { OrderService } from 'src/app/feature/p-payment/order.service'
 import { PPaymentComponent } from 'src/app/feature/p-payment/p-payment.component'
 import { CurrencyService } from 'src/app/api/currencyAPI.service'
+import { DialogService } from 'src/app/service/dialog.service'
 @Component({
   selector: 'app-payment-paypal',
   templateUrl: './payment-paypal.component.html',
   styleUrls: ['./payment-paypal.component.css']
 })
 export class PaymentPaypalComponent implements OnInit {
-  @Input() items: Array<cartItem>
+  @Input() items: Array<cartItem> = []
   @Input() user: Users
-
-  copyItems:Array<cartItem> = []
-
   public payPalConfig?: IPayPalConfig
+
   showSuccess: boolean
   constructor (
     private sharedService: SharedService,
     private orderService: OrderService,
-    private currency_code:CurrencyService,
+    private currency_code: CurrencyService,
     public dialogRef: MatDialogRef<PPaymentComponent>
   ) {}
 
   ngOnInit (): void {
     this.initConfig()
+
+    this.currency_code.getCurrency().subscribe(result => {
+      const fromRate = result.rates['VND']
+      const toRate = result.rates['USD']
+      this.items.forEach(data => {
+        data.productPrice = ((toRate / fromRate) * data.productPrice).toFixed(2)
+        data.productItem.price = parseFloat(
+          ((toRate / fromRate) * data.productItem.price).toFixed(2)
+        )
+      })
+    })
+
+    // test()
+    // this.currency_code.getCurrency().subscribe(result => {
+    //   const fromRate = result.rates['VND']
+    //   const toRate = result.rates['USD']
+    //   this.items.forEach(data => {
+    //     data.productPrice = (
+    //       (toRate / fromRate) *
+    //       data.productPrice
+    //     ).toFixed(2)
+    //     data.productItem.price = parseFloat(
+    //       ((toRate / fromRate) * data.productItem.price).toFixed(2)
+    //     )
+    //   })
+    // })
   }
 
   private getItemPaypal () {
-    return this.copyItems.map(item => {
+    return this.items.map(item => {
       return {
         name: item.productItem.name,
         quantity: item.quantity,
         category: 'DIGITAL_GOODS',
         unit_amount: {
           currency_code: 'USD',
-          value: item.productItem.price.toString()
+          value: item.productItem.price + ''
         }
       }
     })
@@ -87,7 +112,6 @@ export class PaymentPaypalComponent implements OnInit {
       clientId:
         'AcY3T0c72nPrldG0kXU1vnYyUPeW9icX6uGS0gz9bB849FQHeQe-1pizqcpS0q17ueHG1tBSRRKjNPE_',
       createOrderOnClient: data => {
-        // console.log(this.user)
         return <ICreateOrderRequest>{
           intent: 'CAPTURE',
           purchase_units: [
@@ -104,7 +128,7 @@ export class PaymentPaypalComponent implements OnInit {
               },
               amount: {
                 currency_code: 'USD',
-                value: this.copyItems.reduce(
+                value: this.items.reduce(
                   (pre, curr) => pre + curr.productPrice,
                   0
                 ),
@@ -171,16 +195,8 @@ export class PaymentPaypalComponent implements OnInit {
         console.log('OnError', err)
       },
       onClick: (data, actions) => {
-        this.copyItems = [...this.items]
-        this.currency_code.getCurrency().subscribe(data=>{
-          this.copyItems.forEach(item=>{
-            let fromRate = data.rates["VND"]
-            let toRate = data.rates["USD"]
+        // this.dialogRef.close();
 
-            item.productPrice =  ((toRate / fromRate) * item.productPrice).toFixed(2)
-            item.productItem.price =  parseFloat(((toRate / fromRate) * item.productItem.price).toFixed(2))
-          })
-        })
         console.log('onClick', data, actions)
       }
     }

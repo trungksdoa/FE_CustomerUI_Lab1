@@ -9,6 +9,7 @@ import { SharedService } from 'src/app/service/shared.service'
 import { cartItem } from 'src/app/feature/p-cart/service'
 import { CityService } from './citys.service'
 import { OrderService } from './order.service'
+import { DialogService } from 'src/app/service/dialog.service'
 
 @Component({
   selector: 'app-p-payment',
@@ -24,6 +25,9 @@ export class PPaymentComponent implements OnInit {
 
   active: String = ''
   cartItems: cartItem[] = []
+
+  copyData: cartItem[] = []
+
   totalMoney: string
   clickEventSubscription: Subscription
   selected: Array<any> = []
@@ -68,6 +72,7 @@ export class PPaymentComponent implements OnInit {
     private orderService: OrderService,
     private sharedService: SharedService,
     private router: Router,
+    private dialogService: DialogService,
     public dialogRef: MatDialogRef<PPaymentComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
@@ -185,9 +190,9 @@ export class PPaymentComponent implements OnInit {
     this.dialogRef.close('closePayment')
   }
 
-  paymentOnline (link: string) {
-    if (link === 'Thanh toán trả trước') {
-      this.sharedService.callFunctionByClick()
+  changeLink (link: string) {
+    if(link === "Thanh toán trả trước"){
+      this.copyData = [...this.cartItems]
     }
     this.activeLink = link
   }
