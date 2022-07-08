@@ -58,6 +58,7 @@ import { SharedService } from './service/shared.service'
 import { ToastServiceService } from './service/toast-service.service'
 import { ResizeChangeService } from './size-detector/resize-change.service'
 import { SizeDetectorComponent } from './size-detector/size-detector.component'
+import { CurrencyService } from './api/currencyAPI.service'
 
 
 @NgModule({
@@ -121,6 +122,7 @@ import { SizeDetectorComponent } from './size-detector/size-detector.component'
     NgCartCaculatorService,
     NgCartApiService,
     ResizeChangeService,
+    CurrencyService,
     { provide: LAZYLOAD_IMAGE_HOOKS, useClass: ScrollHooks },
   ],
   exports: [AppRoutingModule, AppComponent],

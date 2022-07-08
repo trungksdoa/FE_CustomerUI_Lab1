@@ -116,9 +116,9 @@ export class NgCartService {
     })
   }
 
-  getMiniCart = (): Observable<any> => {
+ getMiniCart = (): Observable<any> => {
     return from(this.getPromise())
-  }
+ }
 
   getPromise = (): Promise<any> => {
     const session = this.sharedService.getLocal
