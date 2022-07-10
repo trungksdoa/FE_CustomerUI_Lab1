@@ -9,6 +9,7 @@ import { OrderService } from 'src/app/feature/p-payment/order.service'
 import { PPaymentComponent } from 'src/app/feature/p-payment/p-payment.component'
 import { CurrencyService } from 'src/app/api/currencyAPI.service'
 import { DialogService } from 'src/app/service/dialog.service'
+import { Router } from '@angular/router'
 @Component({
   selector: 'app-payment-paypal',
   templateUrl: './payment-paypal.component.html',
@@ -18,10 +19,13 @@ export class PaymentPaypalComponent implements OnInit {
   @Input() items: Array<cartItem> = []
   @Input() user: Users
   public payPalConfig?: IPayPalConfig
-
   showSuccess: boolean
+
+  cloneData: { data: Array<cartItem> } = { data: [] }
+
   constructor (
     private sharedService: SharedService,
+    private router: Router,
     private orderService: OrderService,
     private currency_code: CurrencyService,
     public dialogRef: MatDialogRef<PPaymentComponent>
@@ -30,10 +34,13 @@ export class PaymentPaypalComponent implements OnInit {
   ngOnInit (): void {
     this.initConfig()
 
+    this.cloneData.data = JSON.parse(JSON.stringify(this.items))
+    // cloneData.data = [...this.items]
     this.currency_code.getCurrency().subscribe(result => {
       const fromRate = result.rates['VND']
       const toRate = result.rates['USD']
-      this.items.forEach(data => {
+
+      this.cloneData.data.forEach(data => {
         data.productPrice = ((toRate / fromRate) * data.productPrice).toFixed(2)
         data.productItem.price = parseFloat(
           ((toRate / fromRate) * data.productItem.price).toFixed(2)
@@ -41,24 +48,11 @@ export class PaymentPaypalComponent implements OnInit {
       })
     })
 
-    // test()
-    // this.currency_code.getCurrency().subscribe(result => {
-    //   const fromRate = result.rates['VND']
-    //   const toRate = result.rates['USD']
-    //   this.items.forEach(data => {
-    //     data.productPrice = (
-    //       (toRate / fromRate) *
-    //       data.productPrice
-    //     ).toFixed(2)
-    //     data.productItem.price = parseFloat(
-    //       ((toRate / fromRate) * data.productItem.price).toFixed(2)
-    //     )
-    //   })
-    // })
+    // console.log(this.items);
   }
 
-  private getItemPaypal () {
-    return this.items.map(item => {
+  private getItemPaypal (data: Array<cartItem>) {
+    return data.map(item => {
       return {
         name: item.productItem.name,
         quantity: item.quantity,
@@ -102,7 +96,8 @@ export class PaymentPaypalComponent implements OnInit {
         ', ' +
         payer.address.country_code,
       status: 2,
-      totalAmount: 0
+      totalAmount: 0,
+      orderType: 'online'
     }
     return order_content
   }
@@ -128,21 +123,21 @@ export class PaymentPaypalComponent implements OnInit {
               },
               amount: {
                 currency_code: 'USD',
-                value: this.items.reduce(
+                value: this.cloneData.data.reduce(
                   (pre, curr) => pre + curr.productPrice,
                   0
                 ),
                 breakdown: {
                   item_total: {
                     currency_code: 'USD',
-                    value: this.items.reduce(
+                    value: this.cloneData.data.reduce(
                       (pre, curr) => pre + curr.productPrice,
                       0
                     )
                   }
                 }
               },
-              items: this.getItemPaypal()
+              items: this.getItemPaypal(this.cloneData.data)
             }
           ]
         }
@@ -183,7 +178,10 @@ export class PaymentPaypalComponent implements OnInit {
           this.orderService
             .addCartItem(this.getOrderItem(data.payer))
             .subscribe(data => {
-              this.dialogRef.close('closeCart')
+              this.dialogRef.close('paymentSuccess')
+              this.router.navigate(['profile']).then(() => {
+                window.location.reload()
+              })
             })
         }
         this.showSuccess = true

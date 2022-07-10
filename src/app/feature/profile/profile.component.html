@@ -5,8 +5,8 @@
         <mat-card-content>
           <mat-selection-list>
             <!-- <div mat-subheader>Folders</div> -->
-            <mat-list-item [ngClass]="{active: pages === item.type}" *ngFor="let item of menus"
-              (click)="onClick(item.name)">
+            <mat-list-item [ngClass]="checkActive(item.type)" *ngFor="let item of menus"
+              (click)="onClick(item.type)">
               <mat-icon mat-list-icon>{{item.icon}}</mat-icon>
               <div mat-line>{{item.name}}</div>
             </mat-list-item>
@@ -15,60 +15,67 @@
       </mat-card>
     </div>
     <div class="col-md-9">
-      <mat-card *ngIf="pages === 'Thông tin chung'">
-        <!-- <h4 class="text-muted">Báo cảo chi tiêu của bạn trong tháng</h4>
-        <p class="text-muted h6">Bảng thống kê</p>
-        <app-profile-chart></app-profile-chart> -->
-        <mat-divider [inset]="true"></mat-divider>
+      <mat-card *ngIf="pages === types.home">
+          <div style="padding:5px">
+            <p class="text-muted h6">Các đơn đặt hàng gần đây nhất</p>
+            <table class="table table-bordered table-responsive-sm table-responsive-md
+            table-responsive-lg table-striped">
+              <thead>
+                <tr>
+                  <th> Mã đơn hàng </th>
+                  <th> Ngày đặt hàng </th>
+                  <th> Tổng </th>
+                  <th> Trạng thái </th>
+                  <th> Hình thức </th>
+                  <th colspan="2">Hành động</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let order of orders">
+                  <td>
+                    <h4 style="padding:5px">{{order.id}} </h4>
+                  </td>
+                  <td>
+                    <h4 style="padding:5px">{{order.CreateAt}}</h4>
+                  </td>
+                  <td>
+                    <h4 style="padding:5px">{{formatCurrency(order.totalAmount)}}
+                    </h4>
+                  </td>
+                  <td>
+                    <div *ngIf="order.status == 1;">
+                      <h4 style="padding:5px">Chưa thanh toán</h4>
+                    </div>
+                    <div *ngIf="order.status == 2;">
+                      <h4 style="padding:5px">Đã thanh toán</h4>
+                    </div>
+                    <div *ngIf="order.status == 3;">
+                      <h4 style="padding:5px">Đã hủy</h4>
+                    </div>
+                    <div *ngIf="order.status == 4;">
+                      <h4 style="padding:5px">Đã hoàn thành</h4>
+                    </div>
+                  </td>
+                  <td>
+                    <h4 style="padding:5px;text-transform:capitalize;"> {{order.orderType}} </h4>
 
-        <p class="text-muted h6">Các đơn đặt hàng gần đây nhất</p>
-        <table class="table table-bordered table-responsive-sm table-responsive-md
-        table-responsive-lg table-striped">
-          <thead>
-            <tr>
-              <th> Mã đơn hàng </th>
-              <th> Ngày đặt hàng </th>
-              <th> Tổng </th>
-              <th> Trạng thái </th>
-              <th colspan="2">Hành động</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let order of orders">
-              <td> <button mat-button style="padding:5px">{{order.id}} </button></td>
-              <td> <button mat-button
-                  style="padding:5px">{{order.CreateAt}}</button></td>
-              <td> <button mat-button style="padding:5px">{{sharedService.getFormatCurrency(order.totalAmount)}}
-                </button></td>
-              <td>
-                <div *ngIf="order.status == 1;">
-                  <button mat-button color="warn" style="padding:5px">Chưa xác nhận</button>
-                </div>
-                <div *ngIf="order.status == 2;">
-                  <button mat-button color="primary" style="padding:5px">Đã xác nhận</button>
-                </div>
-                <div *ngIf="order.status == 3;">
-                  <button mat-button color="disabled" style="padding:5px">Đã hủy</button>
-                </div>
-                <div *ngIf="order.status == 4;">
-                  <button mat-button style="padding:5px">Đã hoàn thành</button>
-                </div>
-              </td>
-              <td> <button mat-raised-button color="primary" style="padding:5px" (click)="openOrderDetail(order)">Chi
-                  tiết</button></td>
-            </tr>
-            <tr *ngIf="orders.length <= 0">
-              <td colspan="5">
-                <h3 class="text-center">Không tìm thấy dữ liệu</h3>
-              </td>
-            </tr>
-        </table>
+                  </td>
+                  <td> <button mat-raised-button color="primary" style="padding:5px" (click)="openOrderDetail(order)">Chi
+                      tiết</button></td>
+                </tr>
+                <tr *ngIf="orders.length <= 0">
+                  <td colspan="5">
+                    <h3 class="text-center">Không tìm thấy dữ liệu</h3>
+                  </td>
+                </tr>
+            </table>
+          </div>
       </mat-card>
-      <mat-card *ngIf="pages === 'Tổng Đơn Hàng'">
+      <mat-card *ngIf="pages === types.shopping_cart">
         <app-profile-order></app-profile-order>
       </mat-card>
 
-      <mat-card *ngIf="pages === 'Tài Khoản Của Tôi'">
+      <mat-card *ngIf="pages === types.setting">
         <app-profile-account></app-profile-account>
 
       </mat-card>

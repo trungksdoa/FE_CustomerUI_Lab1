@@ -1,9 +1,9 @@
-import { Component, OnInit } from "@angular/core"
-import { orderManagement } from "src/app/model/Order"
-import { DialogService } from "src/app/service/dialog.service"
-import { SharedService } from "src/app/service/shared.service"
-import { OrderService } from "../p-payment/order.service"
-import { ProfileOrderDetailComponent } from "./profile-order-detail/profile-order-detail.component"
+import { Component, OnInit } from '@angular/core'
+import { orderManagement } from 'src/app/model/Order'
+import { DialogService } from 'src/app/service/dialog.service'
+import { SharedService } from 'src/app/service/shared.service'
+import { OrderService } from '../p-payment/order.service'
+import { ProfileOrderDetailComponent } from './profile-order-detail/profile-order-detail.component'
 
 @Component({
   selector: 'app-profile',
@@ -11,50 +11,62 @@ import { ProfileOrderDetailComponent } from "./profile-order-detail/profile-orde
   styleUrls: ['./profile.component.css']
 })
 export class ProfileComponent implements OnInit {
+  types = {
+    home: 'home',
+    setting: 'setting',
+    shopping_cart: 'shopping_cart'
+  }
   menus: any[] = [
     {
       icon: 'home',
-      type:"home",
+      type: this.types.home,
       name: 'Thông tin chung'
     },
     {
       icon: 'settings',
-      type:"setting",
+      type: this.types.setting,
       name: 'Tài Khoản Của Tôi'
     },
     {
       icon: 'shopping_cart',
-      type:"shopping_cart",
-      name: 'Tổng Đơn Hàng'
+      type: this.types.shopping_cart,
+      name: 'Tất cả đơn hàng'
     }
   ]
-  sharedService: SharedService
   orders: orderManagement[] = []
   constructor (
     private orderService: OrderService,
     private _sharedService: SharedService,
     private _dialogService: DialogService
-  ) {
-    this.sharedService = _sharedService
-  }
+  ) {}
 
   ngOnInit (): void {
     this.orderService
       .getTop5OrderByUserId(this._sharedService.getUserFromCookie().id)
       .subscribe(items => {
-        console.log(items);
+        console.log(items)
         this.orders = items
       })
   }
 
+  pages: string = 'home'
 
-  pages: string = 'Thông tin chung'
+  onClick (item: string) {
+    console.log(item)
 
-
-  onClick (item: any) {
     this.pages = item
+
+    console.log(this.pages)
   }
 
+  checkActive (item: string) {
+    console.log(this.pages === item)
+    if (this.pages === item) {
+      return 'active'
+    } else {
+      return ''
+    }
+  }
   openOrderDetail (order: orderManagement): void {
     console.log(order)
     this._dialogService
@@ -68,5 +80,8 @@ export class ProfileComponent implements OnInit {
         ProfileOrderDetailComponent
       )
       .subscribe()
+  }
+  formatCurrency (value: number) {
+    return this._sharedService.getFormatCurrency(value)
   }
 }

@@ -101,12 +101,13 @@
               </div> -->
             </div>
           </form>
-          <app-payment-paypal *ngIf="activeLink==='Thanh toán trả trước'" [user]=" user" [items]="copyData">
+          <app-payment-paypal *ngIf="activeLink==='Thanh toán trả trước'" [user]=" user" [items]="cartItems">
           </app-payment-paypal>
         </div>
       </div>
     </div>
-    <div style="max-width:250px" *ngIf="activeLink==='Thanh toán trả sau'">
+    <!-- <div style="max-width:250px" *ngIf="activeLink==='Thanh toán trả sau'"> -->
+    <div style="max-width:250px">
       <h4>Tổng Hóa Đơn</h4>
       <div class="d-flex justify-content-between">
         <p class="mb-2">Phí giao hàng</p>

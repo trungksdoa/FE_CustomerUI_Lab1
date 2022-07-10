@@ -23,14 +23,15 @@ export class LoginUiComponent implements OnInit {
   constructor (
     private UserService: UserService,
     private sharedService: SharedService,
-    private cartService: NgCartService,
     private router: Router,
     private route: ActivatedRoute,
     private toast: ToastServiceService,
-    private _snackBar: MatSnackBar
   ) {}
 
-  ngOnInit (): void {}
+  ngOnInit (): void {
+    // const params = this.route.snapshot.queryParams
+    // console.log(params)
+  }
   showPassword () {
     this.show_button = !this.show_button
     this.show_eye = !this.show_eye
@@ -60,12 +61,10 @@ export class LoginUiComponent implements OnInit {
       this.UserService.loginRequest(requestUser).subscribe(
         ({ user, message }: { user: Users; message: string }) => {
           this.isSubmit = true
-
-          // this.cartService.createLocalCart(user,user.cart)
+          this.sharedService.setLocal('matBadge', user.cart.cartItem.length)
           this.sharedService.setCookie('user', user)
-          this.sharedService.isLoggin(true);
-          this.checkPreviousPage()
-          this.toast.showSuccess(message)
+          this.sharedService.isLoggin(true)
+          this.checkPreviousPage(message)
           form.reset()
         },
         error => {
@@ -74,9 +73,9 @@ export class LoginUiComponent implements OnInit {
       )
     }
   }
-  checkPreviousPage () {
+  checkPreviousPage (message: string) {
     const params = this.route.snapshot.queryParams
-
+    this.toast.showSuccess(message)
     if (params['redirectURL']) {
       this.router.navigateByUrl(params['redirectURL'])
     } else {

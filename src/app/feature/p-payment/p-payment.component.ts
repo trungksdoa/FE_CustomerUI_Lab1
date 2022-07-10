@@ -7,7 +7,6 @@ import { Order } from 'src/app/model/Order'
 import { Users } from 'src/app/model/user'
 import { SharedService } from 'src/app/service/shared.service'
 import { cartItem } from 'src/app/feature/p-cart/service'
-import { CityService } from './citys.service'
 import { OrderService } from './order.service'
 import { DialogService } from 'src/app/service/dialog.service'
 
@@ -20,14 +19,8 @@ export class PPaymentComponent implements OnInit {
   links = ['Thanh toán trả sau', 'Thanh toán trả trước']
   activeLink = this.links[0]
   background: ThemePalette = undefined
-  // Access ng-select
-  // Call to clear
-
   active: String = ''
   cartItems: cartItem[] = []
-
-  copyData: cartItem[] = []
-
   totalMoney: string
   clickEventSubscription: Subscription
   selected: Array<any> = []
@@ -64,9 +57,9 @@ export class PPaymentComponent implements OnInit {
     userId: undefined,
     note: '',
     status: 0,
-    totalAmount: 0
+    totalAmount: 0,
+    orderType: ''
   }
-  checkObject = JSON.stringify(this.orderForm, undefined, 2)
 
   constructor (
     private orderService: OrderService,
@@ -166,7 +159,8 @@ export class PPaymentComponent implements OnInit {
       note: value.note,
       address2: value.address2,
       status: 1,
-      totalAmount: 0
+      totalAmount: 0,
+      orderType: 'offline'
     }
     return order_content
   }
@@ -181,7 +175,9 @@ export class PPaymentComponent implements OnInit {
         .addCartItem(this.getOrderItem(this.orderForm))
         .subscribe(data => {
           this.dialogRef.close('paymentSuccess')
-          this.router.navigate(['profile'])
+          this.router.navigate(['profile']).then(() => {
+            window.location.reload()
+          })
         })
     }
   }
@@ -191,9 +187,6 @@ export class PPaymentComponent implements OnInit {
   }
 
   changeLink (link: string) {
-    if(link === "Thanh toán trả trước"){
-      this.copyData = [...this.cartItems]
-    }
     this.activeLink = link
   }
 }

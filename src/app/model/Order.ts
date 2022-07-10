@@ -15,6 +15,7 @@ export interface Order {
   userId: Users
   note:string
   status:number
+  orderType:string
   totalAmount:number
 }
 

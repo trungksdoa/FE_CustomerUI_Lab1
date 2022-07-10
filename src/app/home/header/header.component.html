@@ -4,13 +4,15 @@
       <li class="nav-item"><a class="nav-link link-light px-2" [routerLink]="['/']" routerLinkActive="active"
           aria-current="page">Trang chủ</a></li>
     </ul>
-    <ul class="nav">
-      <li class="nav-item"><a href="#" class="nav-link link-light px-2" *ngIf="!login" [routerLink]="['/login']">Đăng
-          nhập</a></li>
-      <li class="nav-item"><a href="#" class="nav-link link-light px-2" *ngIf="!login" [routerLink]="['/register']">Đăng
-          ký</a></li>
+    <ul class="nav" *ngIf="{ val: loggedIn$ | async } as loggedIn">
 
-      <li class="nav-item" *ngIf="login">
+      <li class="nav-item"><a href="#" class="nav-link link-light px-2" *ngIf="!loggedIn.val"
+          [routerLink]="['/Login']">Đăng
+          nhập</a></li>
+      <li class="nav-item"><a href="#" class="nav-link link-light px-2" *ngIf="!loggedIn.val"
+          [routerLink]="['/register']">Đăng
+          ký</a></li>
+      <li class="nav-item" *ngIf="loggedIn.val">
         <div class="flex-shrink-0 dropdown">
           <a class="d-block link-dark text-decoration-none" [matMenuTriggerFor]="menu">
             <img src="http://bootdey.com/img/Content/avatar/avatar1.png" alt="mdo" width="32" height="32"
@@ -27,7 +29,7 @@
   </div>
 </nav>
 
-<header class="py-3 mb-3 border-bottom">
+<header class="py-3 mb-3 border-bottom" style="background-color: #d6d6d6">
   <div class="container d-grid gap-3 align-items-center" style="grid-template-columns: 0.2fr 2fr;">
     <div class="dropdown">
       <a [routerLink]="['/']" routerLinkActive="active"

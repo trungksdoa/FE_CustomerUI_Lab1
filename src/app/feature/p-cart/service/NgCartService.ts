@@ -116,13 +116,13 @@ export class NgCartService {
     })
   }
 
- getMiniCart = (): Observable<any> => {
+  getMiniCart = (): Observable<any> => {
     return from(this.getPromise())
- }
+  }
 
-  getPromise = (): Promise<any> => {
+  getPromise = async (): Promise<any> => {
     const session = this.sharedService.getLocal
-    return new Promise(resolve => {
+    return await new Promise(resolve => {
       resolve(session('matBadge'))
     })
   }
@@ -135,7 +135,4 @@ export class NgCartService {
     return this.callAPI.getCartItemByUserId(userId.id + '')
   }
 
-  deleteCartLocal () {
-    this.sharedService.deleteLocal('localCart')
-  }
 }

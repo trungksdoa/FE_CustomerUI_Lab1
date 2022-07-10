@@ -1,5 +1,5 @@
 import { EventEmitter, Injectable } from '@angular/core'
-import { BehaviorSubject, Subscription } from 'rxjs'
+import { BehaviorSubject, Subscription ,from, Observable} from 'rxjs'
 import { Users } from 'src/app/model/user'
 import { CookieService } from 'ngx-cookie-service'
 
@@ -82,6 +82,10 @@ export class SharedService {
   deleteLocal (name: string) {
     localStorage.removeItem(name)
   }
+
+  deleteAllLocal () {
+    localStorage.clear()
+  }
   /*
    *
    *
@@ -106,18 +110,32 @@ export class SharedService {
   getCookie (name: string) {
     return this.cookieService.get(name)
       ? JSON.parse(this.cookieService.get(name))
-      : ''
+      : undefined
   }
   deleteCookie (name: string) {
     this.cookieService.delete(name)
   }
-
-  getUserFromCookie (): Users {
-    return this.cookieService.get('user')
-      ? JSON.parse(this.cookieService.get('user'))
-      : null
+  deleteAllCookie () {
+    this.cookieService.deleteAll()
+  }
+  getAsyncUserFromCookie (): Observable<Users> {
+    return from(this.getPromise())
   }
 
+  getUserFromCookie (): Users{
+    return this.getCookie("user")
+  }
+
+  getPromise = (): Promise<any> => {
+    const session = this.cookieService.get('user') ? JSON.parse(this.cookieService.get('user')) : undefined
+    return new Promise(resolve => {
+      resolve(session)
+    })
+  }
+
+  ObservableConvert (cp: any) {
+    return from(cp)
+  }
   /*
    *
    *
@@ -125,21 +143,9 @@ export class SharedService {
    *
    *
    */
-
-  // setUniqueItemNumber (value: number) {
-  //   this._uniqueItemInCart.next(value)
-  // }
-  // getUniqueItemInCart () {
-  //   if (this.getLocal('localCart')) {
-  //     this._uniqueItemInCart.next(this.getLocal('localCart').totalUniqueItems)
-  //   } else {
-  //     this._uniqueItemInCart.next(0)
-  //   }
-  //   return this._uniqueItemInCart.asObservable()
-  // }
-
-  //
-  // getUser (): Users {
-  //   return this.getLocal('user')
-  // }
+  deleteAfterLogout(){
+    this.deleteLocal("matBadge");
+    this.deleteCookie("user")
+    this.isLoggin(false);
+  }
 }

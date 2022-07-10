@@ -33,7 +33,7 @@ const routes: Routes = [
   },
 
   {
-    path: 'login',
+    path: 'Login',
     component: LoginUiComponent,
     canActivate: [LoginGuardService]
   },

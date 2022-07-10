@@ -9,8 +9,7 @@ import { NgCartApiService, NgCartService } from 'src/app/feature/p-cart/service'
 import { DialogService } from 'src/app/service/dialog.service'
 import { SharedService } from 'src/app/service/shared.service'
 import { ToastServiceService } from 'src/app/service/toast-service.service'
-import { switchMap, share } from 'rxjs/operators'
-import { of } from 'rxjs'
+import { share } from 'rxjs/operators'
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
@@ -21,7 +20,7 @@ export class HeaderComponent implements OnInit {
   myControl = new FormControl('')
   filteredOptions: Observable<Product[]>
   searchMode: boolean
-  login = false
+  loggedIn$: Observable<boolean>
   miniBadge: number = 0
   constructor (
     private sharedService: SharedService,
@@ -33,14 +32,14 @@ export class HeaderComponent implements OnInit {
   ) {}
 
   ngOnInit (): void {
-    this.sharedService.isLoggedIn().subscribe(isLoggedIn => {
-      if (isLoggedIn) {
-        this.login = isLoggedIn
-      } else {
-        // this.logOut()
+    this.loggedIn$ = this.sharedService.isLoggedIn().pipe(share())
+
+    this.loggedIn$.subscribe(result => {
+      if (result) {
+        this.getMiniCart()
       }
     })
-    this.getMiniCart()
+
     this.getAllProduct()
   }
 
@@ -53,25 +52,27 @@ export class HeaderComponent implements OnInit {
   }
 
   getMiniCart () {
-    if (this.sharedService.getUserFromCookie()) {
-      setInterval(() => {
-        this.cartService.getMiniCart().subscribe(
-          data => {
-            this.miniBadge = data
-          },
-          error => {
-            this.cartAPI
-              .getMiniCart(this.sharedService.getUserFromCookie().id + '')
-              .subscribe(data => {
-                this.miniBadge = data.uniqueItemInCart
-                this.sharedService.setLocal('matBadge', data.uniqueItemInCart)
-              })
-          }
-        )
-      }, 1000)
-    } else {
-      this.sharedService.setLocal('matBadge', 0)
-    }
+    this.sharedService.getAsyncUserFromCookie().subscribe(result => {
+      if (result) {
+        setInterval(() => {
+          this.cartService.getMiniCart().subscribe(
+            data => {
+              this.miniBadge = data
+            },
+            error => {
+              this.cartAPI
+                .getMiniCart(this.sharedService.getUserFromCookie().id + '')
+                .subscribe(data => {
+                  this.miniBadge = data.uniqueItemInCart
+                  this.sharedService.setLocal('matBadge', data.uniqueItemInCart)
+                })
+            }
+          )
+        }, 1000)
+      } else {
+        this.sharedService.setLocal('matBadge', 0)
+      }
+    })
   }
   private _filter (value: string): Product[] {
     const filterValue = value.toLowerCase()
@@ -101,19 +102,20 @@ export class HeaderComponent implements OnInit {
         )
         .subscribe(type => {})
     } else {
-      this.toast.showWarn('Vui lòng đăng nhập !')
-      this.router.navigate(['login'])
+      this.router.navigate(['Login']).then(()=>{
+        this.toast.showWarn('Vui lòng đăng nhập !')
+      })
     }
   }
 
   goProfile () {
-    console.log('profile')
     this.router.navigate(['profile'])
   }
   logOut () {
-    this.sharedService.deleteCookie('user')
-    this.sharedService.deleteLocal('localCart')
-    this.router.navigate(['login'])
-    this.login = false
+    this.sharedService.deleteAfterLogout();
+    this.getMiniCart()
+    this.router.navigate(['Login']).then(()=>{
+      this.toast.showSuccess("Đăng xuất trái đất thành công")
+    })
   }
 }
