@@ -7,6 +7,7 @@ export interface Product {
   description: string
   imageurl: string
   price: number
+  priceUSD:any
   catagory: Category
   slogan:string
 }

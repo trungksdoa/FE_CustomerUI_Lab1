@@ -17,8 +17,9 @@ export class PDetailComponent implements OnInit {
     description: '',
     imageurl: '',
     price: 0,
-    slogan:'',
-    catagory: undefined
+    slogan: '',
+    catagory: undefined,
+    priceUSD: undefined
   }
   defaultImage = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSBZ98r5TmClIzjTCeDzUeCgNSwE5BbgFm4oA&usqp=CAU"
   timestamp = new Date().getTime()

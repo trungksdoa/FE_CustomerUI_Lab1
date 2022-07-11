@@ -73,7 +73,8 @@ export const itemInitvalue: cartItem = {
   productPrice: undefined,
   active: false,
   selected: false,
-  parentID: undefined
+  parentID: undefined,
+  productPriceUSD: undefined
 }
 export const cartInit: Cart = {
   id: 0,

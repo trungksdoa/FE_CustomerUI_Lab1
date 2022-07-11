@@ -194,13 +194,15 @@ export class PCartComponent implements OnInit {
   goCheckout () {
     if (this.itemObjectSelected.length > 0) {
       this.onNoClick()
+
+      cartInit.id = this.cart.id;
       this.dialogService
         .openDialog(
           {
             height: '100%',
             width: '100%',
             disableClose: true,
-            data: this.itemObjectSelected
+            data: this.cartProcess.generatorCart(cartInit,this.itemObjectSelected)
           },
           PPaymentComponent
         )

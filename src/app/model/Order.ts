@@ -6,6 +6,7 @@ export interface orderItems{
   productItem: Product
   quantity: any
   productPrice: any
+  productPriceUSD:any
 }
 
 export interface Order {
@@ -17,6 +18,7 @@ export interface Order {
   status:number
   orderType:string
   totalAmount:number
+  totalAmountUSD:any
 }
 
 

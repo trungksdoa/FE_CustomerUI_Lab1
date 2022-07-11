@@ -16,5 +16,6 @@ export interface cartItem {
   active: boolean
   selected: boolean
   parentID:any
+  productPriceUSD:any
 }
 

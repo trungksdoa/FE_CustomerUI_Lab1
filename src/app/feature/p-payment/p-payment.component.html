@@ -118,7 +118,7 @@
         <p class="mb-2">{{totalMoney}}</p>
       </div>
       <br>
-      <button style="width:100%" mat-button (click)="formSubmit()" class="btn btn-primary">Xác nhận thanh toán</button>
+      <button style="width:100%"  *ngIf="activeLink==='Thanh toán trả sau'" mat-button  (click)="formSubmit()" class="btn btn-primary">Xác nhận thanh toán</button>
 
     </div>
   </div>

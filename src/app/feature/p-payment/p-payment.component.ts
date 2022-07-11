@@ -6,7 +6,7 @@ import { Subscription } from 'rxjs'
 import { Order } from 'src/app/model/Order'
 import { Users } from 'src/app/model/user'
 import { SharedService } from 'src/app/service/shared.service'
-import { cartItem } from 'src/app/feature/p-cart/service'
+import { Cart, cartItem } from 'src/app/feature/p-cart/service'
 import { OrderService } from './order.service'
 import { DialogService } from 'src/app/service/dialog.service'
 
@@ -58,7 +58,8 @@ export class PPaymentComponent implements OnInit {
     note: '',
     status: 0,
     totalAmount: 0,
-    orderType: ''
+    orderType: '',
+    totalAmountUSD: undefined
   }
 
   constructor (
@@ -67,11 +68,11 @@ export class PPaymentComponent implements OnInit {
     private router: Router,
     private dialogService: DialogService,
     public dialogRef: MatDialogRef<PPaymentComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any
+    @Inject(MAT_DIALOG_DATA) public data: Cart
   ) {
     if (data) {
-      this.cartItems = [...data]
-      this.totalMoney = this.caculatorTotal(data)
+      this.cartItems = [...data.cartItem]
+      this.totalMoney = this.sharedService.getFormatCurrency(data.TotalPrice)
       this.user = this.sharedService.getUserFromCookie()
       // this.citysService.getCitys().subscribe((data: any) => {
       //   this.citys = data
@@ -79,7 +80,9 @@ export class PPaymentComponent implements OnInit {
     }
   }
 
-  ngOnInit (): void {}
+  ngOnInit (): void {
+    console.log(this.data);
+  }
 
   /*
    *
@@ -122,12 +125,12 @@ export class PPaymentComponent implements OnInit {
     this.active = ''
   }
 
-  caculatorTotal (itemPayment: cartItem[]) {
-    const amount = itemPayment.reduce((acc, cv) => {
-      return acc + cv.productPrice
-    }, 0)
-    return this.sharedService.getFormatCurrency(amount)
-  }
+  // caculatorTotal (itemPayment: cartItem[]) {
+  //   const amount = itemPayment.reduce((acc, cv) => {
+  //     return acc + cv.productPrice
+  //   }, 0)
+  //   return this.sharedService.getFormatCurrency(amount)
+  // }
 
   /*
    *
@@ -160,7 +163,8 @@ export class PPaymentComponent implements OnInit {
       address2: value.address2,
       status: 1,
       totalAmount: 0,
-      orderType: 'offline'
+      orderType: 'offline',
+      totalAmountUSD: undefined
     }
     return order_content
   }

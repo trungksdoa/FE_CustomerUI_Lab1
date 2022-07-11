@@ -21,8 +21,6 @@ export class PaymentPaypalComponent implements OnInit {
   public payPalConfig?: IPayPalConfig
   showSuccess: boolean
 
-  cloneData: { data: Array<cartItem> } = { data: [] }
-
   constructor (
     private sharedService: SharedService,
     private router: Router,
@@ -31,27 +29,13 @@ export class PaymentPaypalComponent implements OnInit {
     public dialogRef: MatDialogRef<PPaymentComponent>
   ) {}
 
+
   ngOnInit (): void {
     this.initConfig()
-
-    this.cloneData.data = JSON.parse(JSON.stringify(this.items))
-    // cloneData.data = [...this.items]
-    this.currency_code.getCurrency().subscribe(result => {
-      const fromRate = result.rates['VND']
-      const toRate = result.rates['USD']
-
-      this.cloneData.data.forEach(data => {
-        data.productPrice = ((toRate / fromRate) * data.productPrice).toFixed(2)
-        data.productItem.price = parseFloat(
-          ((toRate / fromRate) * data.productItem.price).toFixed(2)
-        )
-      })
-    })
-
-    // console.log(this.items);
   }
 
   private getItemPaypal (data: Array<cartItem>) {
+    console.log(data)
     return data.map(item => {
       return {
         name: item.productItem.name,
@@ -59,11 +43,15 @@ export class PaymentPaypalComponent implements OnInit {
         category: 'DIGITAL_GOODS',
         unit_amount: {
           currency_code: 'USD',
-          value: item.productItem.price + ''
+          value: item.productItem.price+""
         }
       }
     })
   }
+  sum (prev, next) {
+    return prev + next
+  }
+
   getOrderItem (payer: {
     address: {
       address_line_1: '2211 N First Street'
@@ -88,7 +76,8 @@ export class PaymentPaypalComponent implements OnInit {
       address2: '',
       status: 2,
       totalAmount: 0,
-      orderType: 'online'
+      orderType: 'online',
+      totalAmountUSD: undefined
     }
     return order_content
   }
@@ -96,7 +85,7 @@ export class PaymentPaypalComponent implements OnInit {
     this.payPalConfig = {
       currency: 'USD',
       clientId:
-        'AcY3T0c72nPrldG0kXU1vnYyUPeW9icX6uGS0gz9bB849FQHeQe-1pizqcpS0q17ueHG1tBSRRKjNPE_',
+        'AdgKNgleoxp1CkNQDDHafhAUUINuDRorx_vYKn4n11tywpgz1fFxXoe8Ez2BFWuKaliiEYLwire5A9Xh',
       createOrderOnClient: data => {
         return <ICreateOrderRequest>{
           intent: 'CAPTURE',
@@ -114,21 +103,19 @@ export class PaymentPaypalComponent implements OnInit {
               },
               amount: {
                 currency_code: 'USD',
-                value: this.cloneData.data.reduce(
-                  (pre, curr) => pre + curr.productPrice,
-                  0
-                ),
+                value:   this.items
+                  .map(result => result.productPrice)
+                  .reduce((pre, curr) => pre + curr),
                 breakdown: {
                   item_total: {
                     currency_code: 'USD',
-                    value: this.cloneData.data.reduce(
-                      (pre, curr) => pre + curr.productPrice,
-                      0
-                    )
+                    value: this.items
+                      .map(result => result.productPrice)
+                      .reduce((pre, curr) => pre + curr)
                   }
                 }
               },
-              items: this.getItemPaypal(this.cloneData.data)
+              items: this.getItemPaypal(this.items)
             }
           ]
         }
