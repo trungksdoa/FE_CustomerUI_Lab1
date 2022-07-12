@@ -50,7 +50,7 @@ export class NgCartService {
       )
     } else {
       this.toast.showWarn('Vui lóng đăng nhập để sử dụng')
-      this.router.navigate(['login'])
+      this.router.navigate(['Login'])
     }
   }
 
