@@ -25,7 +25,6 @@ export class PaymentPaypalComponent implements OnInit {
     private sharedService: SharedService,
     private router: Router,
     private orderService: OrderService,
-    private currency_code: CurrencyService,
     public dialogRef: MatDialogRef<PPaymentComponent>
   ) {}
 
@@ -35,7 +34,6 @@ export class PaymentPaypalComponent implements OnInit {
   }
 
   private getItemPaypal (data: Array<cartItem>) {
-    console.log(data)
     return data.map(item => {
       return {
         name: item.productItem.name,

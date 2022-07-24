@@ -56,7 +56,7 @@ export class PPaymentComponent implements OnInit {
     address2: '',
     userId: undefined,
     note: '',
-    status: 0,
+    status: 1,
     totalAmount: 0,
     orderType: '',
     totalAmountUSD: undefined

@@ -44,7 +44,6 @@ export class ProfileComponent implements OnInit {
     this.orderService
       .getTop5OrderByUserId(this._sharedService.getUserFromCookie().id)
       .subscribe(items => {
-        console.log(items)
         this.orders = items
       })
   }
@@ -55,12 +54,9 @@ export class ProfileComponent implements OnInit {
     console.log(item)
 
     this.pages = item
-
-    console.log(this.pages)
   }
 
   checkActive (item: string) {
-    console.log(this.pages === item)
     if (this.pages === item) {
       return 'active'
     } else {
@@ -68,7 +64,6 @@ export class ProfileComponent implements OnInit {
     }
   }
   openOrderDetail (order: orderManagement): void {
-    console.log(order)
     this._dialogService
       .openDialog(
         {

@@ -1,10 +1,6 @@
 import { Component, OnInit } from '@angular/core'
 import { NgForm } from '@angular/forms'
-import { MatSnackBar } from '@angular/material/snack-bar'
 import { ActivatedRoute, Router } from '@angular/router'
-import { Observable } from 'rxjs'
-import { IDeactivateOptions } from 'src/app/Auth/confirm-deactivate-guard.service'
-import { NgCartService } from 'src/app/feature/p-cart/service'
 import { Users } from 'src/app/model/user'
 import { SharedService } from 'src/app/service/shared.service'
 import { ToastServiceService } from 'src/app/service/toast-service.service'
@@ -79,7 +75,7 @@ export class LoginUiComponent implements OnInit {
     if (params['redirectURL']) {
       this.router.navigateByUrl(params['redirectURL'])
     } else {
-      this.router.navigate([''])
+      this.router.navigate(['/'])
     }
   }
 }

@@ -21,6 +21,7 @@ export class HeaderComponent implements OnInit {
   filteredOptions: Observable<Product[]>
   searchMode: boolean
   loggedIn$: Observable<boolean>
+  login: boolean = false
   miniBadge: number = 0
   constructor (
     private sharedService: SharedService,
@@ -34,8 +35,9 @@ export class HeaderComponent implements OnInit {
   ngOnInit (): void {
     this.loggedIn$ = this.sharedService.isLoggedIn().pipe(share())
 
-    this.loggedIn$.subscribe(result => {
+    this.loggedIn$.subscribe((result: boolean) => {
       if (result) {
+        this.login = result
         this.getMiniCart()
       }
     })
@@ -102,7 +104,7 @@ export class HeaderComponent implements OnInit {
         )
         .subscribe(type => {})
     } else {
-      this.router.navigate(['Login']).then(()=>{
+      this.router.navigate(['Login']).then(() => {
         this.toast.showWarn('Vui lòng đăng nhập !')
       })
     }
@@ -112,10 +114,10 @@ export class HeaderComponent implements OnInit {
     this.router.navigate(['profile'])
   }
   logOut () {
-    this.sharedService.deleteAfterLogout();
+    this.sharedService.deleteAfterLogout()
     this.getMiniCart()
-    this.router.navigate(['Login']).then(()=>{
-      this.toast.showSuccess("Đăng xuất trái đất thành công")
+    this.router.navigate(['Login']).then(() => {
+      this.toast.showSuccess('Đăng xuất trái đất thành công')
     })
   }
 }
