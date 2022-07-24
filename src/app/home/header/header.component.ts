@@ -114,6 +114,7 @@ export class HeaderComponent implements OnInit {
     this.router.navigate(['profile'])
   }
   logOut () {
+    this.login = false;
     this.sharedService.deleteAfterLogout()
     this.getMiniCart()
     this.router.navigate(['Login']).then(() => {
