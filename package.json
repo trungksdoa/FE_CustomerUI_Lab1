@@ -4,7 +4,6 @@
   "scripts": {
     "heroku-postbuild": "ng build --prod",
     "ng": "ng",
-    "start": "node server.js",
     "startLocal": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
